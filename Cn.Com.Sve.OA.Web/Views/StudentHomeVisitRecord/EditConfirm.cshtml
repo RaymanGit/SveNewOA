@@ -1,0 +1,128 @@
+﻿@model Cn.Com.Sve.OA.Entities.StudentHomeVisitRecord
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.autocomplete.css")" rel="stylesheet" type="text/css" />
+
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.core.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.widget.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.position.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.autocomplete.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.form.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script>
+    <style type="text/css">
+        body
+        {
+            font-size: 12px;
+        }
+        .l-table-edit
+        {
+        }
+        .l-table-edit-td
+        {
+            padding: 4px;
+        }
+        .l-button-submit, .l-button-reset
+        {
+            width: 80px;
+            float: left;
+            margin-left: 10px;
+            padding-bottom: 2px;
+        }
+        .l-verify-tip
+        {
+            left: 230px;
+            top: 120px;
+            z-index: 9999;
+        }
+    </style>
+	<style type="text/css">
+	.ui-autocomplete-loading { background: white url('@Url.Content("~/Content/themes/base/images/ui-anim_basic_16x16.gif")') right center no-repeat; }
+	#f_UserName { width: 25em; }
+	</style>
+    <script type="text/javascript">
+        $(function () {
+            $("#ReviewTime").ligerDateEditor({ initValue: '@String.Format("{0:d}",this.Model.ReviewTime)' });
+            $("#frmCondition").ligerForm();
+        });
+    </script>
+    @if(this.ViewBag.Msg!=null) { 
+    <script type="text/javascript">
+        $(function () {
+            LG.showSuccess('@this.ViewBag.Msg ！');
+        });
+    </script>
+    }
+
+</head>
+<body style="padding: 10px; height: 100%; text-align: center;">
+     <div id="pnlByForm" style="width: 98%">
+             <form id="frmCondition" class="l-form" action='@Url.Action("EditConfirm", "StudentHomeVisitRecord")' method="post" enctype="multipart/form-data">
+                <input type="hidden" name="Id" value="@this.Model.Id" />
+                <input type="hidden" name="StudentId" value="@this.Model.Student.Id" />
+                <input type="hidden" name="ClazzId" value="@this.Model.Student.ClazzId" />
+                <input type="hidden" name="Visitors" value="@this.Model.Visitors" />
+                <input type="hidden" name="Visitees" value="@this.Model.Visitees" />
+                <input type="hidden" name="VisitType" value="@this.Model.VisitType" />
+                <input type="hidden" name="BeginTime" value="@this.Model.BeginTime" />
+                <input type="hidden" name="EndTime" value="@this.Model.EndTime" />
+                <input type="hidden" name="GiveContactCard" value="@this.Model.GiveContactCard" />
+                <input type="hidden" name="PhoneNo" value="@this.Model.PhoneNo" />
+
+                <input type="hidden" name="Time" value="@this.Model.Time" />
+                <input type="hidden" name="Advice" value="@this.Model.Advice" />
+                <input type="hidden" name="Summary" value="@this.Model.Summary" />
+                <input type="hidden" name="ReviewerId" value="@(this.Model.ReviewerId.HasValue ? this.Model.Reviewer.Id : this.ViewBag.User.Id)" />
+
+                <table cellpadding="0" cellspacing="0" class="l-table-edit" style="width:800px" border="1">
+                <tr>
+                    <td class='l-table-edit-td'>家访类型：@this.Model.VisitType</td>
+                    <td class='l-table-edit-td'>家访日期：@String.Format("{0:d}", this.Model.Time)</td>
+                </tr>
+                <tr>
+                    <td class='l-table-edit-td'>开始时间：@this.Model.BeginTime</td>
+                    <td class='l-table-edit-td'>结束时间：@this.Model.EndTime</td>
+                </tr>
+                <tr>
+                    <td class='l-table-edit-td'>家访对象：@this.Model.Visitees</td>
+                    <td class='l-table-edit-td'>家长电话：@this.Model.PhoneNo</td>
+                </tr>
+                <tr>
+                    <td class='l-table-edit-td'>家访人员：@this.Model.Visitors</td>
+                    <td class='l-table-edit-td'>家长联系卡：@this.Model.GiveContactCard</td>
+                </tr>
+                <tr><td class='l-table-edit-td' colspan="2">意见和建议：<br />@this.Model.Advice</td></tr>
+                <tr><td class='l-table-edit-td' colspan="2">家访总结：<br />@this.Model.Summary</td></tr>
+                <tr>
+                    <td class='l-table-edit-td'>抽查人员</td><td class='l-table-edit-td'>@(this.Model.ReviewerId.HasValue?this.Model.Reviewer.Name:this.ViewBag.User.Name)</td>
+                    <td class='l-table-edit-td'>抽查日期</td><td class='l-table-edit-td' ><input type='text' id='ReviewTime' name="ReviewTime" ltype='text' /></td>
+
+                </tr>
+                <tr><td class='l-table-edit-td' colspan="2">抽查情况：<br />
+                <textarea name='ReviewComment' id='ReviewComment' ltype='text' class="l-textarea" style="width:100%;height:200;">@this.Model.ReviewComment</textarea>
+                </td></tr>
+                    <tr><td colspan="4" class='l-table-edit-td'><input type="submit" id="btnAdd" value="保存" /></td></tr>
+                </table>
+             </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1443 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />  
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script> 
+	
+    <style type="text/css">
+        body{ font-size:12px;}
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-verify-tip{ left:230px; top:120px; z-index:9999;}
+    </style>
+    <script type="text/javascript">
+        var gQualificationStudent;
+        var action = "add";
+        var $dialog;
+		var initData;
+		
+        $(function () {
+            gQualificationStudent = $("#grdQualificationStudent").ligerGrid({
+                columns: [
+                    { display: 'Id', name: 'Id', width: 100, align: 'left' },
+					{ display: 'Clazz', name: 'Clazz', width: 100, align: 'left' },
+					{ display: 'TargetSchoolName', name: 'TargetSchoolName', width: 100, align: 'left' },
+					{ display: 'SignUpTime', name: 'SignUpTime', width: 100, align: 'left' },
+					{ display: 'SeqNo', name: 'SeqNo', width: 100, align: 'left' },
+					{ display: 'TargetProfession', name: 'TargetProfession', width: 100, align: 'left' },
+					{ display: 'TargetLevel', name: 'TargetLevel', width: 100, align: 'left' },
+					{ display: 'StudentNo', name: 'StudentNo', width: 100, align: 'left' },
+					{ display: 'Name', name: 'Name', width: 100, align: 'left' },
+					{ display: 'Sex', name: 'Sex', width: 100, align: 'left' },
+					{ display: 'Birthday', name: 'Birthday', width: 100, align: 'left' },
+					{ display: 'JiGuang', name: 'JiGuang', width: 100, align: 'left' },
+					{ display: 'IdCardNo', name: 'IdCardNo', width: 100, align: 'left' },
+					{ display: 'MinZu', name: 'MinZu', width: 100, align: 'left' },
+					{ display: 'ZhengZhiMianMao', name: 'ZhengZhiMianMao', width: 100, align: 'left' },
+					{ display: 'IsMarried', name: 'IsMarried', width: 100, align: 'left' },
+					{ display: 'HomeAddress', name: 'HomeAddress', width: 100, align: 'left' },
+					{ display: 'HuKouAddress', name: 'HuKouAddress', width: 100, align: 'left' },
+					{ display: 'CommAddress', name: 'CommAddress', width: 100, align: 'left' },
+					{ display: 'Postcode', name: 'Postcode', width: 100, align: 'left' },
+					{ display: 'HomeTelephone', name: 'HomeTelephone', width: 100, align: 'left' },
+					{ display: 'Mobile', name: 'Mobile', width: 100, align: 'left' },
+					{ display: 'QQ', name: 'QQ', width: 100, align: 'left' },
+					{ display: 'Company', name: 'Company', width: 100, align: 'left' },
+					{ display: 'Title', name: 'Title', width: 100, align: 'left' },
+					{ display: 'CompanyTelephoneNo', name: 'CompanyTelephoneNo', width: 100, align: 'left' },
+					{ display: 'BeginWorkTime', name: 'BeginWorkTime', width: 100, align: 'left' },
+					{ display: 'WorkedYears', name: 'WorkedYears', width: 100, align: 'left' },
+					{ display: 'HighestEduLevel', name: 'HighestEduLevel', width: 100, align: 'left' },
+					{ display: 'HighestQualification', name: 'HighestQualification', width: 100, align: 'left' },
+					{ display: 'GraduateDate', name: 'GraduateDate', width: 100, align: 'left' },
+					{ display: 'GruduateSchool', name: 'GruduateSchool', width: 100, align: 'left' },
+					{ display: 'HighestQualificationNo', name: 'HighestQualificationNo', width: 100, align: 'left' },
+					{ display: 'StudyDuration1', name: 'StudyDuration1', width: 100, align: 'left' },
+					{ display: 'StudySchool1', name: 'StudySchool1', width: 100, align: 'left' },
+					{ display: 'StudyPosition1', name: 'StudyPosition1', width: 100, align: 'left' },
+					{ display: 'StudyDuration2', name: 'StudyDuration2', width: 100, align: 'left' },
+					{ display: 'StudySchool2', name: 'StudySchool2', width: 100, align: 'left' },
+					{ display: 'StudyPosition2', name: 'StudyPosition2', width: 100, align: 'left' },
+					{ display: 'StudyDuration3', name: 'StudyDuration3', width: 100, align: 'left' },
+					{ display: 'StudySchool3', name: 'StudySchool3', width: 100, align: 'left' },
+					{ display: 'StudyPosition3', name: 'StudyPosition3', width: 100, align: 'left' },
+					{ display: 'MemberRelType1', name: 'MemberRelType1', width: 100, align: 'left' },
+					{ display: 'MemberName1', name: 'MemberName1', width: 100, align: 'left' },
+					{ display: 'MemberMianMao1', name: 'MemberMianMao1', width: 100, align: 'left' },
+					{ display: 'MemberCompany1', name: 'MemberCompany1', width: 100, align: 'left' },
+					{ display: 'MemberPosition1', name: 'MemberPosition1', width: 100, align: 'left' },
+					{ display: 'MemberMobile1', name: 'MemberMobile1', width: 100, align: 'left' },
+					{ display: 'MemberRelType2', name: 'MemberRelType2', width: 100, align: 'left' },
+					{ display: 'MemberName2', name: 'MemberName2', width: 100, align: 'left' },
+					{ display: 'MemberMianMao2', name: 'MemberMianMao2', width: 100, align: 'left' },
+					{ display: 'MemberCompany2', name: 'MemberCompany2', width: 100, align: 'left' },
+					{ display: 'MemberPosition2', name: 'MemberPosition2', width: 100, align: 'left' },
+					{ display: 'MemberMobile2', name: 'MemberMobile2', width: 100, align: 'left' },
+					{ display: 'Remark', name: 'Remark', width: 100, align: 'left' },
+					{ display: 'Status', name: 'Status', width: 100, align: 'left' },
+					{ display: 'Consultant', name: 'Consultant', width: 100, align: 'left' },
+					{ display: 'Referrer', name: 'Referrer', width: 100, align: 'left' },
+					{ display: 'ReferrerMobile', name: 'ReferrerMobile', width: 100, align: 'left' },
+					{ display: 'ReferrerQQ', name: 'ReferrerQQ', width: 100, align: 'left' },
+					{ display: 'MatriculateTime', name: 'MatriculateTime', width: 100, align: 'left' },
+					{ display: 'NetUserName', name: 'NetUserName', width: 100, align: 'left' },
+					{ display: 'NetPassword', name: 'NetPassword', width: 100, align: 'left' },
+					{ display: 'StudyType', name: 'StudyType', width: 100, align: 'left' },
+					{ display: 'SubmitStatus', name: 'SubmitStatus', width: 100, align: 'left' },
+					{ display: 'OfferStatus', name: 'OfferStatus', width: 100, align: 'left' },
+					{ display: 'PayStatus', name: 'PayStatus', width: 100, align: 'left' },
+					{ display: 'PaperStatus', name: 'PaperStatus', width: 100, align: 'left' },
+					{ display: 'OldOAId', name: 'OldOAId', width: 100, align: 'left' },
+					{ display: 'Photo1', name: 'Photo1', width: 100, align: 'left' },
+					{ display: 'Photo2', name: 'Photo2', width: 100, align: 'left' },
+					{ display: 'Photo3', name: 'Photo3', width: 100, align: 'left' }
+                  ],
+                pageSize: 20, toolbar: {},
+                url: '@Url.Action("GetData","QualificationStudent")', 
+                sortName: 'Name',
+                width: '98%', height: '100%', checkbox: false,
+                usePager:true,
+                toolbar: { items: [
+                { text: '增加', icon: 'add', click: addQualificationStudent },
+                { line: true },
+                { text: '修改', icon: 'modify', click: editQualificationStudent },
+                { line: true },
+                { text: '删除', icon: 'delete', click: deleteQualificationStudent }
+                ]
+                }
+            });
+            $("#btnSearch").click(function () {
+                gQualificationStudent.set({ 
+                    parms : [
+                    { name: 'IdSrh', value: $('#IdSrh').val() },
+					{ name: 'IdFromSrh', value: $('#IdFromSrh').val() },
+					{ name: 'IdToSrh', value: $('#IdToSrh').val() },
+					{ name: 'ClazzSrh', value: $('#ClazzSrh').val() },
+					{ name: 'TargetSchoolNameSrh', value: $('#TargetSchoolNameSrh').val() },
+					{ name: 'SignUpTimeSrh', value: $('#SignUpTimeSrh').val() },
+					{ name: 'SeqNoSrh', value: $('#SeqNoSrh').val() },
+					{ name: 'TargetProfessionSrh', value: $('#TargetProfessionSrh').val() },
+					{ name: 'TargetLevelSrh', value: $('#TargetLevelSrh').val() },
+					{ name: 'StudentNoSrh', value: $('#StudentNoSrh').val() },
+					{ name: 'NameSrh', value: $('#NameSrh').val() },
+					{ name: 'SexSrh', value: $('#SexSrh').val() },
+					{ name: 'BirthdaySrh', value: $('#BirthdaySrh').val() },
+					{ name: 'JiGuangSrh', value: $('#JiGuangSrh').val() },
+					{ name: 'IdCardNoSrh', value: $('#IdCardNoSrh').val() },
+					{ name: 'MinZuSrh', value: $('#MinZuSrh').val() },
+					{ name: 'ZhengZhiMianMaoSrh', value: $('#ZhengZhiMianMaoSrh').val() },
+					{ name: 'IsMarriedSrh', value: $('#IsMarriedSrh').val() },
+					{ name: 'HomeAddressSrh', value: $('#HomeAddressSrh').val() },
+					{ name: 'HuKouAddressSrh', value: $('#HuKouAddressSrh').val() },
+					{ name: 'CommAddressSrh', value: $('#CommAddressSrh').val() },
+					{ name: 'PostcodeSrh', value: $('#PostcodeSrh').val() },
+					{ name: 'HomeTelephoneSrh', value: $('#HomeTelephoneSrh').val() },
+					{ name: 'MobileSrh', value: $('#MobileSrh').val() },
+					{ name: 'QQSrh', value: $('#QQSrh').val() },
+					{ name: 'CompanySrh', value: $('#CompanySrh').val() },
+					{ name: 'TitleSrh', value: $('#TitleSrh').val() },
+					{ name: 'CompanyTelephoneNoSrh', value: $('#CompanyTelephoneNoSrh').val() },
+					{ name: 'BeginWorkTimeSrh', value: $('#BeginWorkTimeSrh').val() },
+					{ name: 'WorkedYearsSrh', value: $('#WorkedYearsSrh').val() },
+					{ name: 'WorkedYearsFromSrh', value: $('#WorkedYearsFromSrh').val() },
+					{ name: 'WorkedYearsToSrh', value: $('#WorkedYearsToSrh').val() },
+					{ name: 'HighestEduLevelSrh', value: $('#HighestEduLevelSrh').val() },
+					{ name: 'HighestQualificationSrh', value: $('#HighestQualificationSrh').val() },
+					{ name: 'GraduateDateSrh', value: $('#GraduateDateSrh').val() },
+					{ name: 'GruduateSchoolSrh', value: $('#GruduateSchoolSrh').val() },
+					{ name: 'HighestQualificationNoSrh', value: $('#HighestQualificationNoSrh').val() },
+					{ name: 'StudyDuration1Srh', value: $('#StudyDuration1Srh').val() },
+					{ name: 'StudySchool1Srh', value: $('#StudySchool1Srh').val() },
+					{ name: 'StudyPosition1Srh', value: $('#StudyPosition1Srh').val() },
+					{ name: 'StudyDuration2Srh', value: $('#StudyDuration2Srh').val() },
+					{ name: 'StudySchool2Srh', value: $('#StudySchool2Srh').val() },
+					{ name: 'StudyPosition2Srh', value: $('#StudyPosition2Srh').val() },
+					{ name: 'StudyDuration3Srh', value: $('#StudyDuration3Srh').val() },
+					{ name: 'StudySchool3Srh', value: $('#StudySchool3Srh').val() },
+					{ name: 'StudyPosition3Srh', value: $('#StudyPosition3Srh').val() },
+					{ name: 'MemberRelType1Srh', value: $('#MemberRelType1Srh').val() },
+					{ name: 'MemberName1Srh', value: $('#MemberName1Srh').val() },
+					{ name: 'MemberMianMao1Srh', value: $('#MemberMianMao1Srh').val() },
+					{ name: 'MemberCompany1Srh', value: $('#MemberCompany1Srh').val() },
+					{ name: 'MemberPosition1Srh', value: $('#MemberPosition1Srh').val() },
+					{ name: 'MemberMobile1Srh', value: $('#MemberMobile1Srh').val() },
+					{ name: 'MemberRelType2Srh', value: $('#MemberRelType2Srh').val() },
+					{ name: 'MemberName2Srh', value: $('#MemberName2Srh').val() },
+					{ name: 'MemberMianMao2Srh', value: $('#MemberMianMao2Srh').val() },
+					{ name: 'MemberCompany2Srh', value: $('#MemberCompany2Srh').val() },
+					{ name: 'MemberPosition2Srh', value: $('#MemberPosition2Srh').val() },
+					{ name: 'MemberMobile2Srh', value: $('#MemberMobile2Srh').val() },
+					{ name: 'RemarkSrh', value: $('#RemarkSrh').val() },
+					{ name: 'StatusSrh', value: $('#StatusSrh').val() },
+					{ name: 'ConsultantSrh', value: $('#ConsultantSrh').val() },
+					{ name: 'ReferrerSrh', value: $('#ReferrerSrh').val() },
+					{ name: 'ReferrerMobileSrh', value: $('#ReferrerMobileSrh').val() },
+					{ name: 'ReferrerQQSrh', value: $('#ReferrerQQSrh').val() },
+					{ name: 'MatriculateTimeSrh', value: $('#MatriculateTimeSrh').val() },
+					{ name: 'NetUserNameSrh', value: $('#NetUserNameSrh').val() },
+					{ name: 'NetPasswordSrh', value: $('#NetPasswordSrh').val() },
+					{ name: 'StudyTypeSrh', value: $('#StudyTypeSrh').val() },
+					{ name: 'SubmitStatusSrh', value: $('#SubmitStatusSrh').val() },
+					{ name: 'OfferStatusSrh', value: $('#OfferStatusSrh').val() },
+					{ name: 'PayStatusSrh', value: $('#PayStatusSrh').val() },
+					{ name: 'PaperStatusSrh', value: $('#PaperStatusSrh').val() },
+					{ name: 'OldOAIdSrh', value: $('#OldOAIdSrh').val() },
+					{ name: 'Photo1Srh', value: $('#Photo1Srh').val() },
+					{ name: 'Photo2Srh', value: $('#Photo2Srh').val() },
+					{ name: 'Photo3Srh', value: $('#Photo3Srh').val() }
+                    ]
+                });
+                gQualificationStudent.loadData();
+            });
+			
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp)
+	            {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frmQualificationStudent").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    saveQualificationStudent();
+                    return false;
+                }
+            });
+
+			$.getJSON("@Url.Action("GetInitData","QualificationStudent")", function(data){
+				initData = data;
+                /*
+				$("#f_City_ProvinceId").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceId',data:data.Provinces });
+                data.Provinces.unshift({ Id:'', Name:'所有' });
+                $("#f_City_ProvinceIdSrh").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceIdSrh',data:data.Provinces });
+				*/
+	            $("#formsearch").ligerForm();
+				$("#frmQualificationStudent").ligerForm();
+            });
+
+
+        });
+		
+        function addQualificationStudent(){
+            action = "add";
+			$("#f_QualificationStudent_Id").val("");
+			$("#f_QualificationStudent_Clazz").val("");
+			$("#f_QualificationStudent_TargetSchoolName").val("");
+			$("#f_QualificationStudent_SignUpTime").val("");
+			$("#f_QualificationStudent_SeqNo").val("");
+			$("#f_QualificationStudent_TargetProfession").val("");
+			$("#f_QualificationStudent_TargetLevel").val("");
+			$("#f_QualificationStudent_StudentNo").val("");
+			$("#f_QualificationStudent_Name").val("");
+			$("#f_QualificationStudent_Sex").val("");
+			$("#f_QualificationStudent_Birthday").val("");
+			$("#f_QualificationStudent_JiGuang").val("");
+			$("#f_QualificationStudent_IdCardNo").val("");
+			$("#f_QualificationStudent_MinZu").val("");
+			$("#f_QualificationStudent_ZhengZhiMianMao").val("");
+			$("#f_QualificationStudent_IsMarried").val("");
+			$("#f_QualificationStudent_HomeAddress").val("");
+			$("#f_QualificationStudent_HuKouAddress").val("");
+			$("#f_QualificationStudent_CommAddress").val("");
+			$("#f_QualificationStudent_Postcode").val("");
+			$("#f_QualificationStudent_HomeTelephone").val("");
+			$("#f_QualificationStudent_Mobile").val("");
+			$("#f_QualificationStudent_QQ").val("");
+			$("#f_QualificationStudent_Company").val("");
+			$("#f_QualificationStudent_Title").val("");
+			$("#f_QualificationStudent_CompanyTelephoneNo").val("");
+			$("#f_QualificationStudent_BeginWorkTime").val("");
+			$("#f_QualificationStudent_WorkedYears").val("");
+			$("#f_QualificationStudent_HighestEduLevel").val("");
+			$("#f_QualificationStudent_HighestQualification").val("");
+			$("#f_QualificationStudent_GraduateDate").val("");
+			$("#f_QualificationStudent_GruduateSchool").val("");
+			$("#f_QualificationStudent_HighestQualificationNo").val("");
+			$("#f_QualificationStudent_StudyDuration1").val("");
+			$("#f_QualificationStudent_StudySchool1").val("");
+			$("#f_QualificationStudent_StudyPosition1").val("");
+			$("#f_QualificationStudent_StudyDuration2").val("");
+			$("#f_QualificationStudent_StudySchool2").val("");
+			$("#f_QualificationStudent_StudyPosition2").val("");
+			$("#f_QualificationStudent_StudyDuration3").val("");
+			$("#f_QualificationStudent_StudySchool3").val("");
+			$("#f_QualificationStudent_StudyPosition3").val("");
+			$("#f_QualificationStudent_MemberRelType1").val("");
+			$("#f_QualificationStudent_MemberName1").val("");
+			$("#f_QualificationStudent_MemberMianMao1").val("");
+			$("#f_QualificationStudent_MemberCompany1").val("");
+			$("#f_QualificationStudent_MemberPosition1").val("");
+			$("#f_QualificationStudent_MemberMobile1").val("");
+			$("#f_QualificationStudent_MemberRelType2").val("");
+			$("#f_QualificationStudent_MemberName2").val("");
+			$("#f_QualificationStudent_MemberMianMao2").val("");
+			$("#f_QualificationStudent_MemberCompany2").val("");
+			$("#f_QualificationStudent_MemberPosition2").val("");
+			$("#f_QualificationStudent_MemberMobile2").val("");
+			$("#f_QualificationStudent_Remark").val("");
+			$("#f_QualificationStudent_Status").val("");
+			$("#f_QualificationStudent_Consultant").val("");
+			$("#f_QualificationStudent_Referrer").val("");
+			$("#f_QualificationStudent_ReferrerMobile").val("");
+			$("#f_QualificationStudent_ReferrerQQ").val("");
+			$("#f_QualificationStudent_MatriculateTime").val("");
+			$("#f_QualificationStudent_NetUserName").val("");
+			$("#f_QualificationStudent_NetPassword").val("");
+			$("#f_QualificationStudent_StudyType").val("");
+			$("#f_QualificationStudent_SubmitStatus").val("");
+			$("#f_QualificationStudent_OfferStatus").val("");
+			$("#f_QualificationStudent_PayStatus").val("");
+			$("#f_QualificationStudent_PaperStatus").val("");
+			$("#f_QualificationStudent_OldOAId").val("");
+			$("#f_QualificationStudent_Photo1").val("");
+			$("#f_QualificationStudent_Photo2").val("");
+			$("#f_QualificationStudent_Photo3").val("");
+			$dialog = $.ligerDialog.open({ target: $("#dQualificationStudent"), width: 300, height: 150 });
+        }
+        function editQualificationStudent() {
+            action = "edit";
+            var row = gQualificationStudent.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+			$("#f_QualificationStudent_Id").val(row.Id);
+			$("#f_QualificationStudent_Clazz").val(row.Clazz);
+			$("#f_QualificationStudent_TargetSchoolName").val(row.TargetSchoolName);
+			$("#f_QualificationStudent_SignUpTime").val(row.SignUpTime);
+			$("#f_QualificationStudent_SeqNo").val(row.SeqNo);
+			$("#f_QualificationStudent_TargetProfession").val(row.TargetProfession);
+			$("#f_QualificationStudent_TargetLevel").val(row.TargetLevel);
+			$("#f_QualificationStudent_StudentNo").val(row.StudentNo);
+			$("#f_QualificationStudent_Name").val(row.Name);
+			$("#f_QualificationStudent_Sex").val(row.Sex);
+			$("#f_QualificationStudent_Birthday").val(row.Birthday);
+			$("#f_QualificationStudent_JiGuang").val(row.JiGuang);
+			$("#f_QualificationStudent_IdCardNo").val(row.IdCardNo);
+			$("#f_QualificationStudent_MinZu").val(row.MinZu);
+			$("#f_QualificationStudent_ZhengZhiMianMao").val(row.ZhengZhiMianMao);
+			$("#f_QualificationStudent_IsMarried").val(row.IsMarried);
+			$("#f_QualificationStudent_HomeAddress").val(row.HomeAddress);
+			$("#f_QualificationStudent_HuKouAddress").val(row.HuKouAddress);
+			$("#f_QualificationStudent_CommAddress").val(row.CommAddress);
+			$("#f_QualificationStudent_Postcode").val(row.Postcode);
+			$("#f_QualificationStudent_HomeTelephone").val(row.HomeTelephone);
+			$("#f_QualificationStudent_Mobile").val(row.Mobile);
+			$("#f_QualificationStudent_QQ").val(row.QQ);
+			$("#f_QualificationStudent_Company").val(row.Company);
+			$("#f_QualificationStudent_Title").val(row.Title);
+			$("#f_QualificationStudent_CompanyTelephoneNo").val(row.CompanyTelephoneNo);
+			$("#f_QualificationStudent_BeginWorkTime").val(row.BeginWorkTime);
+			$("#f_QualificationStudent_WorkedYears").val(row.WorkedYears);
+			$("#f_QualificationStudent_HighestEduLevel").val(row.HighestEduLevel);
+			$("#f_QualificationStudent_HighestQualification").val(row.HighestQualification);
+			$("#f_QualificationStudent_GraduateDate").val(row.GraduateDate);
+			$("#f_QualificationStudent_GruduateSchool").val(row.GruduateSchool);
+			$("#f_QualificationStudent_HighestQualificationNo").val(row.HighestQualificationNo);
+			$("#f_QualificationStudent_StudyDuration1").val(row.StudyDuration1);
+			$("#f_QualificationStudent_StudySchool1").val(row.StudySchool1);
+			$("#f_QualificationStudent_StudyPosition1").val(row.StudyPosition1);
+			$("#f_QualificationStudent_StudyDuration2").val(row.StudyDuration2);
+			$("#f_QualificationStudent_StudySchool2").val(row.StudySchool2);
+			$("#f_QualificationStudent_StudyPosition2").val(row.StudyPosition2);
+			$("#f_QualificationStudent_StudyDuration3").val(row.StudyDuration3);
+			$("#f_QualificationStudent_StudySchool3").val(row.StudySchool3);
+			$("#f_QualificationStudent_StudyPosition3").val(row.StudyPosition3);
+			$("#f_QualificationStudent_MemberRelType1").val(row.MemberRelType1);
+			$("#f_QualificationStudent_MemberName1").val(row.MemberName1);
+			$("#f_QualificationStudent_MemberMianMao1").val(row.MemberMianMao1);
+			$("#f_QualificationStudent_MemberCompany1").val(row.MemberCompany1);
+			$("#f_QualificationStudent_MemberPosition1").val(row.MemberPosition1);
+			$("#f_QualificationStudent_MemberMobile1").val(row.MemberMobile1);
+			$("#f_QualificationStudent_MemberRelType2").val(row.MemberRelType2);
+			$("#f_QualificationStudent_MemberName2").val(row.MemberName2);
+			$("#f_QualificationStudent_MemberMianMao2").val(row.MemberMianMao2);
+			$("#f_QualificationStudent_MemberCompany2").val(row.MemberCompany2);
+			$("#f_QualificationStudent_MemberPosition2").val(row.MemberPosition2);
+			$("#f_QualificationStudent_MemberMobile2").val(row.MemberMobile2);
+			$("#f_QualificationStudent_Remark").val(row.Remark);
+			$("#f_QualificationStudent_Status").val(row.Status);
+			$("#f_QualificationStudent_Consultant").val(row.Consultant);
+			$("#f_QualificationStudent_Referrer").val(row.Referrer);
+			$("#f_QualificationStudent_ReferrerMobile").val(row.ReferrerMobile);
+			$("#f_QualificationStudent_ReferrerQQ").val(row.ReferrerQQ);
+			$("#f_QualificationStudent_MatriculateTime").val(row.MatriculateTime);
+			$("#f_QualificationStudent_NetUserName").val(row.NetUserName);
+			$("#f_QualificationStudent_NetPassword").val(row.NetPassword);
+			$("#f_QualificationStudent_StudyType").val(row.StudyType);
+			$("#f_QualificationStudent_SubmitStatus").val(row.SubmitStatus);
+			$("#f_QualificationStudent_OfferStatus").val(row.OfferStatus);
+			$("#f_QualificationStudent_PayStatus").val(row.PayStatus);
+			$("#f_QualificationStudent_PaperStatus").val(row.PaperStatus);
+			$("#f_QualificationStudent_OldOAId").val(row.OldOAId);
+			$("#f_QualificationStudent_Photo1").val(row.Photo1);
+			$("#f_QualificationStudent_Photo2").val(row.Photo2);
+			$("#f_QualificationStudent_Photo3").val(row.Photo3);
+            $dialog = $.ligerDialog.open({ target: $("#dQualificationStudent"), width: 300, height: 150 });
+        }
+        function deleteQualificationStudent() {
+            var row = gQualificationStudent.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？",function (r) { 
+                if(r){
+                    $.post("@Url.Action("Delete","QualificationStudent")", { id: row.Id }
+                        , function (result) {
+                            if (result.Successful) {
+                                gQualificationStudent.deleteSelectedRow();
+                            } else {
+                                $.ligerMessageBox.error('错误', result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+        function saveQualificationStudent(){
+            if(action=="add"){
+                $.post("@Url.Action("Add","QualificationStudent")", $("#frmQualificationStudent").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            gQualificationStudent.addRow(result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }else{
+                $.post("@Url.Action("Update","QualificationStudent")", $("#frmQualificationStudent").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            var row = gQualificationStudent.getSelected();
+                            if (!row) { alert('请选择行'); return; }
+                            gQualificationStudent.updateRow(row,result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+<body style="padding:10px;height:100%; text-align:center;">
+  <div id="mainsearch" style=" width:98%">
+    <div class="searchtitle">
+        <span>搜索</span><img src="@Url.Content("~/Content/lib/icons/32X32/searchtool.gif")" alt="" />
+        <div class="togglebtn"></div> 
+    </div>
+    <div class="navline" style="margin-bottom:4px; margin-top:4px;"></div>
+    <div class="searchbox">
+        <form id="formsearch" class="l-form" action="">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+			<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Id</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdSrh' type='text' id='IdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdFromSrh' type='text' id='IdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdToSrh' type='text' id='IdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Clazz</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ClazzSrh' type='text' id='ClazzSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TargetSchoolName</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TargetSchoolNameSrh' type='text' id='TargetSchoolNameSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SignUpTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SignUpTimeSrh' type='text' id='SignUpTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SeqNo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SeqNoSrh' type='text' id='SeqNoSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TargetProfession</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TargetProfessionSrh' type='text' id='TargetProfessionSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TargetLevel</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TargetLevelSrh' type='text' id='TargetLevelSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudentNo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudentNoSrh' type='text' id='StudentNoSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Name</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NameSrh' type='text' id='NameSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Sex</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SexSrh' type='text' id='SexSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Birthday</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='BirthdaySrh' type='text' id='BirthdaySrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>JiGuang</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='JiGuangSrh' type='text' id='JiGuangSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdCardNo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdCardNoSrh' type='text' id='IdCardNoSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MinZu</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MinZuSrh' type='text' id='MinZuSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ZhengZhiMianMao</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ZhengZhiMianMaoSrh' type='text' id='ZhengZhiMianMaoSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsMarried</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsMarriedSrh' type='text' id='IsMarriedSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HomeAddress</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HomeAddressSrh' type='text' id='HomeAddressSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HuKouAddress</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HuKouAddressSrh' type='text' id='HuKouAddressSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>CommAddress</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='CommAddressSrh' type='text' id='CommAddressSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Postcode</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='PostcodeSrh' type='text' id='PostcodeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HomeTelephone</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HomeTelephoneSrh' type='text' id='HomeTelephoneSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Mobile</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MobileSrh' type='text' id='MobileSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>QQ</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='QQSrh' type='text' id='QQSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Company</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='CompanySrh' type='text' id='CompanySrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Title</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TitleSrh' type='text' id='TitleSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>CompanyTelephoneNo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='CompanyTelephoneNoSrh' type='text' id='CompanyTelephoneNoSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>BeginWorkTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='BeginWorkTimeSrh' type='text' id='BeginWorkTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>WorkedYears</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='WorkedYearsSrh' type='text' id='WorkedYearsSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>WorkedYearsFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='WorkedYearsFromSrh' type='text' id='WorkedYearsFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>WorkedYearsTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='WorkedYearsToSrh' type='text' id='WorkedYearsToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HighestEduLevel</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HighestEduLevelSrh' type='text' id='HighestEduLevelSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HighestQualification</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HighestQualificationSrh' type='text' id='HighestQualificationSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GraduateDate</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GraduateDateSrh' type='text' id='GraduateDateSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GruduateSchool</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GruduateSchoolSrh' type='text' id='GruduateSchoolSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HighestQualificationNo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HighestQualificationNoSrh' type='text' id='HighestQualificationNoSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudyDuration1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudyDuration1Srh' type='text' id='StudyDuration1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudySchool1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudySchool1Srh' type='text' id='StudySchool1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudyPosition1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudyPosition1Srh' type='text' id='StudyPosition1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudyDuration2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudyDuration2Srh' type='text' id='StudyDuration2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudySchool2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudySchool2Srh' type='text' id='StudySchool2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudyPosition2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudyPosition2Srh' type='text' id='StudyPosition2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudyDuration3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudyDuration3Srh' type='text' id='StudyDuration3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudySchool3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudySchool3Srh' type='text' id='StudySchool3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudyPosition3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudyPosition3Srh' type='text' id='StudyPosition3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberRelType1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberRelType1Srh' type='text' id='MemberRelType1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberName1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberName1Srh' type='text' id='MemberName1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberMianMao1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberMianMao1Srh' type='text' id='MemberMianMao1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberCompany1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberCompany1Srh' type='text' id='MemberCompany1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberPosition1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberPosition1Srh' type='text' id='MemberPosition1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberMobile1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberMobile1Srh' type='text' id='MemberMobile1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberRelType2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberRelType2Srh' type='text' id='MemberRelType2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberName2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberName2Srh' type='text' id='MemberName2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberMianMao2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberMianMao2Srh' type='text' id='MemberMianMao2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberCompany2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberCompany2Srh' type='text' id='MemberCompany2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberPosition2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberPosition2Srh' type='text' id='MemberPosition2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberMobile2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberMobile2Srh' type='text' id='MemberMobile2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Remark</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='RemarkSrh' type='text' id='RemarkSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Status</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StatusSrh' type='text' id='StatusSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Consultant</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ConsultantSrh' type='text' id='ConsultantSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Referrer</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ReferrerSrh' type='text' id='ReferrerSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ReferrerMobile</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ReferrerMobileSrh' type='text' id='ReferrerMobileSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ReferrerQQ</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ReferrerQQSrh' type='text' id='ReferrerQQSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MatriculateTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MatriculateTimeSrh' type='text' id='MatriculateTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>NetUserName</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NetUserNameSrh' type='text' id='NetUserNameSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>NetPassword</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NetPasswordSrh' type='text' id='NetPasswordSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudyType</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudyTypeSrh' type='text' id='StudyTypeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SubmitStatus</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SubmitStatusSrh' type='text' id='SubmitStatusSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>OfferStatus</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='OfferStatusSrh' type='text' id='OfferStatusSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>PayStatus</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='PayStatusSrh' type='text' id='PayStatusSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>PaperStatus</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='PaperStatusSrh' type='text' id='PaperStatusSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>OldOAId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='OldOAIdSrh' type='text' id='OldOAIdSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Photo1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Photo1Srh' type='text' id='Photo1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Photo2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Photo2Srh' type='text' id='Photo2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Photo3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Photo3Srh' type='text' id='Photo3Srh' ltype='text' /></td>
+</tr>
+
+            <tr>
+                <td style="text-align:center;" class="l-table-edit-td" colspan="3"><input type="button" value="查询" id="btnSearch"  /></td>
+            </tr>
+        </table>
+        
+        </form>
+    </div>
+  </div>
+  <div id="grdQualificationStudent"></div> 
+  
+   <div id="dQualificationStudent" style="display: none;">
+        <form action="" method="post" id="frmQualificationStudent">
+			<input type="hidden" id="f_QualificationStudent_Id" name="Id" value="" />
+			<table cellpadding="0" cellspacing="0" class="l-table-edit" >
+	            
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Clazz</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Clazz' type='text' id='f_QualificationStudent_Clazz' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TargetSchoolName</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TargetSchoolName' type='text' id='f_QualificationStudent_TargetSchoolName' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>SignUpTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='SignUpTime' type='text' id='f_QualificationStudent_SignUpTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>SeqNo</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='SeqNo' type='text' id='f_QualificationStudent_SeqNo' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TargetProfession</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TargetProfession' type='text' id='f_QualificationStudent_TargetProfession' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TargetLevel</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TargetLevel' type='text' id='f_QualificationStudent_TargetLevel' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudentNo</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudentNo' type='text' id='f_QualificationStudent_StudentNo' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Name</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Name' type='text' id='f_QualificationStudent_Name' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Sex</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Sex' type='text' id='f_QualificationStudent_Sex' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Birthday</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Birthday' type='text' id='f_QualificationStudent_Birthday' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>JiGuang</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='JiGuang' type='text' id='f_QualificationStudent_JiGuang' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IdCardNo</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IdCardNo' type='text' id='f_QualificationStudent_IdCardNo' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MinZu</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MinZu' type='text' id='f_QualificationStudent_MinZu' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ZhengZhiMianMao</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ZhengZhiMianMao' type='text' id='f_QualificationStudent_ZhengZhiMianMao' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsMarried</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsMarried' type='text' id='f_QualificationStudent_IsMarried' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>HomeAddress</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='HomeAddress' type='text' id='f_QualificationStudent_HomeAddress' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>HuKouAddress</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='HuKouAddress' type='text' id='f_QualificationStudent_HuKouAddress' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>CommAddress</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='CommAddress' type='text' id='f_QualificationStudent_CommAddress' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Postcode</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Postcode' type='text' id='f_QualificationStudent_Postcode' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>HomeTelephone</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='HomeTelephone' type='text' id='f_QualificationStudent_HomeTelephone' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Mobile</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Mobile' type='text' id='f_QualificationStudent_Mobile' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>QQ</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='QQ' type='text' id='f_QualificationStudent_QQ' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Company</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Company' type='text' id='f_QualificationStudent_Company' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Title</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Title' type='text' id='f_QualificationStudent_Title' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>CompanyTelephoneNo</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='CompanyTelephoneNo' type='text' id='f_QualificationStudent_CompanyTelephoneNo' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>BeginWorkTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='BeginWorkTime' type='text' id='f_QualificationStudent_BeginWorkTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>WorkedYears</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='WorkedYears' type='text' id='f_QualificationStudent_WorkedYears' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>HighestEduLevel</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='HighestEduLevel' type='text' id='f_QualificationStudent_HighestEduLevel' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>HighestQualification</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='HighestQualification' type='text' id='f_QualificationStudent_HighestQualification' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>GraduateDate</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='GraduateDate' type='text' id='f_QualificationStudent_GraduateDate' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>GruduateSchool</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='GruduateSchool' type='text' id='f_QualificationStudent_GruduateSchool' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>HighestQualificationNo</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='HighestQualificationNo' type='text' id='f_QualificationStudent_HighestQualificationNo' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudyDuration1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudyDuration1' type='text' id='f_QualificationStudent_StudyDuration1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudySchool1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudySchool1' type='text' id='f_QualificationStudent_StudySchool1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudyPosition1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudyPosition1' type='text' id='f_QualificationStudent_StudyPosition1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudyDuration2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudyDuration2' type='text' id='f_QualificationStudent_StudyDuration2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudySchool2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudySchool2' type='text' id='f_QualificationStudent_StudySchool2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudyPosition2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudyPosition2' type='text' id='f_QualificationStudent_StudyPosition2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudyDuration3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudyDuration3' type='text' id='f_QualificationStudent_StudyDuration3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudySchool3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudySchool3' type='text' id='f_QualificationStudent_StudySchool3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudyPosition3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudyPosition3' type='text' id='f_QualificationStudent_StudyPosition3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberRelType1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberRelType1' type='text' id='f_QualificationStudent_MemberRelType1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberName1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberName1' type='text' id='f_QualificationStudent_MemberName1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberMianMao1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberMianMao1' type='text' id='f_QualificationStudent_MemberMianMao1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberCompany1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberCompany1' type='text' id='f_QualificationStudent_MemberCompany1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberPosition1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberPosition1' type='text' id='f_QualificationStudent_MemberPosition1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberMobile1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberMobile1' type='text' id='f_QualificationStudent_MemberMobile1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberRelType2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberRelType2' type='text' id='f_QualificationStudent_MemberRelType2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberName2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberName2' type='text' id='f_QualificationStudent_MemberName2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberMianMao2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberMianMao2' type='text' id='f_QualificationStudent_MemberMianMao2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberCompany2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberCompany2' type='text' id='f_QualificationStudent_MemberCompany2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberPosition2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberPosition2' type='text' id='f_QualificationStudent_MemberPosition2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberMobile2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberMobile2' type='text' id='f_QualificationStudent_MemberMobile2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Remark</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Remark' type='text' id='f_QualificationStudent_Remark' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Status</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Status' type='text' id='f_QualificationStudent_Status' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Consultant</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Consultant' type='text' id='f_QualificationStudent_Consultant' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Referrer</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Referrer' type='text' id='f_QualificationStudent_Referrer' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ReferrerMobile</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ReferrerMobile' type='text' id='f_QualificationStudent_ReferrerMobile' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ReferrerQQ</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ReferrerQQ' type='text' id='f_QualificationStudent_ReferrerQQ' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MatriculateTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MatriculateTime' type='text' id='f_QualificationStudent_MatriculateTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>NetUserName</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='NetUserName' type='text' id='f_QualificationStudent_NetUserName' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>NetPassword</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='NetPassword' type='text' id='f_QualificationStudent_NetPassword' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudyType</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudyType' type='text' id='f_QualificationStudent_StudyType' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>SubmitStatus</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='SubmitStatus' type='text' id='f_QualificationStudent_SubmitStatus' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>OfferStatus</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='OfferStatus' type='text' id='f_QualificationStudent_OfferStatus' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>PayStatus</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='PayStatus' type='text' id='f_QualificationStudent_PayStatus' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>PaperStatus</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='PaperStatus' type='text' id='f_QualificationStudent_PaperStatus' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>OldOAId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='OldOAId' type='text' id='f_QualificationStudent_OldOAId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Photo1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Photo1' type='text' id='f_QualificationStudent_Photo1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Photo2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Photo2' type='text' id='f_QualificationStudent_Photo2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Photo3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Photo3' type='text' id='f_QualificationStudent_Photo3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+            <tr>
+                <td colspan="3" style="text-align:center;">
+                    <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
+                </td>
+            </tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

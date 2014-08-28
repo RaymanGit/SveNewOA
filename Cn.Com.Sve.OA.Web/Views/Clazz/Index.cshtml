@@ -1,0 +1,386 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />  
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script> 
+	
+    <style type="text/css">
+        body{ font-size:12px;}
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-verify-tip{ left:230px; top:120px; z-index:9999;}
+    </style>
+    <script type="text/javascript">
+function ChangeDateFormat(time) {
+    if (time != null) {
+        var date = new Date(parseInt(time.replace("/Date(", "").replace(")/", ""), 10));
+        var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+        var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+        return date.getFullYear() + "-" + month + "-" + currentDate;
+    }
+    return "";
+}
+function FormatDate(d,fmt) { 
+    var o = {
+        "M+": d.getMonth() + 1, //月份 
+        "d+": d.getDate(), //日 
+        "h+": d.getHours(), //小时 
+        "m+": d.getMinutes(), //分 
+        "s+": d.getSeconds(), //秒 
+        "q+": Math.floor((d.getMonth() + 3) / 3), //季度 
+        "S": d.getMilliseconds() //毫秒 
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (d.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
+
+        var gClazz;
+        var action = "add";
+        var $dialog;
+		var initData;
+		
+        $(function () {
+			$("#f_Clazz_OpenDate").ligerDateEditor();
+			$("#f_Clazz_KickOffDate").ligerDateEditor();
+			$("#f_Clazz_ClosedDate").ligerDateEditor();
+
+            gClazz = $("#grdClazz").ligerGrid({
+                columns: [
+					{ display: '班级', name: 'Name', width: 100, align: 'left' },
+					{ display: '学期', name: 'Semester', width: 100, align: 'left' },
+					{ display: 'A模块教员', name: 'TeacherA', width: 100, align: 'left' },
+					{ display: 'B模块教员', name: 'TeacherB', width: 100, align: 'left' },
+					{ display: '班主任', name: 'Master', width: 100, align: 'left' },
+					{ display: '责任领导', name: 'Governor', width: 100, align: 'left' },
+					{ display: '开班日期', name: 'OpenDate', width: 100, align: 'left', type:'date' },
+					{ display: '开学典礼', name: 'KickOffDate', width: 100, align: 'left', type:'date' },
+					{ display: '结课日期', name: 'ClosedDate', width: 100, align: 'left', type:'date' }
+                  ],
+                pageSize: 20, toolbar: {},
+                url: '@Url.Action("GetData","Clazz")', 
+                sortName: 'Name',
+                width: '98%', height: '100%', checkbox: false,
+                usePager:true,
+                toolbar: { items: [
+                { text: '增加', icon: 'add', click: addClazz },
+                { line: true },
+                { text: '修改', icon: 'modify', click: editClazz },
+                { line: true },
+                { text: '删除', icon: 'delete', click: deleteClazz }
+                ]
+                }
+            });
+            $("#btnSearch").click(function () {
+                gClazz.set({ 
+                    parms : [
+					{ name: 'NameSrh', value: $('#NameSrh').val() },
+					{ name: 'SemesterSrh', value: $('#SemesterSrh').val() },
+					{ name: 'TeacherASrh', value: $('#TeacherASrh').val() },
+					{ name: 'TeacherBSrh', value: $('#TeacherBSrh').val() },
+					{ name: 'MasterSrh', value: $('#MasterSrh').val() },
+					{ name: 'GovernorSrh', value: $('#GovernorSrh').val() }
+					]
+                });
+                gClazz.loadData();
+            });
+			
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp)
+	            {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frmClazz").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    saveClazz();
+                    return false;
+                }
+            });
+
+			$.getJSON("@Url.Action("GetInitData","Clazz")", function(data){
+				initData = data;
+                /*
+				$("#f_City_ProvinceId").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceId',data:data.Provinces });
+                data.Provinces.unshift({ Id:'', Name:'所有' });
+                $("#f_City_ProvinceIdSrh").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceIdSrh',data:data.Provinces });
+				*/
+	            $("#formsearch").ligerForm();
+				//$("#frmClazz").ligerForm();
+            });
+
+
+        });
+		
+        function addClazz(){
+            action = "add";
+			$("#f_Clazz_Name").val("");
+			$("#f_Clazz_Semester").val("");
+			$("#f_Clazz_TeacherA").val("");
+			$("#f_Clazz_TeacherB").val("");
+			$("#f_Clazz_Master").val("");
+			$("#f_Clazz_Governor").val("");
+
+			$("#f_Clazz_OpenDate").val("");
+			$("#f_Clazz_ClosedDate").val("");
+			$("#f_Clazz_KickOffDate").val("");
+
+			$dialog = $.ligerDialog.open({ target: $("#dClazz"), width: 550, height: 260 });
+        }
+        function editClazz() {
+            action = "edit";
+            var row = gClazz.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+            $("#f_Clazz_Id").val(row.Id);
+			$("#f_Clazz_Name").val(row.Name);
+			$("#f_Clazz_Semester").val(row.Semester);
+			$("#f_Clazz_TeacherA").val(row.TeacherA);
+			$("#f_Clazz_TeacherB").val(row.TeacherB);
+			$("#f_Clazz_Master").val(row.Master);
+			$("#f_Clazz_Governor").val(row.Governor);
+
+			//$("#f_Clazz_OpenDate").ligerDateEditor({ initValue:row.OpenDate});
+			//alert(row.OpenDate);
+			//alert(ChangeDateFormat(row.OpenDate));
+			//alert(ChangeDateFormat(row.OpenDate));
+			$("#f_Clazz_OpenDate").val(ChangeDateFormat(row.OpenDate));
+			$("#f_Clazz_ClosedDate").val(ChangeDateFormat(row.ClosedDate));
+			$("#f_Clazz_KickOffDate").val(ChangeDateFormat(row.KickOffDate));
+
+            $dialog = $.ligerDialog.open({ target: $("#dClazz"), width: 550, height: 260 });
+        }
+        function deleteClazz() {
+            var row = gClazz.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？",function (r) { 
+                if(r){
+                    $.post("@Url.Action("Delete","Clazz")", { id: row.Id }
+                        , function (result) {
+                            if (result.Successful) {
+                                gClazz.deleteSelectedRow();
+                            } else {
+                                $.ligerMessageBox.error('错误', result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+        function saveClazz(){
+            if(action=="add"){
+                $.post("@Url.Action("Add","Clazz")", $("#frmClazz").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            gClazz.addRow(result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }else{
+                $.post("@Url.Action("Update","Clazz")", $("#frmClazz").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            var row = gClazz.getSelected();
+                            if (!row) { alert('请选择行'); return; }
+                            gClazz.updateRow(row,result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+<body style="padding:10px;height:100%; text-align:center;">
+  <div id="mainsearch" style=" width:98%">
+    <div class="searchtitle">
+        <span>搜索</span><img src="@Url.Content("~/Content/lib/icons/32X32/searchtool.gif")" alt="" />
+        <div class="togglebtn"></div> 
+    </div>
+    <div class="navline" style="margin-bottom:4px; margin-top:4px;"></div>
+    <div class="searchbox">
+        <form id="formsearch" class="l-form" action="">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>班级</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NameSrh' type='text' id='NameSrh' ltype='text' /></td>
+<td style='text-align:right;' class='l-table-edit-td'>学期</td>
+<td style='text-align:left;' class='l-table-edit-td'>
+
+<input name='SemesterSrh' type='text' id='SemesterSrh' ltype='text' />
+</td>
+</tr>
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>A模块教员</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherASrh' type='text' id='TeacherASrh' ltype='text' /></td>
+<td style='text-align:right;' class='l-table-edit-td'>B模块教员</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherBSrh' type='text' id='TeacherBSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>班主任</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MasterSrh' type='text' id='MasterSrh' ltype='text' /></td>
+<td style='text-align:right;' class='l-table-edit-td'>责任领导</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GovernorSrh' type='text' id='GovernorSrh' ltype='text' /></td>
+</tr>
+
+
+
+            <tr>
+                <td style="text-align:center;" class="l-table-edit-td" colspan="3"><input type="button" value="查询" id="btnSearch"  /></td>
+            </tr>
+        </table>
+        
+        </form>
+    </div>
+  </div>
+  <div id="grdClazz"></div> 
+  
+   <div id="dClazz" style="display: none;">
+        <form action="" method="post" id="frmClazz">
+			<input type="hidden" id="f_Clazz_Id" name="Id" value="" />
+<input name='StudentQty' type='hidden' id='f_Clazz_StudentQty' value="50" />
+<input name='LimitedQty' type='hidden' id='f_Clazz_LimitedQty' value="50" />
+<input name='FinishedDate' type='hidden' id='f_Clazz_FinishedDate' value="2014-1-1" />
+<input name='IsOpen' type='hidden' id='f_Clazz_IsOpen' value="true" />
+<input name='IsClosed' type='hidden' id='f_Clazz_IsClosed' value="false" />
+<input name='IsFinished' type='hidden' id='f_Clazz_IsFinished' value="false" />
+<input name='CreateTime' type='hidden' id='f_Clazz_CreateTime' value="2014-1-1" />
+<input name='UpdateTime' type='hidden' id='f_Clazz_UpdateTime' value="2014-1-1" />
+
+			<table cellpadding="0" cellspacing="0" class="l-table-edit" >
+	            
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>班级</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Name' type='text' id='f_Clazz_Name' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+
+<td class='l-table-edit-td' style='text-align:right;'>学期</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<!--
+<input name='Semester' type='text' id='f_Clazz_Semester' ltype='text' />
+-->
+<select name='Semester' id='f_Clazz_Semester'>
+<option value='第1学期'>第1学期</option>
+<option value='第2学期'>第2学期</option>
+<option value='第3学期'>第3学期</option>
+</select>
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>A模块教员</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TeacherA' type='text' id='f_Clazz_TeacherA' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+<td class='l-table-edit-td' style='text-align:right;'>B模块教员</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TeacherB' type='text' id='f_Clazz_TeacherB' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>班主任</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Master' type='text' id='f_Clazz_Master' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+<td class='l-table-edit-td' style='text-align:right;'>责任领导</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Governor' type='text' id='f_Clazz_Governor' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>开班日期</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='OpenDate' type='text' id='f_Clazz_OpenDate' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+<td class='l-table-edit-td' style='text-align:right;'>开学典礼</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='KickOffDate' type='text' id='f_Clazz_KickOffDate' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>结课日期</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ClosedDate' type='text' id='f_Clazz_ClosedDate' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+<td class='l-table-edit-td' style='text-align:right;'>&nbsp;</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+&nbsp;
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+
+            <tr>
+                <td colspan="6" style="text-align:center;">
+                    <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
+                </td>
+            </tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

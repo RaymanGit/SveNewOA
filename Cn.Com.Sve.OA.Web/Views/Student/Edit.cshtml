@@ -1,0 +1,992 @@
+﻿@model Cn.Com.Sve.OA.Entities.Student
+@{
+	Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title></title>
+	<meta name="viewport" content="width=device-width" />
+	<link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/themes/base/jquery.ui.autocomplete.css")" rel="stylesheet" type="text/css" />
+	<script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.core.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.widget.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.position.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.autocomplete.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/jquery-validation/jquery.form.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script>
+	<style type="text/css">
+		body
+		{
+			font-size: 12px;
+		}
+		.l-table-edit
+		{
+		}
+		.l-table-edit-td
+		{
+			padding: 4px;
+		}
+		.l-button-submit, .l-button-reset
+		{
+			width: 80px;
+			float: left;
+			margin-left: 10px;
+			padding-bottom: 2px;
+		}
+		.l-verify-tip
+		{
+			left: 230px;
+			top: 120px;
+			z-index: 9999;
+		}
+		.txt
+		{
+			width: 98%;
+		}
+		.yellowbg
+		{
+			background-color: #FFFFDD;
+		}
+	</style>
+	
+	@if (this.Model.Birthday.HasValue) { this.ViewBag.Birthday = "{ initValue: '" + this.Model.Birthday.Value.ToString("yyyy-MM-dd") + "' }"; } else { this.ViewBag.Birthday = ""; }
+	@if (this.Model.GraduateDate.HasValue) { this.ViewBag.GraduateDate = "{ initValue: '" + this.Model.GraduateDate.Value.ToString("yyyy-MM-dd") + "' }"; } else { this.ViewBag.GraduateDate = ""; }
+	@if (this.Model.InSchoolDate.HasValue) { this.ViewBag.InSchoolDate = "{ initValue: '" + this.Model.InSchoolDate.Value.ToString("yyyy-MM-dd") + "' }"; } else { this.ViewBag.InSchoolDate = ""; }
+	<script type="text/javascript">
+		var gStudent;
+		var action = "add";
+		var $dialog;
+		var initData;
+
+		$(function () {
+			$("#Birthday").ligerDateEditor(@Html.Raw(this.ViewBag.Birthday));
+			$("#GraduateDate").ligerDateEditor(@Html.Raw(this.ViewBag.GraduateDate));
+			$("#InSchoolDate").ligerDateEditor(@Html.Raw(this.ViewBag.InSchoolDate));
+
+			$("#GruduateSchoolName").autocomplete({
+				source: function (request, response) {
+					$.ajax({
+						url: '@Url.Action("Suggest", "School")',
+						dataType: "json",
+						data: {
+							qty: 12,
+							prefix: request.term
+						},
+						success: function (data) {
+							response($.map(data, function (item) {
+								return {
+									label: item.Name,
+									value: item.Id
+								}
+							}));
+						}
+					});
+				},
+				minLength: 1,
+				select: function (event, ui) {
+					$("#GruduateSchoolId").val(ui.item.value);
+					$("#GruduateSchoolName").val(ui.item.label);
+					return false;
+				},
+				open: function () {
+					//$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+				},
+				close: function () {
+					//$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+				}
+			});
+			$("#DistrictName").autocomplete({
+				source: function (request, response) {
+					$.ajax({
+						url: '@Url.Action("Suggest", "District")',
+						dataType: "json",
+						data: {
+							qty: 12,
+							prefix: request.term
+						},
+						success: function (data) {
+							response($.map(data, function (item) {
+								return {
+									label: item.Name,
+									value: item.Id
+								}
+							}));
+						}
+					});
+				},
+				minLength: 1,
+				select: function (event, ui) {
+					$("#DistrictId").val(ui.item.value);
+					$("#DistrictName").val(ui.item.label);
+					return false;
+				},
+				open: function () {
+					$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+				},
+				close: function () {
+					$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+				}
+			});
+
+			$cboSmall = $("#SmallSourceName").ligerComboBox(
+                { textField: 'Name', valueField: 'Id', valueFieldID: 'SmallInfoSourceId', width: 90 });
+			$cboBig = $("#BigSourceName").ligerComboBox({
+				textField: 'Name', valueField: 'Id', valueFieldID: 'BigSourceId', width: 90,
+				onSelected: function (v, t) {
+					for (i = 0; i < infoSourceData.BigSource.length; i++) {
+						if (infoSourceData.BigSource[i].Id != v) continue;
+						$cboSmall.setData(infoSourceData.BigSource[i].SmallSource);
+						if (infoSourceData.BigSource[i].SmallSource.length > 0) {
+							$cboSmall.selectValue(@this.Model.InfoSourceSmall.Id);
+						}
+					}
+				}
+			});
+
+			//GetCascadeComboData2
+			$.getJSON('@Url.Action("GetCascadeComboData", "BigInfoSource")', function (data) {
+				infoSourceData = data;
+				$cboBig.setData(data.BigSource);
+				$cboBig.selectValue(@this.Model.InfoSourceSmall.InfoSourceBigId);
+			});
+
+			$("#ClazzName").autocomplete({
+				source: function (request, response) {
+					$.ajax({
+						url: '@Url.Action("Suggest", "Clazz")',
+						dataType: "json",
+						data: {
+							qty: 12,
+							prefix: request.term
+						},
+						success: function (data) {
+							response($.map(data, function (item) {
+								return {
+									label: item.Name,
+									value: item.Id
+								}
+							}));
+						}
+					});
+				},
+				minLength: 1,
+				select: function (event, ui) {
+					$("#ClazzId").val(ui.item.value);
+					$("#ClazzName").val(ui.item.label);
+					return false;
+				},
+				open: function () {
+					$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+				},
+				close: function () {
+					$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+				}
+			});
+			//$("#frmStudent").ligerForm();
+
+			//			$.getJSON("@Url.Action("GetInitData", "Student")", function(data){
+			//				initData = data;
+			//                /*
+			//				$("#f_City_ProvinceId").ligerComboBox(
+			//                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceId',data:data.Provinces });
+			//                data.Provinces.unshift({ Id:'', Name:'所有' });
+			//                $("#f_City_ProvinceIdSrh").ligerComboBox(
+			//                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceIdSrh',data:data.Provinces });
+			//				*/
+			//	            $("#formsearch").ligerForm();
+			//				//$("#frmStudent").ligerForm();
+			//            });
+
+
+		});
+		
+	</script>
+</head>
+<body style="padding: 10px; height: 100%; text-align: center;">
+	<form action="@Url.Action("Update","Student")" method="post" id="frmStudent" enctype="multipart/form-data">
+	<input type="hidden" name="Id" id="Id" value="@this.Model.Id" />
+	<input type="hidden" name="Pic1" id="Pic1" value="@this.Model.Pic1" />
+	<input type="hidden" name="Pic2" id="Pic2" value="@this.Model.Pic2" />
+	<input type="hidden" name="Pic3" id="Pic3" value="@this.Model.Pic3" />
+	<input type="hidden" name="Pic4" id="Pic4" value="@this.Model.Pic4" />
+	<input type="hidden" name="Pic5" id="Pic5" value="@this.Model.Pic5" />
+	<input type="hidden" name="Pic6" id="Pic6" value="@this.Model.Pic6" />
+	<input type="hidden" name="CreateTime" id="CreateTime" value="@this.Model.CreateTime" />
+	<input type="hidden" name="NeedObtainWork" id="NeedObtainWork" value="@this.Model.NeedObtainWork" />
+
+	<div style="width: 98%">
+		<table style="border: 1px solid black; width: 1000px;" border="1">
+			<tr>
+				<td colspan="8" style="background-color: #cccccc;">
+					个人基本信息
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right; width: 60px;'>
+					姓名
+				</td>
+				<td class='l-table-edit-td' style='text-align: left; width: 190px'>
+					<input name='Name' type='text' id='Name' class='txt yellowbg' ltype='text' value="@this.Model.Name" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right; width: 60px;'>
+					姓名拼音
+				</td>
+				<td class='l-table-edit-td' style='text-align: left; width: 190px'>
+					<input name='PinYin' type='text' id='PinYin' class='txt' ltype='text' value="@this.Model.PinYin" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right; width: 60px;'>
+					学号
+				</td>
+				<td class='l-table-edit-td' style='text-align: left; width: 190px'>
+					<input name='StudentNo' type='text' id='StudentNo' class='txt' ltype='text' value="@this.Model.StudentNo" />
+				</td>
+				<td colspan="2" rowspan="10" align="center" style="width: 150px;">
+					&nbsp;<img src="@this.Model.Pic1" alt="照片" style="width:150;" width="150px" />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					性别
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					@if (this.Model.Gender.Equals("男")) {
+					<input name='Gender' type='radio' value="男" checked="checked" />@Html.Raw("男&nbsp;&nbsp;")
+					<input name='Gender' type='radio' value="女" />@Html.Raw("女")
+					} else {
+					<input name='Gender' type='radio' value="男" />@Html.Raw("男&nbsp;&nbsp;")
+					<input name='Gender' type='radio' value="女" checked="checked" />@Html.Raw("女")
+					}
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					出生日期
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='Birthday' type='text' id='Birthday' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					高考批次
+				</td>
+				
+				<td class='l-table-edit-td' style='text-align: left; width: 190px'>
+					<select id="GaoKaoBatch" name="GaoKaoBatch" style="width: 98%;">
+					@if (this.Model.GaoKaoBatch != null && this.Model.GaoKaoBatch.Equals("落榜")) {
+						<option value="落榜" selected='selected'>落榜</option>
+					} else {
+						<option value="落榜">落榜</option>
+					}
+					@if (this.Model.GaoKaoBatch != null && this.Model.GaoKaoBatch.Equals("1批")) {
+						<option value="1批" selected='selected'>1批</option>
+					} else {
+						<option value="1批">1批</option>
+					}
+					@if (this.Model.GaoKaoBatch != null && this.Model.GaoKaoBatch.Equals("2A")) {
+						<option value="2A" selected='selected'>2A</option>
+					} else {
+						<option value="2A">2A</option>
+					}
+					@if (this.Model.GaoKaoBatch != null && this.Model.GaoKaoBatch.Equals("2B")) {
+						<option value="2B" selected='selected'>2B</option>
+					} else {
+						<option value="2B">2B</option>
+					}
+					@if (this.Model.GaoKaoBatch != null && this.Model.GaoKaoBatch.Equals("3A")) {
+						<option value="3A" selected='selected'>3A</option>
+					} else {
+						<option value="3A">3A</option>
+					}
+					@if (this.Model.GaoKaoBatch != null && this.Model.GaoKaoBatch.Equals("3B")) {
+						<option value="3B" selected='selected'>3B</option>
+					} else {
+						<option value="3B">3B</option>
+					}
+					@if (this.Model.GaoKaoBatch != null && this.Model.GaoKaoBatch.Equals("初中")) {
+						<option value="初中" selected='selected'>初中</option>
+					} else {
+						<option value="初中">初中</option>
+					}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					学历
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<select id="EduLevel" name="EduLevel" style="width: 98%;">
+					@if (this.Model.EduLevel != null && this.Model.EduLevel.Equals("高中")) {
+						<option value="高中" selected='selected'>高中</option>
+					} else {
+						<option value="高中">高中</option>
+					}
+					@if (this.Model.EduLevel != null && this.Model.EduLevel.Equals("初中")) {
+						<option value="初中" selected='selected'>初中</option>
+					} else {
+						<option value="初中">初中</option>
+					}
+					@if (this.Model.EduLevel != null && this.Model.EduLevel.Equals("大专")) {
+						<option value="大专" selected='selected'>大专</option>
+					} else {
+						<option value="大专">大专</option>
+					}
+					@if (this.Model.EduLevel != null && this.Model.EduLevel.Equals("本科")) {
+						<option value="本科" selected='selected'>本科</option>
+					} else {
+						<option value="本科">本科</option>
+					}
+					@if (this.Model.EduLevel != null && this.Model.EduLevel.Equals("小学")) {
+						<option value="小学" selected='selected'>小学</option>
+					} else {
+						<option value="小学">小学</option>
+					}
+					</select>
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					毕业时间
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='GraduateDate' type='text' id='GraduateDate' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					高考成绩
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='Score' type='text' id='Score' class='txt' ltype='text' value="@this.Model.Score" />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					毕业学校
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='GruduateSchoolName' type='text' id='GruduateSchoolName' class='txt' value="@((this.Model.GruduateSchool != null) ? this.Model.GruduateSchool.Name : "")"
+						ltype='text' />
+					<input name='GruduateSchoolId' type='hidden' id='GruduateSchoolId' value="@this.Model.GruduateSchoolId" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					专业
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='Profession' type='text' id='Profession' class='txt' ltype='text' value="@this.Model.Profession" />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					身份证号
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='IdCardNo' type='text' id='IdCardNo' class='txt' ltype='text' value="@this.Model.IdCardNo" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					户口类型
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					@if (this.Model.HuKouType != null && this.Model.HuKouType.Equals("农业")) {
+					<input name='HuKouType' type='radio' value="农业" checked='checked'  />@Html.Raw("农业&nbsp;&nbsp;")
+					<input name='HuKouType' type='radio' value="非农" />@Html.Raw("非农")
+					} else {
+					<input name='HuKouType' type='radio' value="农业"  />@Html.Raw("农业&nbsp;&nbsp;")
+					<input name='HuKouType' type='radio' value="非农" checked='checked' />@Html.Raw("非农")
+					}
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					通讯地址
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="5">
+					<input name='Address' type='text' id='Address' class='txt' ltype='text' value="@this.Model.Address" />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					居住区域
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='DistrictName' type='text' id='DistrictName' class='txt' ltype='text' value="@((this.Model.District!=null)?this.Model.District.FullName:"")" />
+					<input name='DistrictId' type='hidden' id='DistrictId' value="@this.Model.DistrictId" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					邮政编码
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='Postcode' type='text' id='Postcode' class='txt' ltype='text' value="@this.Model.Postcode" />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					费用来源
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='FeeSource' type='text' id='FeeSource' class='txt' ltype='text' value="@this.Model.FeeSource" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					信息来源
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<table border="0" width="100%">
+						<tr>
+							<td>
+								<input name='BigSourceName' type='text' id='BigSourceName' style="width: 45%" />
+								<input name='BigSourceId' type='hidden' id='BigSourceId' />
+							</td>
+							<td width="50%" align="right">
+								<input name='SmallSourceName' type='text' id='SmallSourceName' style="width: 45%" />
+								<input name='SmallInfoSourceId' type='hidden' id='SmallInfoSourceId' />
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					咨询老师
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='Consultants' type='text' id='Consultants' class='txt' ltype='text' value="@this.Model.Consultants" />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					QQ号
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='QQ' type='text' id='QQ' class='txt' ltype='text' value="@this.Model.QQ" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					电子邮箱
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='Email' type='text' id='Email' class='txt' ltype='text' value="@this.Model.Email" />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					手机
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='Mobile' type='text' id='Mobile' class='txt' ltype='text' value="@this.Model.Mobile" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					家庭电话
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='HomeTelephone' type='text' id='HomeTelephone' class='txt' ltype='text' value="@this.Model.HomeTelephone" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					办公电话
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='OfficeTelephone' type='text' id='OfficeTelephone' class='txt' ltype='text' value="@this.Model.OfficeTelephone" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="8" style="background-color: #cccccc;">
+					学员家庭成员关系
+				</td>
+			</tr>
+			<tr>
+				<td align="center" class='l-table-edit-td'>
+					关系
+				</td>
+				<td align="center" class='l-table-edit-td'>
+					姓名
+				</td>
+				<td align="center" colspan="3" class='l-table-edit-td'>
+					工作单位
+				</td>
+				<td align="center" colspan="2" class='l-table-edit-td'>
+					职位
+				</td>
+				<td align="center" class='l-table-edit-td' style="width: 190px">
+					手机号码
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberRelType1' type='text' id='MemberRelType1' class='txt' ltype='text' value="@this.Model.MemberRelType1" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberName1' type='text' id='MemberName1' class='txt' ltype='text' value="@this.Model.MemberName1" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='MemberCompany1' type='text' id='MemberCompany1' class='txt' ltype='text' value="@this.Model.MemberCompany1" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='MemberPosition1' type='text' id='MemberPosition1' class='txt' ltype='text' value="@this.Model.MemberPosition1" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberMobile1' type='text' id='MemberMobile1' class='txt' ltype='text' value="@this.Model.MemberMobile1" />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberRelType2' type='text' id='MemberRelType2' class='txt' ltype='text' value="@this.Model.MemberRelType2" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberName2' type='text' id='MemberName2' class='txt' ltype='text' value="@this.Model.MemberName2" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='MemberCompany2' type='text' id='MemberCompany2' class='txt' ltype='text' value="@this.Model.MemberCompany2" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='MemberPosition2' type='text' id='MemberPosition2' class='txt' ltype='text' value="@this.Model.MemberPosition2" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberMobile2' type='text' id='MemberMobile2' class='txt' ltype='text' value="@this.Model.MemberMobile2" />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberRelType3' type='text' id='MemberRelType3' class='txt' ltype='text' value="@this.Model.MemberRelType3" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberName3' type='text' id='MemberName3' class='txt' ltype='text' value="@this.Model.MemberName3" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='MemberCompany3' type='text' id='MemberCompany3' class='txt' ltype='text' value="@this.Model.MemberCompany3" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='MemberPosition3' type='text' id='MemberPosition3' class='txt' ltype='text' value="@this.Model.MemberPosition3" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberMobile3' type='text' id='MemberMobile3' class='txt' ltype='text' value="@this.Model.MemberMobile3" />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberRelType4' type='text' id='MemberRelType4' class='txt' ltype='text' value="@this.Model.MemberRelType4" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberName4' type='text' id='MemberName4' class='txt' ltype='text' value="@this.Model.MemberName4" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='MemberCompany4' type='text' id='MemberCompany4' class='txt' ltype='text' value="@this.Model.MemberCompany4" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='MemberPosition4' type='text' id='MemberPosition4' class='txt' ltype='text' value="@this.Model.MemberPosition4" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberMobile4' type='text' id='MemberMobile4' class='txt' ltype='text' value="@this.Model.MemberMobile4" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="8" style="background-color: #cccccc;">
+					入学前相关经历
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">
+					学习/工作状况
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="6">
+					<input name='WorkState' type='text' id='WorkState' class='txt' ltype='text' value="@this.Model.WorkState" />
+				</td>
+			</tr>
+			<tr>
+				<td align="center" colspan="2">
+					起止年月
+				</td>
+				<td align="center" colspan="4">
+					学校或工作单位
+				</td>
+				<td align="center" colspan="2">
+					职务
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='StudyDuration1' type='text' id='StudyDuration1' class='txt' ltype='text' value="@this.Model.StudyDuration1" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="4">
+					<input name='StudySchool1' type='text' id='StudySchool1' class='txt' ltype='text' value="@this.Model.StudySchool1" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='StudyPosition1' type='text' id='StudyPosition1' class='txt' ltype='text' value="@this.Model.StudyPosition1" />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='StudyDuration2' type='text' id='StudyDuration2' class='txt' ltype='text' value="@this.Model.StudyDuration2" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="4">
+					<input name='StudySchool2' type='text' id='StudySchool2' class='txt' ltype='text' value="@this.Model.StudySchool2" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='StudyPosition2' type='text' id='StudyPosition2' class='txt' ltype='text' value="@this.Model.StudyPosition2" />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='StudyDuration3' type='text' id='StudyDuration3' class='txt' ltype='text' value="@this.Model.StudyDuration3" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="4">
+					<input name='StudySchool3' type='text' id='StudySchool3' class='txt' ltype='text' value="@this.Model.StudySchool3" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='StudyPosition3' type='text' id='StudyPosition3' class='txt' ltype='text' value="@this.Model.StudyPosition3" />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					软件使用
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					@if (this.Model.SoftwareExp != null && this.Model.SoftwareExp.Equals("是")) {
+					<input name='SoftwareExp' type='radio' value="是" checked='checked'  />@Html.Raw("是&nbsp;&nbsp;")
+					<input name='SoftwareExp' type='radio' value="否" />@Html.Raw("否")
+					} else {
+					<input name='SoftwareExp' type='radio' value="是"  />@Html.Raw("是&nbsp;&nbsp;")
+					<input name='SoftwareExp' type='radio' value="否" checked='checked' />@Html.Raw("否")
+					}
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					软件编程
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					@if (this.Model.ProgramExp != null && this.Model.ProgramExp.Equals("是")) {
+					<input name='ProgramExp' type='radio' value="是" checked='checked'  />@Html.Raw("是&nbsp;&nbsp;")
+					<input name='ProgramExp' type='radio' value="否" />@Html.Raw("否")
+					} else {
+					<input name='ProgramExp' type='radio' value="是"  />@Html.Raw("是&nbsp;&nbsp;")
+					<input name='ProgramExp' type='radio' value="否" checked='checked' />@Html.Raw("否")
+					}
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					网络操作
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					@if (this.Model.NetworkExp != null && this.Model.NetworkExp.Equals("是")) {
+					<input name='NetworkExp' type='radio' value="是" checked='checked'  />@Html.Raw("是&nbsp;&nbsp;")
+					<input name='NetworkExp' type='radio' value="否" />@Html.Raw("否")
+					} else {
+					<input name='NetworkExp' type='radio' value="是"  />@Html.Raw("是&nbsp;&nbsp;")
+					<input name='NetworkExp' type='radio' value="否" checked='checked' />@Html.Raw("否")
+					}
+				</td>
+				<td class='l-table-edit-td' style='text-align: right; width: 60px;'>
+					学过相关课程
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					@if (this.Model.RelCourse != null && this.Model.RelCourse.Equals("是")) {
+					<input name='RelCourse' type='radio' value="是" checked='checked'  />@Html.Raw("是&nbsp;&nbsp;")
+					<input name='RelCourse' type='radio' value="否" />@Html.Raw("否")
+					} else {
+					<input name='RelCourse' type='radio' value="是"  />@Html.Raw("是&nbsp;&nbsp;")
+					<input name='RelCourse' type='radio' value="否" checked='checked' />@Html.Raw("否")
+					}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="8" style="background-color: #cccccc;">
+					资料提交情况
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">
+					照片电子档
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input type="file" class='txt' ltype='text' id="pf1" name="pf1" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">
+					四张彩照
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					@if (this.Model.Receive1 != null && this.Model.Receive1.Equals("已提交")) {
+					<input name='Receive1' type='radio' value="已提交" checked='checked'  />@Html.Raw("已提交&nbsp;&nbsp;")
+					<input name='Receive1' type='radio' value="未提交" />@Html.Raw("未提交")
+					} else {
+					<input name='Receive1' type='radio' value="已提交"  />@Html.Raw("已提交&nbsp;&nbsp;")
+					<input name='Receive1' type='radio' value="未提交" checked='checked' />@Html.Raw("未提交")
+					}
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">
+					身份证正面扫描件
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input type="file" class='txt' ltype='text' id="pf2" name="pf2" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">
+					复印件
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					@if (this.Model.Receive2 != null && this.Model.Receive2.Equals("已提交")) {
+					<input name='Receive2' type='radio' value="已提交" checked='checked'  />@Html.Raw("已提交&nbsp;&nbsp;")
+					<input name='Receive2' type='radio' value="未提交" />@Html.Raw("未提交")
+					} else {
+					<input name='Receive2' type='radio' value="已提交"  />@Html.Raw("已提交&nbsp;&nbsp;")
+					<input name='Receive2' type='radio' value="未提交" checked='checked' />@Html.Raw("未提交")
+					}
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">
+					身份证反面扫描件
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input type="file" class='txt' ltype='text' id="pf3" name="pf3" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">
+					复印件
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					@if (this.Model.Receive3 != null && this.Model.Receive3.Equals("已提交")) {
+					<input name='Receive3' type='radio' value="已提交" checked='checked'  />@Html.Raw("已提交&nbsp;&nbsp;")
+					<input name='Receive3' type='radio' value="未提交" />@Html.Raw("未提交")
+					} else {
+					<input name='Receive3' type='radio' value="已提交"  />@Html.Raw("已提交&nbsp;&nbsp;")
+					<input name='Receive3' type='radio' value="未提交" checked='checked' />@Html.Raw("未提交")
+					}
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">
+					学历证件扫描件
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input type="file" class='txt' ltype='text' id="pf4" name="pf4" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">
+					复印件
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					@if (this.Model.Receive4 != null && this.Model.Receive4.Equals("已提交")) {
+					<input name='Receive4' type='radio' value="已提交" checked='checked'  />@Html.Raw("已提交&nbsp;&nbsp;")
+					<input name='Receive4' type='radio' value="未提交" />@Html.Raw("未提交")
+					} else {
+					<input name='Receive4' type='radio' value="已提交"  />@Html.Raw("已提交&nbsp;&nbsp;")
+					<input name='Receive4' type='radio' value="未提交" checked='checked' />@Html.Raw("未提交")
+					}
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">
+					户口本首页扫描件
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input type="file" class='txt' ltype='text' id="pf5" name="pf5" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">
+					复印件
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					@if (this.Model.Receive5 != null && this.Model.Receive5.Equals("已提交")) {
+					<input name='Receive5' type='radio' value="已提交" checked='checked'  />@Html.Raw("已提交&nbsp;&nbsp;")
+					<input name='Receive5' type='radio' value="未提交" />@Html.Raw("未提交")
+					} else {
+					<input name='Receive5' type='radio' value="已提交"  />@Html.Raw("已提交&nbsp;&nbsp;")
+					<input name='Receive5' type='radio' value="未提交" checked='checked' />@Html.Raw("未提交")
+					}
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">
+					户口本本人扫描件
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input type="file" class='txt' ltype='text' id="pf6" name="pf6" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">
+					复印件
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					@if (this.Model.Receive6 != null && this.Model.Receive6.Equals("已提交")) {
+					<input name='Receive6' type='radio' value="已提交" checked='checked'  />@Html.Raw("已提交&nbsp;&nbsp;")
+					<input name='Receive6' type='radio' value="未提交" />@Html.Raw("未提交")
+					} else {
+					<input name='Receive6' type='radio' value="已提交"  />@Html.Raw("已提交&nbsp;&nbsp;")
+					<input name='Receive6' type='radio' value="未提交" checked='checked' />@Html.Raw("未提交")
+					}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="8" style="background-color: #cccccc;">
+					学员在校相关信息
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					入学须知1
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					@if (this.Model.Give1 != null && this.Model.Give1.Equals("已领")) {
+					<input name='Give1' type='radio' value="已领" checked='checked'  />@Html.Raw("已领&nbsp;&nbsp;")
+					<input name='Give1' type='radio' value="未领" />@Html.Raw("未领")
+					} else {
+					<input name='Give1' type='radio' value="已领"  />@Html.Raw("已领&nbsp;&nbsp;")
+					<input name='Give1' type='radio' value="未领" checked='checked' />@Html.Raw("未领")
+					}
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					入学须知2
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					@if (this.Model.Give2 != null && this.Model.Give2.Equals("已领")) {
+					<input name='Give2' type='radio' value="已领" checked='checked'  />@Html.Raw("已领&nbsp;&nbsp;")
+					<input name='Give2' type='radio' value="未领" />@Html.Raw("未领")
+					} else {
+					<input name='Give2' type='radio' value="已领"  />@Html.Raw("已领&nbsp;&nbsp;")
+					<input name='Give2' type='radio' value="未领" checked='checked' />@Html.Raw("未领")
+					}
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					家长联系卡
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					@if (this.Model.Give3 != null && this.Model.Give3.Equals("已领")) {
+					<input name='Give3' type='radio' value="已领" checked='checked'  />@Html.Raw("已领&nbsp;&nbsp;")
+					<input name='Give3' type='radio' value="未领" />@Html.Raw("未领")
+					} else {
+					<input name='Give3' type='radio' value="已领"  />@Html.Raw("已领&nbsp;&nbsp;")
+					<input name='Give3' type='radio' value="未领" checked='checked' />@Html.Raw("未领")
+					}
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					笔记本电脑
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					@if (this.Model.GiveNotebook != null && this.Model.GiveNotebook.Equals("已领")) {
+					<input name='GiveNotebook' type='radio' value="已领" checked='checked'  />@Html.Raw("已领&nbsp;&nbsp;")
+					<input name='GiveNotebook' type='radio' value="未领" />@Html.Raw("未领")
+					} else {
+					<input name='GiveNotebook' type='radio' value="已领"  />@Html.Raw("已领&nbsp;&nbsp;")
+					<input name='GiveNotebook' type='radio' value="未领" checked='checked' />@Html.Raw("未领")
+					}
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					保险购买
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='InsuranceStatus' type='text' id='InsuranceStatus' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					报读学历
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					@if (this.Model.IsGetQualification != null && this.Model.IsGetQualification.Equals("是")) {
+					<input name='IsGetQualification' type='radio' value="是" checked='checked'  />@Html.Raw("是&nbsp;&nbsp;")
+					<input name='IsGetQualification' type='radio' value="否" />@Html.Raw("否")
+					} else {
+					<input name='IsGetQualification' type='radio' value="是"  />@Html.Raw("是&nbsp;&nbsp;")
+					<input name='IsGetQualification' type='radio' value="否" checked='checked' />@Html.Raw("否")
+					}
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					学历院校
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='QualificationSchool' type='text' id='QualificationSchool' class='txt' value="@this.Model.QualificationSchool"
+						ltype='text' />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					班级
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='ClazzName' type='text' id='ClazzName' class='txt' ltype='text' value="@((this.Model.Clazz!=null)?this.Model.Clazz.Name:"")" />
+					<input name='ClazzId' type='hidden' id='ClazzId' value="@this.Model.ClazzId" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					目前状况
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<select id="Status" name="Status" style="width: 98%;">
+						<option value="在读" @if (this.Model.Status != null && this.Model.Status.Equals("在读")) { Html.Raw("selected='selected'"); }>在读</option>
+						<option value="已毕业" @if (this.Model.Status != null && this.Model.Status.Equals("已毕业")) { Html.Raw("selected='selected'"); }>已毕业</option>
+						<option value="已就业" @if (this.Model.Status != null && this.Model.Status.Equals("已就业")) { Html.Raw("selected='selected'"); }>已就业</option>
+						<option value="已退学" @if (this.Model.Status != null && this.Model.Status.Equals("已退学")) { Html.Raw("selected='selected'"); }>已退学</option>
+					</select>
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					教材领用
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					@if (this.Model.GiveCourseware != null && this.Model.GiveCourseware.Equals("已领")) {
+					<input name='GiveCourseware' type='radio' value="已领" checked='checked'  />@Html.Raw("已领&nbsp;&nbsp;")
+					<input name='GiveCourseware' type='radio' value="未领" />@Html.Raw("未领")
+					} else {
+					<input name='GiveCourseware' type='radio' value="已领"  />@Html.Raw("已领&nbsp;&nbsp;")
+					<input name='GiveCourseware' type='radio' value="未领" checked='checked' />@Html.Raw("未领")
+					}
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					宿舍号
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='DormNo' type='text' id='DormNo' class='txt' ltype='text' value="@this.Model.DormNo" />
+				</td>
+			</tr>
+			<tr>
+			</tr>
+			<tr>
+				<td colspan="8" style="background-color: #cccccc;">
+					学员情况说明
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">
+					是否与学院老师有关系
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					@if (this.Model.HasRelTeacher != null && this.Model.HasRelTeacher.Equals("是")) {
+					<input name='HasRelTeacher' type='radio' value="是" checked='checked'  />@Html.Raw("是&nbsp;&nbsp;")
+					<input name='HasRelTeacher' type='radio' value="否" />@Html.Raw("否")
+					} else {
+					<input name='HasRelTeacher' type='radio' value="是"  />@Html.Raw("是&nbsp;&nbsp;")
+					<input name='HasRelTeacher' type='radio' value="否" checked='checked' />@Html.Raw("否")
+					}
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					关系人
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='RelTeacher' type='text' id='RelTeacher' class='txt' ltype='text' value="@this.Model.RelTeacher" />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					入学日期
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='InSchoolDate' type='text' id='InSchoolDate' class='txt' ltype='text'  />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					家庭情况
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="7">
+					<input name='HomeIntro' type='text' id='HomeIntro' class='txt' ltype='text' value="@this.Model.HomeIntro" />
+				</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					备注
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="7">
+					<input name='Remark' type='text' id='Remark' class='txt' ltype='text' value="@this.Model.Remark" />
+				</td>
+			</tr>
+			<tr>
+				<td align="center" colspan="8">
+					<input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+				</td>
+			</tr>
+		</table>
+	</div>
+	</form>
+</body>
+</html>

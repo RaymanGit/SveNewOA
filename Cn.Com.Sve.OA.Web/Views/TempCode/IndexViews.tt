@@ -1,0 +1,343 @@
+﻿<#@ template language="C#" debug="false" hostspecific="true"#>
+<#@ include file="EF.Utility.CS.ttinclude"#>
+<#@ output extension=".cs" encoding="utf-8"#>
+<#
+CodeGenerationTools code = new CodeGenerationTools(this);
+MetadataLoader loader = new MetadataLoader(this);
+CodeRegion region = new CodeRegion(this, 1);
+MetadataTools ef = new MetadataTools(this);
+
+string inputFile = @"..\..\..\Cn.Com.Sve.OA.DataServices\OaModel.edmx";
+EdmItemCollection ItemCollection = loader.CreateEdmItemCollection(inputFile);
+string namespaceName = code.VsNamespaceSuggestion();
+
+EntityFrameworkTemplateFileManager fileManager = EntityFrameworkTemplateFileManager.Create(this);
+
+// Write out support code to primary template output file
+WriteHeader(fileManager);
+
+EntityContainer container = ItemCollection.GetItems<EntityContainer>().FirstOrDefault();
+
+// Emit Entity Types
+// 循环处理实体模型中的所有实体
+foreach (EntityType entity in ItemCollection.GetItems<EntityType>().OrderBy(e => e.Name)) {
+	//string className = entity.Name + "ControllerTemp";
+
+    fileManager.StartNewFile(entity.Name + "-Index.cshtml");
+	var pkTypeName = code.Escape(entity.KeyMembers[0].TypeUsage);
+    bool entityHasNullableFKs = entity.NavigationProperties.Any(np => np.GetDependentProperties().Any(p=>ef.IsNullable(p)));
+	string entitySetName = GetEntitySetName(entity.Name, container, code);
+	StringBuilder sbGridColumns = new StringBuilder();
+	StringBuilder sbSearchFields = new StringBuilder();
+	StringBuilder sbSetSearchFields = new StringBuilder();
+	StringBuilder sbFormFields = new StringBuilder();
+	foreach (EdmProperty edmProperty in entity.Properties.Where(p => p.TypeUsage.EdmType is PrimitiveType && p.DeclaringType == entity)) {
+		string propertyName = code.Escape(edmProperty);
+		bool isForeignKey = entity.NavigationProperties.Any(np=>np.GetDependentProperties().Contains(edmProperty));
+
+		if(sbGridColumns.Length>0){
+			sbGridColumns.AppendLine().Append("\t\t\t\t\t");
+			sbSearchFields.AppendLine().Append("\t\t\t\t");
+			sbSetSearchFields.AppendLine().Append("\t\t\t\t\t");
+			sbFormFields.AppendLine().Append("\t\t\t\t");
+		}
+		sbGridColumns.Append("{ display: '").Append(propertyName).Append("', name: '").Append(propertyName)
+			.Append("', width: 100, align: 'left' }").Append(",");
+		sbSearchFields.AppendLine("<tr>").AppendFormat("<td style='text-align:right;' class='l-table-edit-td'>{0}</td>", propertyName).AppendLine()
+			.AppendFormat("<td style='text-align:left;' class='l-table-edit-td'><input name='{0}Srh' type='text' id='{0}Srh' ltype='text' /></td>", propertyName)
+			.AppendLine().AppendLine("</tr>");
+		sbSetSearchFields.Append("{ name: '").Append(propertyName).Append("Srh', value: $('#")
+			.Append(propertyName).Append("Srh').val() },");
+
+		if(this.BuildRange(code.Escape(edmProperty.TypeUsage))){
+			sbSearchFields.AppendLine("<tr>").AppendFormat("<td style='text-align:right;' class='l-table-edit-td'>{0}From</td>", propertyName).AppendLine()
+				.AppendFormat("<td style='text-align:left;' class='l-table-edit-td'><input name='{0}FromSrh' type='text' id='{0}FromSrh' ltype='text' /></td>", propertyName)
+				.AppendLine().AppendLine("</tr>");
+			sbSearchFields.AppendLine("<tr>").AppendFormat("<td style='text-align:right;' class='l-table-edit-td'>{0}To</td>", propertyName).AppendLine()
+				.AppendFormat("<td style='text-align:left;' class='l-table-edit-td'><input name='{0}ToSrh' type='text' id='{0}ToSrh' ltype='text' /></td>", propertyName)
+				.AppendLine().AppendLine("</tr>");
+			sbSetSearchFields.AppendLine().Append("\t\t\t\t\t{ name: '").Append(propertyName).Append("FromSrh', value: $('#")
+				.Append(propertyName).Append("FromSrh').val() },");
+			sbSetSearchFields.AppendLine().Append("\t\t\t\t\t{ name: '").Append(propertyName).Append("ToSrh', value: $('#")
+				.Append(propertyName).Append("ToSrh').val() },");
+		}
+		if(!code.Escape(edmProperty).Equals("Id")){
+			sbFormFields.AppendLine("<tr>").AppendFormat("<td class='l-table-edit-td' style='text-align:right;'>{0}</td>", propertyName).AppendLine()
+				.AppendLine("<td class='l-table-edit-td' style='text-align:left;width:160px'>")
+				.AppendFormat("<input name='{0}' type='text' id='f_{1}_{0}' ltype='text' />", propertyName, entity.Name).AppendLine()
+				.AppendLine("</td>").AppendLine("<td style='text-align:left;'></td>").AppendLine("</tr>");
+		}
+	}
+	if(sbGridColumns.Length>0){
+		sbGridColumns.Remove(sbGridColumns.Length-1,1);
+	}
+	if(sbSetSearchFields.Length>0){
+		sbSetSearchFields.Remove(sbSetSearchFields.Length-1,1);
+	}
+#>
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />  
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script> 
+	
+    <style type="text/css">
+        body{ font-size:12px;}
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-verify-tip{ left:230px; top:120px; z-index:9999;}
+    </style>
+    <script type="text/javascript">
+        var g<#=entity.Name#>;
+        var action = "add";
+        var $dialog;
+		var initData;
+		
+        $(function () {
+            g<#=entity.Name#> = $("#grd<#=entity.Name#>").ligerGrid({
+                columns: [
+                    <#=sbGridColumns.ToString()#>
+                  ],
+                pageSize: 20, toolbar: {},
+                url: '@Url.Action("GetData","<#=entity.Name#>")', 
+                sortName: 'Name',
+                width: '98%', height: '100%', checkbox: false,
+                usePager:true,
+                toolbar: { items: [
+                { text: '增加', icon: 'add', click: add<#=entity.Name#> },
+                { line: true },
+                { text: '修改', icon: 'modify', click: edit<#=entity.Name#> },
+                { line: true },
+                { text: '删除', icon: 'delete', click: delete<#=entity.Name#> }
+                ]
+                }
+            });
+            $("#btnSearch").click(function () {
+                g<#=entity.Name#>.set({ 
+                    parms : [
+                    <#=sbSetSearchFields.ToString()#>
+                    ]
+                });
+                g<#=entity.Name#>.loadData();
+            });
+			
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp)
+	            {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frm<#=entity.Name#>").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    save<#=entity.Name#>();
+                    return false;
+                }
+            });
+
+			$.getJSON("@Url.Action("GetInitData","<#=entity.Name#>")", function(data){
+				initData = data;
+                /*
+				$("#f_City_ProvinceId").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceId',data:data.Provinces });
+                data.Provinces.unshift({ Id:'', Name:'所有' });
+                $("#f_City_ProvinceIdSrh").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceIdSrh',data:data.Provinces });
+				*/
+	            $("#formsearch").ligerForm();
+				$("#frm<#=entity.Name#>").ligerForm();
+            });
+
+
+        });
+		
+        function add<#=entity.Name#>(){
+            action = "add";
+<#
+	foreach (EdmProperty edmProperty in entity.Properties.Where(p => p.TypeUsage.EdmType is PrimitiveType && p.DeclaringType == entity)) {
+		string propertyName = code.Escape(edmProperty);
+#>
+			$("#f_<#=entity.Name#>_<#=propertyName#>").val("");
+<#
+	}
+#>
+			$dialog = $.ligerDialog.open({ target: $("#d<#=entity.Name#>"), width: 300, height: 150 });
+        }
+        function edit<#=entity.Name#>() {
+            action = "edit";
+            var row = g<#=entity.Name#>.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+<#
+	foreach (EdmProperty edmProperty in entity.Properties.Where(p => p.TypeUsage.EdmType is PrimitiveType && p.DeclaringType == entity)) {
+		string propertyName = code.Escape(edmProperty);
+#>
+			$("#f_<#=entity.Name#>_<#=propertyName#>").val(row.<#=propertyName#>);
+<#
+	}
+#>
+            $dialog = $.ligerDialog.open({ target: $("#d<#=entity.Name#>"), width: 300, height: 150 });
+        }
+        function delete<#=entity.Name#>() {
+            var row = g<#=entity.Name#>.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？",function (r) { 
+                if(r){
+                    $.post("@Url.Action("Delete","<#=entity.Name#>")", { id: row.Id }
+                        , function (result) {
+                            if (result.Successful) {
+                                g<#=entity.Name#>.deleteSelectedRow();
+                            } else {
+                                $.ligerMessageBox.error('错误', result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+        function save<#=entity.Name#>(){
+            if(action=="add"){
+                $.post("@Url.Action("Add","<#=entity.Name#>")", $("#frm<#=entity.Name#>").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            g<#=entity.Name#>.addRow(result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }else{
+                $.post("@Url.Action("Update","<#=entity.Name#>")", $("#frm<#=entity.Name#>").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            var row = g<#=entity.Name#>.getSelected();
+                            if (!row) { alert('请选择行'); return; }
+                            g<#=entity.Name#>.updateRow(row,result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+<body style="padding:10px;height:100%; text-align:center;">
+  <div id="mainsearch" style=" width:98%">
+    <div class="searchtitle">
+        <span>搜索</span><img src="@Url.Content("~/Content/lib/icons/32X32/searchtool.gif")" alt="" />
+        <div class="togglebtn"></div> 
+    </div>
+    <div class="navline" style="margin-bottom:4px; margin-top:4px;"></div>
+    <div class="searchbox">
+        <form id="formsearch" class="l-form" action="">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+			<#=sbSearchFields.ToString()#>
+            <tr>
+                <td style="text-align:center;" class="l-table-edit-td" colspan="3"><input type="button" value="查询" id="btnSearch"  /></td>
+            </tr>
+        </table>
+        
+        </form>
+    </div>
+  </div>
+  <div id="grd<#=entity.Name#>"></div> 
+  
+   <div id="d<#=entity.Name#>" style="display: none;">
+        <form action="" method="post" id="frm<#=entity.Name#>">
+			<input type="hidden" id="f_<#=entity.Name#>_Id" name="Id" value="" />
+			<table cellpadding="0" cellspacing="0" class="l-table-edit" >
+	            <#=sbFormFields.ToString()#>
+            <tr>
+                <td colspan="3" style="text-align:center;">
+                    <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
+                </td>
+            </tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>
+<#
+}
+	fileManager.Process();
+#>
+<#+
+void WriteHeader(EntityFrameworkTemplateFileManager fileManager, params string[] extraUsings) {
+    fileManager.StartHeader();
+    fileManager.EndBlock();
+}
+#>
+<#+
+string GetEntitySetName(string entityName, EntityContainer container, CodeGenerationTools code){
+	foreach (EntitySet entitySet in container.BaseEntitySets.OfType<EntitySet>()) {
+		if(entitySet.ElementType.Name.Equals(entityName)){
+			return code.Escape(entitySet.Name);
+		}
+	}
+	return null;
+}
+bool BuildRange(string type){
+	bool result = false;
+	switch(type.ToLower()){
+		case "int":
+		case "decimal":
+		case "double":
+		case "long":
+		case "datetime":
+		case "nullable<int>":
+		case "nullable<decimal>":
+		case "nullable<double>":
+		case "nullable<long>":
+		case "nullable<datetime>":
+			result = true;
+			break;
+		default:
+			break;
+	}
+	return result;
+}
+#>

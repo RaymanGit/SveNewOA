@@ -1,0 +1,341 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />  
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script> 
+	
+    <style type="text/css">
+        body{ font-size:12px;}
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-verify-tip{ left:230px; top:120px; z-index:9999;}
+    </style>
+    <script type="text/javascript">
+        var gStudentChangeClazzLog;
+        var action = "add";
+        var $dialog;
+		var initData;
+		
+        $(function () {
+            gStudentChangeClazzLog = $("#grdStudentChangeClazzLog").ligerGrid({
+                columns: [
+                    { display: 'Id', name: 'Id', width: 100, align: 'left' },
+					{ display: 'StudentId', name: 'StudentId', width: 100, align: 'left' },
+					{ display: 'OldClazzId', name: 'OldClazzId', width: 100, align: 'left' },
+					{ display: 'NewClazzId', name: 'NewClazzId', width: 100, align: 'left' },
+					{ display: 'ChangeTime', name: 'ChangeTime', width: 100, align: 'left' },
+					{ display: 'OperatorName', name: 'OperatorName', width: 100, align: 'left' }
+                  ],
+                pageSize: 20, toolbar: {},
+                url: '@Url.Action("GetData","StudentChangeClazzLog")', 
+                sortName: 'Name',
+                width: '98%', height: '100%', checkbox: false,
+                usePager:true,
+                toolbar: { items: [
+                { text: '增加', icon: 'add', click: addStudentChangeClazzLog },
+                { line: true },
+                { text: '修改', icon: 'modify', click: editStudentChangeClazzLog },
+                { line: true },
+                { text: '删除', icon: 'delete', click: deleteStudentChangeClazzLog }
+                ]
+                }
+            });
+            $("#btnSearch").click(function () {
+                gStudentChangeClazzLog.set({ 
+                    parms : [
+                    { name: 'IdSrh', value: $('#IdSrh').val() },
+					{ name: 'IdFromSrh', value: $('#IdFromSrh').val() },
+					{ name: 'IdToSrh', value: $('#IdToSrh').val() },
+					{ name: 'StudentIdSrh', value: $('#StudentIdSrh').val() },
+					{ name: 'StudentIdFromSrh', value: $('#StudentIdFromSrh').val() },
+					{ name: 'StudentIdToSrh', value: $('#StudentIdToSrh').val() },
+					{ name: 'OldClazzIdSrh', value: $('#OldClazzIdSrh').val() },
+					{ name: 'OldClazzIdFromSrh', value: $('#OldClazzIdFromSrh').val() },
+					{ name: 'OldClazzIdToSrh', value: $('#OldClazzIdToSrh').val() },
+					{ name: 'NewClazzIdSrh', value: $('#NewClazzIdSrh').val() },
+					{ name: 'NewClazzIdFromSrh', value: $('#NewClazzIdFromSrh').val() },
+					{ name: 'NewClazzIdToSrh', value: $('#NewClazzIdToSrh').val() },
+					{ name: 'ChangeTimeSrh', value: $('#ChangeTimeSrh').val() },
+					{ name: 'OperatorNameSrh', value: $('#OperatorNameSrh').val() }
+                    ]
+                });
+                gStudentChangeClazzLog.loadData();
+            });
+			
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp)
+	            {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frmStudentChangeClazzLog").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    saveStudentChangeClazzLog();
+                    return false;
+                }
+            });
+
+			$.getJSON("@Url.Action("GetInitData","StudentChangeClazzLog")", function(data){
+				initData = data;
+                /*
+				$("#f_City_ProvinceId").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceId',data:data.Provinces });
+                data.Provinces.unshift({ Id:'', Name:'所有' });
+                $("#f_City_ProvinceIdSrh").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceIdSrh',data:data.Provinces });
+				*/
+	            $("#formsearch").ligerForm();
+				$("#frmStudentChangeClazzLog").ligerForm();
+            });
+
+
+        });
+		
+        function addStudentChangeClazzLog(){
+            action = "add";
+			$("#f_StudentChangeClazzLog_Id").val("");
+			$("#f_StudentChangeClazzLog_StudentId").val("");
+			$("#f_StudentChangeClazzLog_OldClazzId").val("");
+			$("#f_StudentChangeClazzLog_NewClazzId").val("");
+			$("#f_StudentChangeClazzLog_ChangeTime").val("");
+			$("#f_StudentChangeClazzLog_OperatorName").val("");
+			$dialog = $.ligerDialog.open({ target: $("#dStudentChangeClazzLog"), width: 300, height: 150 });
+        }
+        function editStudentChangeClazzLog() {
+            action = "edit";
+            var row = gStudentChangeClazzLog.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+			$("#f_StudentChangeClazzLog_Id").val(row.Id);
+			$("#f_StudentChangeClazzLog_StudentId").val(row.StudentId);
+			$("#f_StudentChangeClazzLog_OldClazzId").val(row.OldClazzId);
+			$("#f_StudentChangeClazzLog_NewClazzId").val(row.NewClazzId);
+			$("#f_StudentChangeClazzLog_ChangeTime").val(row.ChangeTime);
+			$("#f_StudentChangeClazzLog_OperatorName").val(row.OperatorName);
+            $dialog = $.ligerDialog.open({ target: $("#dStudentChangeClazzLog"), width: 300, height: 150 });
+        }
+        function deleteStudentChangeClazzLog() {
+            var row = gStudentChangeClazzLog.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？",function (r) { 
+                if(r){
+                    $.post("@Url.Action("Delete","StudentChangeClazzLog")", { id: row.Id }
+                        , function (result) {
+                            if (result.Successful) {
+                                gStudentChangeClazzLog.deleteSelectedRow();
+                            } else {
+                                $.ligerMessageBox.error('错误', result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+        function saveStudentChangeClazzLog(){
+            if(action=="add"){
+                $.post("@Url.Action("Add","StudentChangeClazzLog")", $("#frmStudentChangeClazzLog").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            gStudentChangeClazzLog.addRow(result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }else{
+                $.post("@Url.Action("Update","StudentChangeClazzLog")", $("#frmStudentChangeClazzLog").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            var row = gStudentChangeClazzLog.getSelected();
+                            if (!row) { alert('请选择行'); return; }
+                            gStudentChangeClazzLog.updateRow(row,result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+<body style="padding:10px;height:100%; text-align:center;">
+  <div id="mainsearch" style=" width:98%">
+    <div class="searchtitle">
+        <span>搜索</span><img src="@Url.Content("~/Content/lib/icons/32X32/searchtool.gif")" alt="" />
+        <div class="togglebtn"></div> 
+    </div>
+    <div class="navline" style="margin-bottom:4px; margin-top:4px;"></div>
+    <div class="searchbox">
+        <form id="formsearch" class="l-form" action="">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+			<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Id</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdSrh' type='text' id='IdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdFromSrh' type='text' id='IdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdToSrh' type='text' id='IdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudentId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudentIdSrh' type='text' id='StudentIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudentIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudentIdFromSrh' type='text' id='StudentIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudentIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudentIdToSrh' type='text' id='StudentIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>OldClazzId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='OldClazzIdSrh' type='text' id='OldClazzIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>OldClazzIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='OldClazzIdFromSrh' type='text' id='OldClazzIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>OldClazzIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='OldClazzIdToSrh' type='text' id='OldClazzIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>NewClazzId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NewClazzIdSrh' type='text' id='NewClazzIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>NewClazzIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NewClazzIdFromSrh' type='text' id='NewClazzIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>NewClazzIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NewClazzIdToSrh' type='text' id='NewClazzIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ChangeTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ChangeTimeSrh' type='text' id='ChangeTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>OperatorName</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='OperatorNameSrh' type='text' id='OperatorNameSrh' ltype='text' /></td>
+</tr>
+
+            <tr>
+                <td style="text-align:center;" class="l-table-edit-td" colspan="3"><input type="button" value="查询" id="btnSearch"  /></td>
+            </tr>
+        </table>
+        
+        </form>
+    </div>
+  </div>
+  <div id="grdStudentChangeClazzLog"></div> 
+  
+   <div id="dStudentChangeClazzLog" style="display: none;">
+        <form action="" method="post" id="frmStudentChangeClazzLog">
+			<input type="hidden" id="f_StudentChangeClazzLog_Id" name="Id" value="" />
+			<table cellpadding="0" cellspacing="0" class="l-table-edit" >
+	            
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudentId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudentId' type='text' id='f_StudentChangeClazzLog_StudentId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>OldClazzId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='OldClazzId' type='text' id='f_StudentChangeClazzLog_OldClazzId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>NewClazzId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='NewClazzId' type='text' id='f_StudentChangeClazzLog_NewClazzId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ChangeTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ChangeTime' type='text' id='f_StudentChangeClazzLog_ChangeTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>OperatorName</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='OperatorName' type='text' id='f_StudentChangeClazzLog_OperatorName' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+            <tr>
+                <td colspan="3" style="text-align:center;">
+                    <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
+                </td>
+            </tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

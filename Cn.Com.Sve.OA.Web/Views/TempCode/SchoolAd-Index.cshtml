@@ -1,0 +1,604 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />  
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script> 
+	
+    <style type="text/css">
+        body{ font-size:12px;}
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-verify-tip{ left:230px; top:120px; z-index:9999;}
+    </style>
+    <script type="text/javascript">
+        var gSchoolAd;
+        var action = "add";
+        var $dialog;
+		var initData;
+		
+        $(function () {
+            gSchoolAd = $("#grdSchoolAd").ligerGrid({
+                columns: [
+                    { display: 'Id', name: 'Id', width: 100, align: 'left' },
+					{ display: 'SchoolId', name: 'SchoolId', width: 100, align: 'left' },
+					{ display: 'Year', name: 'Year', width: 100, align: 'left' },
+					{ display: 'HighClassQty', name: 'HighClassQty', width: 100, align: 'left' },
+					{ display: 'HighStudentQty', name: 'HighStudentQty', width: 100, align: 'left' },
+					{ display: 'LowClassQty', name: 'LowClassQty', width: 100, align: 'left' },
+					{ display: 'LowStudentQty', name: 'LowStudentQty', width: 100, align: 'left' },
+					{ display: 'DaoJiShiPai', name: 'DaoJiShiPai', width: 100, align: 'left' },
+					{ display: 'JiaoShiBiaoYu', name: 'JiaoShiBiaoYu', width: 100, align: 'left' },
+					{ display: 'ShuShiBiaoYu', name: 'ShuShiBiaoYu', width: 100, align: 'left' },
+					{ display: 'ShiTangBiaoYu', name: 'ShiTangBiaoYu', width: 100, align: 'left' },
+					{ display: 'LouTiBiaoYu', name: 'LouTiBiaoYu', width: 100, align: 'left' },
+					{ display: 'BuTiao', name: 'BuTiao', width: 100, align: 'left' },
+					{ display: 'TaiLi', name: 'TaiLi', width: 100, align: 'left' },
+					{ display: 'GuaLi', name: 'GuaLi', width: 100, align: 'left' }
+                  ],
+                pageSize: 20, toolbar: {},
+                url: '@Url.Action("GetData","SchoolAd")', 
+                sortName: 'Name',
+                width: '98%', height: '100%', checkbox: false,
+                usePager:true,
+                toolbar: { items: [
+                { text: '增加', icon: 'add', click: addSchoolAd },
+                { line: true },
+                { text: '修改', icon: 'modify', click: editSchoolAd },
+                { line: true },
+                { text: '删除', icon: 'delete', click: deleteSchoolAd }
+                ]
+                }
+            });
+            $("#btnSearch").click(function () {
+                gSchoolAd.set({ 
+                    parms : [
+                    { name: 'IdSrh', value: $('#IdSrh').val() },
+					{ name: 'IdFromSrh', value: $('#IdFromSrh').val() },
+					{ name: 'IdToSrh', value: $('#IdToSrh').val() },
+					{ name: 'SchoolIdSrh', value: $('#SchoolIdSrh').val() },
+					{ name: 'SchoolIdFromSrh', value: $('#SchoolIdFromSrh').val() },
+					{ name: 'SchoolIdToSrh', value: $('#SchoolIdToSrh').val() },
+					{ name: 'YearSrh', value: $('#YearSrh').val() },
+					{ name: 'YearFromSrh', value: $('#YearFromSrh').val() },
+					{ name: 'YearToSrh', value: $('#YearToSrh').val() },
+					{ name: 'HighClassQtySrh', value: $('#HighClassQtySrh').val() },
+					{ name: 'HighClassQtyFromSrh', value: $('#HighClassQtyFromSrh').val() },
+					{ name: 'HighClassQtyToSrh', value: $('#HighClassQtyToSrh').val() },
+					{ name: 'HighStudentQtySrh', value: $('#HighStudentQtySrh').val() },
+					{ name: 'HighStudentQtyFromSrh', value: $('#HighStudentQtyFromSrh').val() },
+					{ name: 'HighStudentQtyToSrh', value: $('#HighStudentQtyToSrh').val() },
+					{ name: 'LowClassQtySrh', value: $('#LowClassQtySrh').val() },
+					{ name: 'LowClassQtyFromSrh', value: $('#LowClassQtyFromSrh').val() },
+					{ name: 'LowClassQtyToSrh', value: $('#LowClassQtyToSrh').val() },
+					{ name: 'LowStudentQtySrh', value: $('#LowStudentQtySrh').val() },
+					{ name: 'LowStudentQtyFromSrh', value: $('#LowStudentQtyFromSrh').val() },
+					{ name: 'LowStudentQtyToSrh', value: $('#LowStudentQtyToSrh').val() },
+					{ name: 'DaoJiShiPaiSrh', value: $('#DaoJiShiPaiSrh').val() },
+					{ name: 'DaoJiShiPaiFromSrh', value: $('#DaoJiShiPaiFromSrh').val() },
+					{ name: 'DaoJiShiPaiToSrh', value: $('#DaoJiShiPaiToSrh').val() },
+					{ name: 'JiaoShiBiaoYuSrh', value: $('#JiaoShiBiaoYuSrh').val() },
+					{ name: 'JiaoShiBiaoYuFromSrh', value: $('#JiaoShiBiaoYuFromSrh').val() },
+					{ name: 'JiaoShiBiaoYuToSrh', value: $('#JiaoShiBiaoYuToSrh').val() },
+					{ name: 'ShuShiBiaoYuSrh', value: $('#ShuShiBiaoYuSrh').val() },
+					{ name: 'ShuShiBiaoYuFromSrh', value: $('#ShuShiBiaoYuFromSrh').val() },
+					{ name: 'ShuShiBiaoYuToSrh', value: $('#ShuShiBiaoYuToSrh').val() },
+					{ name: 'ShiTangBiaoYuSrh', value: $('#ShiTangBiaoYuSrh').val() },
+					{ name: 'ShiTangBiaoYuFromSrh', value: $('#ShiTangBiaoYuFromSrh').val() },
+					{ name: 'ShiTangBiaoYuToSrh', value: $('#ShiTangBiaoYuToSrh').val() },
+					{ name: 'LouTiBiaoYuSrh', value: $('#LouTiBiaoYuSrh').val() },
+					{ name: 'LouTiBiaoYuFromSrh', value: $('#LouTiBiaoYuFromSrh').val() },
+					{ name: 'LouTiBiaoYuToSrh', value: $('#LouTiBiaoYuToSrh').val() },
+					{ name: 'BuTiaoSrh', value: $('#BuTiaoSrh').val() },
+					{ name: 'BuTiaoFromSrh', value: $('#BuTiaoFromSrh').val() },
+					{ name: 'BuTiaoToSrh', value: $('#BuTiaoToSrh').val() },
+					{ name: 'TaiLiSrh', value: $('#TaiLiSrh').val() },
+					{ name: 'TaiLiFromSrh', value: $('#TaiLiFromSrh').val() },
+					{ name: 'TaiLiToSrh', value: $('#TaiLiToSrh').val() },
+					{ name: 'GuaLiSrh', value: $('#GuaLiSrh').val() },
+					{ name: 'GuaLiFromSrh', value: $('#GuaLiFromSrh').val() },
+					{ name: 'GuaLiToSrh', value: $('#GuaLiToSrh').val() }
+                    ]
+                });
+                gSchoolAd.loadData();
+            });
+			
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp)
+	            {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frmSchoolAd").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    saveSchoolAd();
+                    return false;
+                }
+            });
+
+			$.getJSON("@Url.Action("GetInitData","SchoolAd")", function(data){
+				initData = data;
+                /*
+				$("#f_City_ProvinceId").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceId',data:data.Provinces });
+                data.Provinces.unshift({ Id:'', Name:'所有' });
+                $("#f_City_ProvinceIdSrh").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceIdSrh',data:data.Provinces });
+				*/
+	            $("#formsearch").ligerForm();
+				$("#frmSchoolAd").ligerForm();
+            });
+
+
+        });
+		
+        function addSchoolAd(){
+            action = "add";
+			$("#f_SchoolAd_Id").val("");
+			$("#f_SchoolAd_SchoolId").val("");
+			$("#f_SchoolAd_Year").val("");
+			$("#f_SchoolAd_HighClassQty").val("");
+			$("#f_SchoolAd_HighStudentQty").val("");
+			$("#f_SchoolAd_LowClassQty").val("");
+			$("#f_SchoolAd_LowStudentQty").val("");
+			$("#f_SchoolAd_DaoJiShiPai").val("");
+			$("#f_SchoolAd_JiaoShiBiaoYu").val("");
+			$("#f_SchoolAd_ShuShiBiaoYu").val("");
+			$("#f_SchoolAd_ShiTangBiaoYu").val("");
+			$("#f_SchoolAd_LouTiBiaoYu").val("");
+			$("#f_SchoolAd_BuTiao").val("");
+			$("#f_SchoolAd_TaiLi").val("");
+			$("#f_SchoolAd_GuaLi").val("");
+			$dialog = $.ligerDialog.open({ target: $("#dSchoolAd"), width: 300, height: 150 });
+        }
+        function editSchoolAd() {
+            action = "edit";
+            var row = gSchoolAd.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+			$("#f_SchoolAd_Id").val(row.Id);
+			$("#f_SchoolAd_SchoolId").val(row.SchoolId);
+			$("#f_SchoolAd_Year").val(row.Year);
+			$("#f_SchoolAd_HighClassQty").val(row.HighClassQty);
+			$("#f_SchoolAd_HighStudentQty").val(row.HighStudentQty);
+			$("#f_SchoolAd_LowClassQty").val(row.LowClassQty);
+			$("#f_SchoolAd_LowStudentQty").val(row.LowStudentQty);
+			$("#f_SchoolAd_DaoJiShiPai").val(row.DaoJiShiPai);
+			$("#f_SchoolAd_JiaoShiBiaoYu").val(row.JiaoShiBiaoYu);
+			$("#f_SchoolAd_ShuShiBiaoYu").val(row.ShuShiBiaoYu);
+			$("#f_SchoolAd_ShiTangBiaoYu").val(row.ShiTangBiaoYu);
+			$("#f_SchoolAd_LouTiBiaoYu").val(row.LouTiBiaoYu);
+			$("#f_SchoolAd_BuTiao").val(row.BuTiao);
+			$("#f_SchoolAd_TaiLi").val(row.TaiLi);
+			$("#f_SchoolAd_GuaLi").val(row.GuaLi);
+            $dialog = $.ligerDialog.open({ target: $("#dSchoolAd"), width: 300, height: 150 });
+        }
+        function deleteSchoolAd() {
+            var row = gSchoolAd.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？",function (r) { 
+                if(r){
+                    $.post("@Url.Action("Delete","SchoolAd")", { id: row.Id }
+                        , function (result) {
+                            if (result.Successful) {
+                                gSchoolAd.deleteSelectedRow();
+                            } else {
+                                $.ligerMessageBox.error('错误', result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+        function saveSchoolAd(){
+            if(action=="add"){
+                $.post("@Url.Action("Add","SchoolAd")", $("#frmSchoolAd").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            gSchoolAd.addRow(result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }else{
+                $.post("@Url.Action("Update","SchoolAd")", $("#frmSchoolAd").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            var row = gSchoolAd.getSelected();
+                            if (!row) { alert('请选择行'); return; }
+                            gSchoolAd.updateRow(row,result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+<body style="padding:10px;height:100%; text-align:center;">
+  <div id="mainsearch" style=" width:98%">
+    <div class="searchtitle">
+        <span>搜索</span><img src="@Url.Content("~/Content/lib/icons/32X32/searchtool.gif")" alt="" />
+        <div class="togglebtn"></div> 
+    </div>
+    <div class="navline" style="margin-bottom:4px; margin-top:4px;"></div>
+    <div class="searchbox">
+        <form id="formsearch" class="l-form" action="">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+			<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Id</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdSrh' type='text' id='IdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdFromSrh' type='text' id='IdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdToSrh' type='text' id='IdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SchoolId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SchoolIdSrh' type='text' id='SchoolIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SchoolIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SchoolIdFromSrh' type='text' id='SchoolIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SchoolIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SchoolIdToSrh' type='text' id='SchoolIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Year</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='YearSrh' type='text' id='YearSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>YearFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='YearFromSrh' type='text' id='YearFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>YearTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='YearToSrh' type='text' id='YearToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HighClassQty</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HighClassQtySrh' type='text' id='HighClassQtySrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HighClassQtyFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HighClassQtyFromSrh' type='text' id='HighClassQtyFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HighClassQtyTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HighClassQtyToSrh' type='text' id='HighClassQtyToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HighStudentQty</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HighStudentQtySrh' type='text' id='HighStudentQtySrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HighStudentQtyFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HighStudentQtyFromSrh' type='text' id='HighStudentQtyFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HighStudentQtyTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HighStudentQtyToSrh' type='text' id='HighStudentQtyToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>LowClassQty</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LowClassQtySrh' type='text' id='LowClassQtySrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>LowClassQtyFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LowClassQtyFromSrh' type='text' id='LowClassQtyFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>LowClassQtyTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LowClassQtyToSrh' type='text' id='LowClassQtyToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>LowStudentQty</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LowStudentQtySrh' type='text' id='LowStudentQtySrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>LowStudentQtyFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LowStudentQtyFromSrh' type='text' id='LowStudentQtyFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>LowStudentQtyTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LowStudentQtyToSrh' type='text' id='LowStudentQtyToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DaoJiShiPai</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DaoJiShiPaiSrh' type='text' id='DaoJiShiPaiSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DaoJiShiPaiFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DaoJiShiPaiFromSrh' type='text' id='DaoJiShiPaiFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DaoJiShiPaiTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DaoJiShiPaiToSrh' type='text' id='DaoJiShiPaiToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>JiaoShiBiaoYu</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='JiaoShiBiaoYuSrh' type='text' id='JiaoShiBiaoYuSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>JiaoShiBiaoYuFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='JiaoShiBiaoYuFromSrh' type='text' id='JiaoShiBiaoYuFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>JiaoShiBiaoYuTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='JiaoShiBiaoYuToSrh' type='text' id='JiaoShiBiaoYuToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ShuShiBiaoYu</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ShuShiBiaoYuSrh' type='text' id='ShuShiBiaoYuSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ShuShiBiaoYuFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ShuShiBiaoYuFromSrh' type='text' id='ShuShiBiaoYuFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ShuShiBiaoYuTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ShuShiBiaoYuToSrh' type='text' id='ShuShiBiaoYuToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ShiTangBiaoYu</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ShiTangBiaoYuSrh' type='text' id='ShiTangBiaoYuSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ShiTangBiaoYuFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ShiTangBiaoYuFromSrh' type='text' id='ShiTangBiaoYuFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ShiTangBiaoYuTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ShiTangBiaoYuToSrh' type='text' id='ShiTangBiaoYuToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>LouTiBiaoYu</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LouTiBiaoYuSrh' type='text' id='LouTiBiaoYuSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>LouTiBiaoYuFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LouTiBiaoYuFromSrh' type='text' id='LouTiBiaoYuFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>LouTiBiaoYuTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LouTiBiaoYuToSrh' type='text' id='LouTiBiaoYuToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>BuTiao</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='BuTiaoSrh' type='text' id='BuTiaoSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>BuTiaoFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='BuTiaoFromSrh' type='text' id='BuTiaoFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>BuTiaoTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='BuTiaoToSrh' type='text' id='BuTiaoToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TaiLi</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TaiLiSrh' type='text' id='TaiLiSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TaiLiFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TaiLiFromSrh' type='text' id='TaiLiFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TaiLiTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TaiLiToSrh' type='text' id='TaiLiToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GuaLi</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GuaLiSrh' type='text' id='GuaLiSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GuaLiFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GuaLiFromSrh' type='text' id='GuaLiFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GuaLiTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GuaLiToSrh' type='text' id='GuaLiToSrh' ltype='text' /></td>
+</tr>
+
+            <tr>
+                <td style="text-align:center;" class="l-table-edit-td" colspan="3"><input type="button" value="查询" id="btnSearch"  /></td>
+            </tr>
+        </table>
+        
+        </form>
+    </div>
+  </div>
+  <div id="grdSchoolAd"></div> 
+  
+   <div id="dSchoolAd" style="display: none;">
+        <form action="" method="post" id="frmSchoolAd">
+			<input type="hidden" id="f_SchoolAd_Id" name="Id" value="" />
+			<table cellpadding="0" cellspacing="0" class="l-table-edit" >
+	            
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>SchoolId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='SchoolId' type='text' id='f_SchoolAd_SchoolId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Year</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Year' type='text' id='f_SchoolAd_Year' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>HighClassQty</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='HighClassQty' type='text' id='f_SchoolAd_HighClassQty' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>HighStudentQty</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='HighStudentQty' type='text' id='f_SchoolAd_HighStudentQty' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>LowClassQty</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='LowClassQty' type='text' id='f_SchoolAd_LowClassQty' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>LowStudentQty</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='LowStudentQty' type='text' id='f_SchoolAd_LowStudentQty' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>DaoJiShiPai</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='DaoJiShiPai' type='text' id='f_SchoolAd_DaoJiShiPai' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>JiaoShiBiaoYu</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='JiaoShiBiaoYu' type='text' id='f_SchoolAd_JiaoShiBiaoYu' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ShuShiBiaoYu</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ShuShiBiaoYu' type='text' id='f_SchoolAd_ShuShiBiaoYu' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ShiTangBiaoYu</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ShiTangBiaoYu' type='text' id='f_SchoolAd_ShiTangBiaoYu' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>LouTiBiaoYu</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='LouTiBiaoYu' type='text' id='f_SchoolAd_LouTiBiaoYu' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>BuTiao</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='BuTiao' type='text' id='f_SchoolAd_BuTiao' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TaiLi</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TaiLi' type='text' id='f_SchoolAd_TaiLi' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>GuaLi</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='GuaLi' type='text' id='f_SchoolAd_GuaLi' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+            <tr>
+                <td colspan="3" style="text-align:center;">
+                    <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
+                </td>
+            </tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

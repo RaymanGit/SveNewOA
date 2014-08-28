@@ -1,0 +1,1206 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />  
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script> 
+	
+    <style type="text/css">
+        body{ font-size:12px;}
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-verify-tip{ left:230px; top:120px; z-index:9999;}
+    </style>
+    <script type="text/javascript">
+        var gCustomer;
+        var action = "add";
+        var $dialog;
+		var initData;
+		
+        $(function () {
+            gCustomer = $("#grdCustomer").ligerGrid({
+                columns: [
+                    { display: 'Id', name: 'Id', width: 100, align: 'left' },
+					{ display: 'Name', name: 'Name', width: 100, align: 'left' },
+					{ display: 'SchoolId', name: 'SchoolId', width: 100, align: 'left' },
+					{ display: 'MarketYear', name: 'MarketYear', width: 100, align: 'left' },
+					{ display: 'Telephone', name: 'Telephone', width: 100, align: 'left' },
+					{ display: 'Mobile', name: 'Mobile', width: 100, align: 'left' },
+					{ display: 'Gender', name: 'Gender', width: 100, align: 'left' },
+					{ display: 'QQ', name: 'QQ', width: 100, align: 'left' },
+					{ display: 'Email', name: 'Email', width: 100, align: 'left' },
+					{ display: 'EduLevel', name: 'EduLevel', width: 100, align: 'left' },
+					{ display: 'IsGaoKao', name: 'IsGaoKao', width: 100, align: 'left' },
+					{ display: 'GaoKaoScore', name: 'GaoKaoScore', width: 100, align: 'left' },
+					{ display: 'GaoKaoBatch', name: 'GaoKaoBatch', width: 100, align: 'left' },
+					{ display: 'DistrictId', name: 'DistrictId', width: 100, align: 'left' },
+					{ display: 'Address', name: 'Address', width: 100, align: 'left' },
+					{ display: 'Postcode', name: 'Postcode', width: 100, align: 'left' },
+					{ display: 'SmallInfoSourceId', name: 'SmallInfoSourceId', width: 100, align: 'left' },
+					{ display: 'ConsultType', name: 'ConsultType', width: 100, align: 'left' },
+					{ display: 'Remark', name: 'Remark', width: 100, align: 'left' },
+					{ display: 'ConsultantId1', name: 'ConsultantId1', width: 100, align: 'left' },
+					{ display: 'ConsultantId2', name: 'ConsultantId2', width: 100, align: 'left' },
+					{ display: 'NetConsultantId', name: 'NetConsultantId', width: 100, align: 'left' },
+					{ display: 'CreateTeacherId', name: 'CreateTeacherId', width: 100, align: 'left' },
+					{ display: 'ConsultTime', name: 'ConsultTime', width: 100, align: 'left' },
+					{ display: 'SalesTeamId', name: 'SalesTeamId', width: 100, align: 'left' },
+					{ display: 'SalesmanId', name: 'SalesmanId', width: 100, align: 'left' },
+					{ display: 'IsImport', name: 'IsImport', width: 100, align: 'left' },
+					{ display: 'TeleSalesTimes', name: 'TeleSalesTimes', width: 100, align: 'left' },
+					{ display: 'NextTeleSalesTime', name: 'NextTeleSalesTime', width: 100, align: 'left' },
+					{ display: 'AppointmentTime', name: 'AppointmentTime', width: 100, align: 'left' },
+					{ display: 'DropInTime', name: 'DropInTime', width: 100, align: 'left' },
+					{ display: 'DinWeiTime', name: 'DinWeiTime', width: 100, align: 'left' },
+					{ display: 'SignUpTime', name: 'SignUpTime', width: 100, align: 'left' },
+					{ display: 'IsDinWei', name: 'IsDinWei', width: 100, align: 'left' },
+					{ display: 'IsClosed', name: 'IsClosed', width: 100, align: 'left' },
+					{ display: 'LastSalesTime', name: 'LastSalesTime', width: 100, align: 'left' },
+					{ display: 'Important', name: 'Important', width: 100, align: 'left' },
+					{ display: 'ConsultantRemark', name: 'ConsultantRemark', width: 100, align: 'left' },
+					{ display: 'Keywords', name: 'Keywords', width: 100, align: 'left' },
+					{ display: 'Clazz', name: 'Clazz', width: 100, align: 'left' },
+					{ display: 'IsLeaderFollow', name: 'IsLeaderFollow', width: 100, align: 'left' },
+					{ display: 'Status', name: 'Status', width: 100, align: 'left' },
+					{ display: 'LastSaleLog', name: 'LastSaleLog', width: 100, align: 'left' },
+					{ display: 'IsDorm', name: 'IsDorm', width: 100, align: 'left' },
+					{ display: 'InClazzId', name: 'InClazzId', width: 100, align: 'left' },
+					{ display: 'IsPay', name: 'IsPay', width: 100, align: 'left' },
+					{ display: 'PayTime', name: 'PayTime', width: 100, align: 'left' },
+					{ display: 'IsRefund', name: 'IsRefund', width: 100, align: 'left' },
+					{ display: 'RefundTime', name: 'RefundTime', width: 100, align: 'left' },
+					{ display: 'IsDropIn', name: 'IsDropIn', width: 100, align: 'left' },
+					{ display: 'IsSignUp', name: 'IsSignUp', width: 100, align: 'left' }
+                  ],
+                pageSize: 20, toolbar: {},
+                url: '@Url.Action("GetData","Customer")', 
+                sortName: 'Name',
+                width: '98%', height: '100%', checkbox: false,
+                usePager:true,
+                toolbar: { items: [
+                { text: '增加', icon: 'add', click: addCustomer },
+                { line: true },
+                { text: '修改', icon: 'modify', click: editCustomer },
+                { line: true },
+                { text: '删除', icon: 'delete', click: deleteCustomer }
+                ]
+                }
+            });
+            $("#btnSearch").click(function () {
+                gCustomer.set({ 
+                    parms : [
+                    { name: 'IdSrh', value: $('#IdSrh').val() },
+					{ name: 'IdFromSrh', value: $('#IdFromSrh').val() },
+					{ name: 'IdToSrh', value: $('#IdToSrh').val() },
+					{ name: 'NameSrh', value: $('#NameSrh').val() },
+					{ name: 'SchoolIdSrh', value: $('#SchoolIdSrh').val() },
+					{ name: 'SchoolIdFromSrh', value: $('#SchoolIdFromSrh').val() },
+					{ name: 'SchoolIdToSrh', value: $('#SchoolIdToSrh').val() },
+					{ name: 'MarketYearSrh', value: $('#MarketYearSrh').val() },
+					{ name: 'MarketYearFromSrh', value: $('#MarketYearFromSrh').val() },
+					{ name: 'MarketYearToSrh', value: $('#MarketYearToSrh').val() },
+					{ name: 'TelephoneSrh', value: $('#TelephoneSrh').val() },
+					{ name: 'MobileSrh', value: $('#MobileSrh').val() },
+					{ name: 'GenderSrh', value: $('#GenderSrh').val() },
+					{ name: 'QQSrh', value: $('#QQSrh').val() },
+					{ name: 'EmailSrh', value: $('#EmailSrh').val() },
+					{ name: 'EduLevelSrh', value: $('#EduLevelSrh').val() },
+					{ name: 'IsGaoKaoSrh', value: $('#IsGaoKaoSrh').val() },
+					{ name: 'GaoKaoScoreSrh', value: $('#GaoKaoScoreSrh').val() },
+					{ name: 'GaoKaoScoreFromSrh', value: $('#GaoKaoScoreFromSrh').val() },
+					{ name: 'GaoKaoScoreToSrh', value: $('#GaoKaoScoreToSrh').val() },
+					{ name: 'GaoKaoBatchSrh', value: $('#GaoKaoBatchSrh').val() },
+					{ name: 'DistrictIdSrh', value: $('#DistrictIdSrh').val() },
+					{ name: 'DistrictIdFromSrh', value: $('#DistrictIdFromSrh').val() },
+					{ name: 'DistrictIdToSrh', value: $('#DistrictIdToSrh').val() },
+					{ name: 'AddressSrh', value: $('#AddressSrh').val() },
+					{ name: 'PostcodeSrh', value: $('#PostcodeSrh').val() },
+					{ name: 'SmallInfoSourceIdSrh', value: $('#SmallInfoSourceIdSrh').val() },
+					{ name: 'SmallInfoSourceIdFromSrh', value: $('#SmallInfoSourceIdFromSrh').val() },
+					{ name: 'SmallInfoSourceIdToSrh', value: $('#SmallInfoSourceIdToSrh').val() },
+					{ name: 'ConsultTypeSrh', value: $('#ConsultTypeSrh').val() },
+					{ name: 'RemarkSrh', value: $('#RemarkSrh').val() },
+					{ name: 'ConsultantId1Srh', value: $('#ConsultantId1Srh').val() },
+					{ name: 'ConsultantId1FromSrh', value: $('#ConsultantId1FromSrh').val() },
+					{ name: 'ConsultantId1ToSrh', value: $('#ConsultantId1ToSrh').val() },
+					{ name: 'ConsultantId2Srh', value: $('#ConsultantId2Srh').val() },
+					{ name: 'ConsultantId2FromSrh', value: $('#ConsultantId2FromSrh').val() },
+					{ name: 'ConsultantId2ToSrh', value: $('#ConsultantId2ToSrh').val() },
+					{ name: 'NetConsultantIdSrh', value: $('#NetConsultantIdSrh').val() },
+					{ name: 'NetConsultantIdFromSrh', value: $('#NetConsultantIdFromSrh').val() },
+					{ name: 'NetConsultantIdToSrh', value: $('#NetConsultantIdToSrh').val() },
+					{ name: 'CreateTeacherIdSrh', value: $('#CreateTeacherIdSrh').val() },
+					{ name: 'CreateTeacherIdFromSrh', value: $('#CreateTeacherIdFromSrh').val() },
+					{ name: 'CreateTeacherIdToSrh', value: $('#CreateTeacherIdToSrh').val() },
+					{ name: 'ConsultTimeSrh', value: $('#ConsultTimeSrh').val() },
+					{ name: 'SalesTeamIdSrh', value: $('#SalesTeamIdSrh').val() },
+					{ name: 'SalesTeamIdFromSrh', value: $('#SalesTeamIdFromSrh').val() },
+					{ name: 'SalesTeamIdToSrh', value: $('#SalesTeamIdToSrh').val() },
+					{ name: 'SalesmanIdSrh', value: $('#SalesmanIdSrh').val() },
+					{ name: 'SalesmanIdFromSrh', value: $('#SalesmanIdFromSrh').val() },
+					{ name: 'SalesmanIdToSrh', value: $('#SalesmanIdToSrh').val() },
+					{ name: 'IsImportSrh', value: $('#IsImportSrh').val() },
+					{ name: 'TeleSalesTimesSrh', value: $('#TeleSalesTimesSrh').val() },
+					{ name: 'TeleSalesTimesFromSrh', value: $('#TeleSalesTimesFromSrh').val() },
+					{ name: 'TeleSalesTimesToSrh', value: $('#TeleSalesTimesToSrh').val() },
+					{ name: 'NextTeleSalesTimeSrh', value: $('#NextTeleSalesTimeSrh').val() },
+					{ name: 'AppointmentTimeSrh', value: $('#AppointmentTimeSrh').val() },
+					{ name: 'DropInTimeSrh', value: $('#DropInTimeSrh').val() },
+					{ name: 'DinWeiTimeSrh', value: $('#DinWeiTimeSrh').val() },
+					{ name: 'SignUpTimeSrh', value: $('#SignUpTimeSrh').val() },
+					{ name: 'IsDinWeiSrh', value: $('#IsDinWeiSrh').val() },
+					{ name: 'IsClosedSrh', value: $('#IsClosedSrh').val() },
+					{ name: 'LastSalesTimeSrh', value: $('#LastSalesTimeSrh').val() },
+					{ name: 'ImportantSrh', value: $('#ImportantSrh').val() },
+					{ name: 'ConsultantRemarkSrh', value: $('#ConsultantRemarkSrh').val() },
+					{ name: 'KeywordsSrh', value: $('#KeywordsSrh').val() },
+					{ name: 'ClazzSrh', value: $('#ClazzSrh').val() },
+					{ name: 'IsLeaderFollowSrh', value: $('#IsLeaderFollowSrh').val() },
+					{ name: 'StatusSrh', value: $('#StatusSrh').val() },
+					{ name: 'LastSaleLogSrh', value: $('#LastSaleLogSrh').val() },
+					{ name: 'IsDormSrh', value: $('#IsDormSrh').val() },
+					{ name: 'InClazzIdSrh', value: $('#InClazzIdSrh').val() },
+					{ name: 'InClazzIdFromSrh', value: $('#InClazzIdFromSrh').val() },
+					{ name: 'InClazzIdToSrh', value: $('#InClazzIdToSrh').val() },
+					{ name: 'IsPaySrh', value: $('#IsPaySrh').val() },
+					{ name: 'PayTimeSrh', value: $('#PayTimeSrh').val() },
+					{ name: 'IsRefundSrh', value: $('#IsRefundSrh').val() },
+					{ name: 'RefundTimeSrh', value: $('#RefundTimeSrh').val() },
+					{ name: 'IsDropInSrh', value: $('#IsDropInSrh').val() },
+					{ name: 'IsSignUpSrh', value: $('#IsSignUpSrh').val() }
+                    ]
+                });
+                gCustomer.loadData();
+            });
+			
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp)
+	            {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frmCustomer").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    saveCustomer();
+                    return false;
+                }
+            });
+
+			$.getJSON("@Url.Action("GetInitData","Customer")", function(data){
+				initData = data;
+                /*
+				$("#f_City_ProvinceId").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceId',data:data.Provinces });
+                data.Provinces.unshift({ Id:'', Name:'所有' });
+                $("#f_City_ProvinceIdSrh").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceIdSrh',data:data.Provinces });
+				*/
+	            $("#formsearch").ligerForm();
+				$("#frmCustomer").ligerForm();
+            });
+
+
+        });
+		
+        function addCustomer(){
+            action = "add";
+			$("#f_Customer_Id").val("");
+			$("#f_Customer_Name").val("");
+			$("#f_Customer_SchoolId").val("");
+			$("#f_Customer_MarketYear").val("");
+			$("#f_Customer_Telephone").val("");
+			$("#f_Customer_Mobile").val("");
+			$("#f_Customer_Gender").val("");
+			$("#f_Customer_QQ").val("");
+			$("#f_Customer_Email").val("");
+			$("#f_Customer_EduLevel").val("");
+			$("#f_Customer_IsGaoKao").val("");
+			$("#f_Customer_GaoKaoScore").val("");
+			$("#f_Customer_GaoKaoBatch").val("");
+			$("#f_Customer_DistrictId").val("");
+			$("#f_Customer_Address").val("");
+			$("#f_Customer_Postcode").val("");
+			$("#f_Customer_SmallInfoSourceId").val("");
+			$("#f_Customer_ConsultType").val("");
+			$("#f_Customer_Remark").val("");
+			$("#f_Customer_ConsultantId1").val("");
+			$("#f_Customer_ConsultantId2").val("");
+			$("#f_Customer_NetConsultantId").val("");
+			$("#f_Customer_CreateTeacherId").val("");
+			$("#f_Customer_ConsultTime").val("");
+			$("#f_Customer_SalesTeamId").val("");
+			$("#f_Customer_SalesmanId").val("");
+			$("#f_Customer_IsImport").val("");
+			$("#f_Customer_TeleSalesTimes").val("");
+			$("#f_Customer_NextTeleSalesTime").val("");
+			$("#f_Customer_AppointmentTime").val("");
+			$("#f_Customer_DropInTime").val("");
+			$("#f_Customer_DinWeiTime").val("");
+			$("#f_Customer_SignUpTime").val("");
+			$("#f_Customer_IsDinWei").val("");
+			$("#f_Customer_IsClosed").val("");
+			$("#f_Customer_LastSalesTime").val("");
+			$("#f_Customer_Important").val("");
+			$("#f_Customer_ConsultantRemark").val("");
+			$("#f_Customer_Keywords").val("");
+			$("#f_Customer_Clazz").val("");
+			$("#f_Customer_IsLeaderFollow").val("");
+			$("#f_Customer_Status").val("");
+			$("#f_Customer_LastSaleLog").val("");
+			$("#f_Customer_IsDorm").val("");
+			$("#f_Customer_InClazzId").val("");
+			$("#f_Customer_IsPay").val("");
+			$("#f_Customer_PayTime").val("");
+			$("#f_Customer_IsRefund").val("");
+			$("#f_Customer_RefundTime").val("");
+			$("#f_Customer_IsDropIn").val("");
+			$("#f_Customer_IsSignUp").val("");
+			$dialog = $.ligerDialog.open({ target: $("#dCustomer"), width: 300, height: 150 });
+        }
+        function editCustomer() {
+            action = "edit";
+            var row = gCustomer.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+			$("#f_Customer_Id").val(row.Id);
+			$("#f_Customer_Name").val(row.Name);
+			$("#f_Customer_SchoolId").val(row.SchoolId);
+			$("#f_Customer_MarketYear").val(row.MarketYear);
+			$("#f_Customer_Telephone").val(row.Telephone);
+			$("#f_Customer_Mobile").val(row.Mobile);
+			$("#f_Customer_Gender").val(row.Gender);
+			$("#f_Customer_QQ").val(row.QQ);
+			$("#f_Customer_Email").val(row.Email);
+			$("#f_Customer_EduLevel").val(row.EduLevel);
+			$("#f_Customer_IsGaoKao").val(row.IsGaoKao);
+			$("#f_Customer_GaoKaoScore").val(row.GaoKaoScore);
+			$("#f_Customer_GaoKaoBatch").val(row.GaoKaoBatch);
+			$("#f_Customer_DistrictId").val(row.DistrictId);
+			$("#f_Customer_Address").val(row.Address);
+			$("#f_Customer_Postcode").val(row.Postcode);
+			$("#f_Customer_SmallInfoSourceId").val(row.SmallInfoSourceId);
+			$("#f_Customer_ConsultType").val(row.ConsultType);
+			$("#f_Customer_Remark").val(row.Remark);
+			$("#f_Customer_ConsultantId1").val(row.ConsultantId1);
+			$("#f_Customer_ConsultantId2").val(row.ConsultantId2);
+			$("#f_Customer_NetConsultantId").val(row.NetConsultantId);
+			$("#f_Customer_CreateTeacherId").val(row.CreateTeacherId);
+			$("#f_Customer_ConsultTime").val(row.ConsultTime);
+			$("#f_Customer_SalesTeamId").val(row.SalesTeamId);
+			$("#f_Customer_SalesmanId").val(row.SalesmanId);
+			$("#f_Customer_IsImport").val(row.IsImport);
+			$("#f_Customer_TeleSalesTimes").val(row.TeleSalesTimes);
+			$("#f_Customer_NextTeleSalesTime").val(row.NextTeleSalesTime);
+			$("#f_Customer_AppointmentTime").val(row.AppointmentTime);
+			$("#f_Customer_DropInTime").val(row.DropInTime);
+			$("#f_Customer_DinWeiTime").val(row.DinWeiTime);
+			$("#f_Customer_SignUpTime").val(row.SignUpTime);
+			$("#f_Customer_IsDinWei").val(row.IsDinWei);
+			$("#f_Customer_IsClosed").val(row.IsClosed);
+			$("#f_Customer_LastSalesTime").val(row.LastSalesTime);
+			$("#f_Customer_Important").val(row.Important);
+			$("#f_Customer_ConsultantRemark").val(row.ConsultantRemark);
+			$("#f_Customer_Keywords").val(row.Keywords);
+			$("#f_Customer_Clazz").val(row.Clazz);
+			$("#f_Customer_IsLeaderFollow").val(row.IsLeaderFollow);
+			$("#f_Customer_Status").val(row.Status);
+			$("#f_Customer_LastSaleLog").val(row.LastSaleLog);
+			$("#f_Customer_IsDorm").val(row.IsDorm);
+			$("#f_Customer_InClazzId").val(row.InClazzId);
+			$("#f_Customer_IsPay").val(row.IsPay);
+			$("#f_Customer_PayTime").val(row.PayTime);
+			$("#f_Customer_IsRefund").val(row.IsRefund);
+			$("#f_Customer_RefundTime").val(row.RefundTime);
+			$("#f_Customer_IsDropIn").val(row.IsDropIn);
+			$("#f_Customer_IsSignUp").val(row.IsSignUp);
+            $dialog = $.ligerDialog.open({ target: $("#dCustomer"), width: 300, height: 150 });
+        }
+        function deleteCustomer() {
+            var row = gCustomer.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？",function (r) { 
+                if(r){
+                    $.post("@Url.Action("Delete","Customer")", { id: row.Id }
+                        , function (result) {
+                            if (result.Successful) {
+                                gCustomer.deleteSelectedRow();
+                            } else {
+                                $.ligerMessageBox.error('错误', result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+        function saveCustomer(){
+            if(action=="add"){
+                $.post("@Url.Action("Add","Customer")", $("#frmCustomer").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            gCustomer.addRow(result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }else{
+                $.post("@Url.Action("Update","Customer")", $("#frmCustomer").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            var row = gCustomer.getSelected();
+                            if (!row) { alert('请选择行'); return; }
+                            gCustomer.updateRow(row,result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+<body style="padding:10px;height:100%; text-align:center;">
+  <div id="mainsearch" style=" width:98%">
+    <div class="searchtitle">
+        <span>搜索</span><img src="@Url.Content("~/Content/lib/icons/32X32/searchtool.gif")" alt="" />
+        <div class="togglebtn"></div> 
+    </div>
+    <div class="navline" style="margin-bottom:4px; margin-top:4px;"></div>
+    <div class="searchbox">
+        <form id="formsearch" class="l-form" action="">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+			<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Id</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdSrh' type='text' id='IdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdFromSrh' type='text' id='IdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdToSrh' type='text' id='IdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Name</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NameSrh' type='text' id='NameSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SchoolId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SchoolIdSrh' type='text' id='SchoolIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SchoolIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SchoolIdFromSrh' type='text' id='SchoolIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SchoolIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SchoolIdToSrh' type='text' id='SchoolIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MarketYear</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MarketYearSrh' type='text' id='MarketYearSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MarketYearFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MarketYearFromSrh' type='text' id='MarketYearFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MarketYearTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MarketYearToSrh' type='text' id='MarketYearToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Telephone</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TelephoneSrh' type='text' id='TelephoneSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Mobile</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MobileSrh' type='text' id='MobileSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Gender</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GenderSrh' type='text' id='GenderSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>QQ</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='QQSrh' type='text' id='QQSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Email</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='EmailSrh' type='text' id='EmailSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>EduLevel</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='EduLevelSrh' type='text' id='EduLevelSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsGaoKao</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsGaoKaoSrh' type='text' id='IsGaoKaoSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GaoKaoScore</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GaoKaoScoreSrh' type='text' id='GaoKaoScoreSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GaoKaoScoreFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GaoKaoScoreFromSrh' type='text' id='GaoKaoScoreFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GaoKaoScoreTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GaoKaoScoreToSrh' type='text' id='GaoKaoScoreToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GaoKaoBatch</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GaoKaoBatchSrh' type='text' id='GaoKaoBatchSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DistrictId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DistrictIdSrh' type='text' id='DistrictIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DistrictIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DistrictIdFromSrh' type='text' id='DistrictIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DistrictIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DistrictIdToSrh' type='text' id='DistrictIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Address</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='AddressSrh' type='text' id='AddressSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Postcode</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='PostcodeSrh' type='text' id='PostcodeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SmallInfoSourceId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SmallInfoSourceIdSrh' type='text' id='SmallInfoSourceIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SmallInfoSourceIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SmallInfoSourceIdFromSrh' type='text' id='SmallInfoSourceIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SmallInfoSourceIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SmallInfoSourceIdToSrh' type='text' id='SmallInfoSourceIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ConsultType</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ConsultTypeSrh' type='text' id='ConsultTypeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Remark</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='RemarkSrh' type='text' id='RemarkSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ConsultantId1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ConsultantId1Srh' type='text' id='ConsultantId1Srh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ConsultantId1From</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ConsultantId1FromSrh' type='text' id='ConsultantId1FromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ConsultantId1To</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ConsultantId1ToSrh' type='text' id='ConsultantId1ToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ConsultantId2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ConsultantId2Srh' type='text' id='ConsultantId2Srh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ConsultantId2From</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ConsultantId2FromSrh' type='text' id='ConsultantId2FromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ConsultantId2To</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ConsultantId2ToSrh' type='text' id='ConsultantId2ToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>NetConsultantId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NetConsultantIdSrh' type='text' id='NetConsultantIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>NetConsultantIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NetConsultantIdFromSrh' type='text' id='NetConsultantIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>NetConsultantIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NetConsultantIdToSrh' type='text' id='NetConsultantIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>CreateTeacherId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='CreateTeacherIdSrh' type='text' id='CreateTeacherIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>CreateTeacherIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='CreateTeacherIdFromSrh' type='text' id='CreateTeacherIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>CreateTeacherIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='CreateTeacherIdToSrh' type='text' id='CreateTeacherIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ConsultTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ConsultTimeSrh' type='text' id='ConsultTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SalesTeamId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SalesTeamIdSrh' type='text' id='SalesTeamIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SalesTeamIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SalesTeamIdFromSrh' type='text' id='SalesTeamIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SalesTeamIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SalesTeamIdToSrh' type='text' id='SalesTeamIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SalesmanId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SalesmanIdSrh' type='text' id='SalesmanIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SalesmanIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SalesmanIdFromSrh' type='text' id='SalesmanIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SalesmanIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SalesmanIdToSrh' type='text' id='SalesmanIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsImport</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsImportSrh' type='text' id='IsImportSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeleSalesTimes</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeleSalesTimesSrh' type='text' id='TeleSalesTimesSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeleSalesTimesFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeleSalesTimesFromSrh' type='text' id='TeleSalesTimesFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeleSalesTimesTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeleSalesTimesToSrh' type='text' id='TeleSalesTimesToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>NextTeleSalesTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NextTeleSalesTimeSrh' type='text' id='NextTeleSalesTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>AppointmentTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='AppointmentTimeSrh' type='text' id='AppointmentTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DropInTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DropInTimeSrh' type='text' id='DropInTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DinWeiTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DinWeiTimeSrh' type='text' id='DinWeiTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SignUpTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SignUpTimeSrh' type='text' id='SignUpTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsDinWei</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsDinWeiSrh' type='text' id='IsDinWeiSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsClosed</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsClosedSrh' type='text' id='IsClosedSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>LastSalesTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LastSalesTimeSrh' type='text' id='LastSalesTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Important</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ImportantSrh' type='text' id='ImportantSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ConsultantRemark</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ConsultantRemarkSrh' type='text' id='ConsultantRemarkSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Keywords</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='KeywordsSrh' type='text' id='KeywordsSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Clazz</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ClazzSrh' type='text' id='ClazzSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsLeaderFollow</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsLeaderFollowSrh' type='text' id='IsLeaderFollowSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Status</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StatusSrh' type='text' id='StatusSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>LastSaleLog</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LastSaleLogSrh' type='text' id='LastSaleLogSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsDorm</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsDormSrh' type='text' id='IsDormSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>InClazzId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='InClazzIdSrh' type='text' id='InClazzIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>InClazzIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='InClazzIdFromSrh' type='text' id='InClazzIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>InClazzIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='InClazzIdToSrh' type='text' id='InClazzIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsPay</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsPaySrh' type='text' id='IsPaySrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>PayTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='PayTimeSrh' type='text' id='PayTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsRefund</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsRefundSrh' type='text' id='IsRefundSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>RefundTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='RefundTimeSrh' type='text' id='RefundTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsDropIn</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsDropInSrh' type='text' id='IsDropInSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsSignUp</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsSignUpSrh' type='text' id='IsSignUpSrh' ltype='text' /></td>
+</tr>
+
+            <tr>
+                <td style="text-align:center;" class="l-table-edit-td" colspan="3"><input type="button" value="查询" id="btnSearch"  /></td>
+            </tr>
+        </table>
+        
+        </form>
+    </div>
+  </div>
+  <div id="grdCustomer"></div> 
+  
+   <div id="dCustomer" style="display: none;">
+        <form action="" method="post" id="frmCustomer">
+			<input type="hidden" id="f_Customer_Id" name="Id" value="" />
+			<table cellpadding="0" cellspacing="0" class="l-table-edit" >
+	            
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Name</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Name' type='text' id='f_Customer_Name' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>SchoolId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='SchoolId' type='text' id='f_Customer_SchoolId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MarketYear</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MarketYear' type='text' id='f_Customer_MarketYear' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Telephone</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Telephone' type='text' id='f_Customer_Telephone' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Mobile</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Mobile' type='text' id='f_Customer_Mobile' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Gender</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Gender' type='text' id='f_Customer_Gender' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>QQ</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='QQ' type='text' id='f_Customer_QQ' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Email</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Email' type='text' id='f_Customer_Email' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>EduLevel</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='EduLevel' type='text' id='f_Customer_EduLevel' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsGaoKao</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsGaoKao' type='text' id='f_Customer_IsGaoKao' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>GaoKaoScore</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='GaoKaoScore' type='text' id='f_Customer_GaoKaoScore' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>GaoKaoBatch</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='GaoKaoBatch' type='text' id='f_Customer_GaoKaoBatch' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>DistrictId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='DistrictId' type='text' id='f_Customer_DistrictId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Address</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Address' type='text' id='f_Customer_Address' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Postcode</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Postcode' type='text' id='f_Customer_Postcode' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>SmallInfoSourceId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='SmallInfoSourceId' type='text' id='f_Customer_SmallInfoSourceId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ConsultType</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ConsultType' type='text' id='f_Customer_ConsultType' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Remark</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Remark' type='text' id='f_Customer_Remark' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ConsultantId1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ConsultantId1' type='text' id='f_Customer_ConsultantId1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ConsultantId2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ConsultantId2' type='text' id='f_Customer_ConsultantId2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>NetConsultantId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='NetConsultantId' type='text' id='f_Customer_NetConsultantId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>CreateTeacherId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='CreateTeacherId' type='text' id='f_Customer_CreateTeacherId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ConsultTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ConsultTime' type='text' id='f_Customer_ConsultTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>SalesTeamId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='SalesTeamId' type='text' id='f_Customer_SalesTeamId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>SalesmanId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='SalesmanId' type='text' id='f_Customer_SalesmanId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsImport</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsImport' type='text' id='f_Customer_IsImport' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TeleSalesTimes</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TeleSalesTimes' type='text' id='f_Customer_TeleSalesTimes' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>NextTeleSalesTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='NextTeleSalesTime' type='text' id='f_Customer_NextTeleSalesTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>AppointmentTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='AppointmentTime' type='text' id='f_Customer_AppointmentTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>DropInTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='DropInTime' type='text' id='f_Customer_DropInTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>DinWeiTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='DinWeiTime' type='text' id='f_Customer_DinWeiTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>SignUpTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='SignUpTime' type='text' id='f_Customer_SignUpTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsDinWei</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsDinWei' type='text' id='f_Customer_IsDinWei' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsClosed</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsClosed' type='text' id='f_Customer_IsClosed' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>LastSalesTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='LastSalesTime' type='text' id='f_Customer_LastSalesTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Important</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Important' type='text' id='f_Customer_Important' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ConsultantRemark</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ConsultantRemark' type='text' id='f_Customer_ConsultantRemark' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Keywords</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Keywords' type='text' id='f_Customer_Keywords' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Clazz</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Clazz' type='text' id='f_Customer_Clazz' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsLeaderFollow</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsLeaderFollow' type='text' id='f_Customer_IsLeaderFollow' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Status</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Status' type='text' id='f_Customer_Status' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>LastSaleLog</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='LastSaleLog' type='text' id='f_Customer_LastSaleLog' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsDorm</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsDorm' type='text' id='f_Customer_IsDorm' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>InClazzId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='InClazzId' type='text' id='f_Customer_InClazzId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsPay</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsPay' type='text' id='f_Customer_IsPay' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>PayTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='PayTime' type='text' id='f_Customer_PayTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsRefund</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsRefund' type='text' id='f_Customer_IsRefund' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>RefundTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='RefundTime' type='text' id='f_Customer_RefundTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsDropIn</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsDropIn' type='text' id='f_Customer_IsDropIn' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsSignUp</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsSignUp' type='text' id='f_Customer_IsSignUp' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+            <tr>
+                <td colspan="3" style="text-align:center;">
+                    <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
+                </td>
+            </tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

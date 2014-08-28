@@ -1,0 +1,380 @@
+﻿@model Cn.Com.Sve.OA.Web.Models.ViewModels.Student_Search_ViewModel
+
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.autocomplete.css")" rel="stylesheet" type="text/css" />
+
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.core.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.widget.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.position.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.autocomplete.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.form.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script>
+    <style type="text/css">
+        body
+        {
+            font-size: 12px;
+        }
+        .l-table-edit
+        {
+        }
+        .l-table-edit-td
+        {
+            padding: 4px;
+        }
+        .l-button-submit, .l-button-reset
+        {
+            width: 80px;
+            float: left;
+            margin-left: 10px;
+            padding-bottom: 2px;
+        }
+        .l-verify-tip
+        {
+            left: 230px;
+            top: 120px;
+            z-index: 9999;
+        }
+    </style>
+	<style type="text/css">
+	.ui-autocomplete-loading { background: white url('@Url.Content("~/Content/themes/base/images/ui-anim_basic_16x16.gif")') right center no-repeat; }
+	#f_UserName { width: 25em; }
+	</style>
+    <script type="text/javascript">
+    	$(function () {
+
+    		$("#GruduateSchoolNameSrh").autocomplete({
+    			source: function (request, response) {
+    				$.ajax({
+    					url: '@Url.Action("Suggest", "School")',
+    					dataType: "json",
+    					data: {
+    						qty: 12,
+    						prefix: request.term
+    					},
+    					success: function (data) {
+    						response($.map(data, function (item) {
+    							return {
+    								label: item.Name,
+    								value: item.Id
+    							}
+    						}));
+    					}
+    				});
+    			},
+    			minLength: 1,
+    			select: function (event, ui) {
+    				$("#GruduateSchoolIdSrh").val(ui.item.value);
+    				$("#GruduateSchoolNameSrh").val(ui.item.label);
+    				return false;
+    			},
+    			open: function () {
+    				//$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+    			},
+    			close: function () {
+    				//$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+    			}
+    		});
+            $("#frmCondition").ligerForm();
+        });
+    </script>
+</head>
+<body style="padding: 10px; height: 100%; text-align: center;">
+    <div id="pnlByCondition" style="width: 98%">
+             <form id="frmCondition" class="l-form" action='' method="post" enctype="multipart/form-data">
+                <table cellpadding="0" cellspacing="0" class="l-table-edit">
+                <tr>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        年级
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <select id="SemesterSrh" name="SemesterSrh"  style="width:98%;">
+                            @if (String.IsNullOrEmpty(this.Model.Criteria.SemesterSrh)) {
+	                        <option value="" selected="selected" >全部</option>
+                            } else {
+	                        <option value="" >全部</option>
+                            }
+                            @if (this.Model.Criteria.SemesterSrh != null && this.Model.Criteria.SemesterSrh.Equals("第1学期")) {
+	                        <option value="第1学期" selected="selected" >第1学期</option>
+                            } else {
+	                        <option value="第1学期">第1学期</option>
+                            }
+                            @if (this.Model.Criteria.SemesterSrh != null && this.Model.Criteria.SemesterSrh.Equals("第2学期")) {
+	                        <option value="第2学期" selected="selected" >第2学期</option>
+                            } else {
+	                        <option value="第2学期">第2学期</option>
+                            }
+                            @if (this.Model.Criteria.SemesterSrh != null && this.Model.Criteria.SemesterSrh.Equals("第3学期")) {
+	                        <option value="第3学期" selected="selected" >第3学期</option>
+                            } else {
+	                        <option value="第3学期">第3学期</option>
+                            }
+                        </select>
+                    </td>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        班级
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <input type='text' id='ClazzNameSrh' name="ClazzNameSrh" ltype='text' value="@this.Model.Criteria.ClazzNameSrh" />
+                    </td>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        学号
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td' >
+                        <input type='text' id='StudentNoSrh' name="StudentNoSrh" ltype='text' value="@this.Model.Criteria.StudentNoSrh" />
+                    </td>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        姓名
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td' >
+                        <input type='text' id='NameSrh' name="NameSrh" ltype='text' value="@this.Model.Criteria.NameSrh" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class='l-table-edit-td' style='text-align: right;'>
+                        学习状态
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                        <select id="StatusSrh" name="StatusSrh"  style="width:98%;">
+                            @if (String.IsNullOrEmpty(this.Model.Criteria.StatusSrh)) {
+	                        <option value="" selected="selected" >全部</option>
+                            } else {
+	                        <option value="" >全部</option>
+                            }
+                            @if (this.Model.Criteria.StatusSrh != null && this.Model.Criteria.StatusSrh.Equals("在读")) {
+	                        <option value="在读" selected="selected" >在读</option>
+                            } else {
+	                        <option value="在读">在读</option>
+                            }
+                            @if (this.Model.Criteria.StatusSrh != null && this.Model.Criteria.StatusSrh.Equals("休学")) {
+	                        <option value="休学" selected="selected" >休学</option>
+                            } else {
+	                        <option value="休学">休学</option>
+                            }
+                            @if (this.Model.Criteria.StatusSrh != null && this.Model.Criteria.StatusSrh.Equals("退学")) {
+	                        <option value="退学" selected="selected" >退学</option>
+                            } else {
+	                        <option value="退学">退学</option>
+                            }
+                            @if (this.Model.Criteria.StatusSrh != null && this.Model.Criteria.StatusSrh.Equals("已就业")) {
+	                        <option value="已就业" selected="selected" >已就业</option>
+                            } else {
+	                        <option value="已就业">已就业</option>
+                            }
+                            @if (this.Model.Criteria.StatusSrh != null && this.Model.Criteria.StatusSrh.Equals("已毕业")) {
+	                        <option value="已毕业" selected="selected" >已毕业</option>
+                            } else {
+	                        <option value="已毕业">已毕业</option>
+                            }
+                        </select>
+                    </td>
+                   <td class='l-table-edit-td' style='text-align: right;'>
+                        居住区域
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                        <input type='text' id='AddrZoneSrh' name="AddrZoneSrh" ltype='text' value="@this.Model.Criteria.AddrZoneSrh" />
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: right;'>
+                        毕业学校
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+<!--<input type='text' id='GruduateSchoolNameSrh' name="GruduateSchoolNameSrh" ltype='text' value="@this.Model.Criteria.GruduateSchoolNameSrh" />-->
+
+<input name='GruduateSchoolNameSrh' type='text' id='GruduateSchoolNameSrh' class='txt' value="@((this.Model.Criteria.GruduateSchoolNameSrh != null) ? this.Model.Criteria.GruduateSchoolNameSrh : "")"
+	ltype='text' />
+<input name='GruduateSchoolIdSrh' type='hidden' id='GruduateSchoolId' value="@this.Model.Criteria.GruduateSchoolIdSrh" />
+                    </td>
+                   <td class='l-table-edit-td' style='text-align: right;'>
+                        户口类型
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                        <select id="HuKouTypeSrh" name="HuKouTypeSrh"  style="width:98%;">
+                            @if (String.IsNullOrEmpty(this.Model.Criteria.HuKouTypeSrh)) {
+	                        <option value="" selected="selected" >全部</option>
+                            } else {
+	                        <option value="" >全部</option>
+                            }
+                            @if (this.Model.Criteria.HuKouTypeSrh != null && this.Model.Criteria.HuKouTypeSrh.Equals("农业")) {
+	                        <option value="农业" selected="selected" >农业</option>
+                            } else {
+	                        <option value="农业">农业</option>
+                            }
+                            @if (this.Model.Criteria.HuKouTypeSrh != null && this.Model.Criteria.HuKouTypeSrh.Equals("非农业")) {
+	                        <option value="非农" selected="selected" >非农</option>
+                            } else {
+	                        <option value="非农">非农</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        咨询师
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td' >
+                       <input type='text' id='ConsultantsSrh' name="ConsultantsSrh" ltype='text' value="@this.Model.Criteria.ConsultantsSrh" />
+                    </td>
+                   <td class='l-table-edit-td' style='text-align: right;'>
+                        关系人
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                       <input type='text' id='RelTeacherSrh' name="RelTeacherSrh" ltype='text' value="@this.Model.Criteria.RelTeacherSrh" />
+                    </td>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        报读大学
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td' >
+                        <select id="IsGetQualificationSrh" name="IsGetQualificationSrh"  style="width:98%;">
+                            @if (String.IsNullOrEmpty(this.Model.Criteria.IsGetQualificationSrh)) {
+	                        <option value="" selected="selected" >全部</option>
+                            } else {
+	                        <option value="" >全部</option>
+                            }
+                            @if (this.Model.Criteria.IsGetQualificationSrh != null && this.Model.Criteria.IsGetQualificationSrh.Equals("未报读")) {
+	                        <option value="未报读" selected="selected" >未报读</option>
+                            } else {
+	                        <option value="未报读">未报读</option>
+                            }
+                            @if (this.Model.Criteria.IsGetQualificationSrh != null && this.Model.Criteria.IsGetQualificationSrh.Equals("报大专")) {
+	                        <option value="报大专" selected="selected" >报大专</option>
+                            } else {
+	                        <option value="报大专">报大专</option>
+                            }
+                            @if (this.Model.Criteria.IsGetQualificationSrh != null && this.Model.Criteria.IsGetQualificationSrh.Equals("报本科")) {
+	                        <option value="报本科" selected="selected" >报本科</option>
+                            } else {
+	                        <option value="报本科">报本科</option>
+                            }
+                        </select>
+                   </td>
+                   <td class='l-table-edit-td' style='text-align: right;'>
+                        高考批次
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                        <select id="GaoKaoBatchSrh" name="GaoKaoBatchSrh"  style="width:98%;">
+                            @if (String.IsNullOrEmpty(this.Model.Criteria.GaoKaoBatchSrh)) {
+	                        <option value="" selected="selected" >全部</option>
+                            } else {
+	                        <option value="" >全部</option>
+                            }
+                            @if (this.Model.Criteria.GaoKaoBatchSrh != null && this.Model.Criteria.GaoKaoBatchSrh.Equals("1批")) {
+	                        <option value="1批" selected="selected" >1批</option>
+                            } else {
+	                        <option value="1批">1批</option>
+                            }
+                            @if (this.Model.Criteria.GaoKaoBatchSrh != null && this.Model.Criteria.GaoKaoBatchSrh.Equals("2A")) {
+	                        <option value="2A" selected="selected" >2A</option>
+                            } else {
+	                        <option value="2A">2A</option>
+                            }
+                            @if (this.Model.Criteria.GaoKaoBatchSrh != null && this.Model.Criteria.GaoKaoBatchSrh.Equals("2B")) {
+	                        <option value="2B" selected="selected" >2B</option>
+                            } else {
+	                        <option value="2B">2B</option>
+                            }
+                            @if (this.Model.Criteria.GaoKaoBatchSrh != null && this.Model.Criteria.GaoKaoBatchSrh.Equals("3A")) {
+	                        <option value="3A" selected="selected" >3A</option>
+                            } else {
+	                        <option value="3A">3A</option>
+                            }
+                            @if (this.Model.Criteria.GaoKaoBatchSrh != null && this.Model.Criteria.GaoKaoBatchSrh.Equals("3B")) {
+	                        <option value="3B" selected="selected" >3B</option>
+                            } else {
+	                        <option value="3B">3B</option>
+                            }
+                            @if (this.Model.Criteria.GaoKaoBatchSrh != null && this.Model.Criteria.GaoKaoBatchSrh.Equals("落榜")) {
+	                        <option value="落榜" selected="selected" >落榜</option>
+                            } else {
+	                        <option value="落榜">落榜</option>
+                            }
+                            @if (this.Model.Criteria.GaoKaoBatchSrh != null && this.Model.Criteria.GaoKaoBatchSrh.Equals("初中")) {
+	                        <option value="初中" selected="selected" >初中</option>
+                            } else {
+	                        <option value="初中">初中</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        地址
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td' >
+                       <input type='text' id='AddressSrh' name="AddressSrh" ltype='text' value="@this.Model.Criteria.AddressSrh" />
+                    </td>
+                   <td class='l-table-edit-td' style='text-align: right;'>
+                        报读院校
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                       <select id="QualificationSchoolSrh" name="QualificationSchoolSrh"  style="width:98%;">
+                            @if (String.IsNullOrEmpty(this.Model.Criteria.QualificationSchoolSrh)) {
+	                        <option value="" selected="selected" >全部</option>
+                            } else {
+	                        <option value="" >全部</option>
+                            }
+                            @if (this.Model.Criteria.QualificationSchoolSrh != null && this.Model.Criteria.QualificationSchoolSrh.Equals("汕头大学")) {
+	                        <option value="汕头大学" selected="selected" >汕头大学</option>
+                            } else {
+	                        <option value="汕头大学">汕头大学</option>
+                            }
+                            @if (this.Model.Criteria.QualificationSchoolSrh != null && this.Model.Criteria.QualificationSchoolSrh.Equals("嘉应学院")) {
+	                        <option value="嘉应学院" selected="selected" >嘉应学院</option>
+                            } else {
+	                        <option value="嘉应学院">嘉应学院</option>
+                            }
+                        </select>
+
+                    </td>
+                    <td style="text-align:center" colspan="4">
+                        <input type="submit" id="btnSearch" value="查询" />
+                    </td>
+                </tr>
+
+                </table>
+            </form>
+    </div>
+
+     @foreach (var t in this.Model.Clazz) {
+        <div style="width: 98%">
+        <div class="searchtitle">
+            <span>@t.ClazzName</span>
+        </div>
+        <div class="navline" style="margin-bottom: 4px; margin-top: 4px;">
+        </div>
+        <div class="searchbox" style="padding-left:40px;">
+            <table cellpadding="0" cellspacing="0" class="l-table-edit" style="width:100%;">
+                <tr>
+                    @for (int i = 0; i < t.Students.Count; i++) {
+                        <td style='text-align: left; width:25%;' class='l-table-edit-td'>
+                            <a href="#" onclick="top.f_addTab('tab-display-student-@t.Students[i].Id', '@t.Students[i].Name', '@Url.Action("Display", "Student")' + '?id=@t.Students[i].Id');return false;">@t.Students[i].Name</a>
+                        </td>
+                        if ((i + 1) % 4 == 0) { 
+                        @Html.Raw("</tr><tr>");
+                        }
+                    }
+                </tr>
+            </table>
+        </div>
+        </div>
+     }
+</body>
+</html>

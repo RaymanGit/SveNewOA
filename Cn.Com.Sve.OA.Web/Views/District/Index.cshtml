@@ -1,0 +1,390 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script>
+    <style type="text/css">
+        body
+        {
+            font-size: 12px;
+        }
+        .l-table-edit
+        {
+        }
+        .l-table-edit-td
+        {
+            padding: 4px;
+        }
+        .l-button-submit, .l-button-reset
+        {
+            width: 80px;
+            float: left;
+            margin-left: 10px;
+            padding-bottom: 2px;
+        }
+        .l-verify-tip
+        {
+            left: 230px;
+            top: 120px;
+            z-index: 9999;
+        }
+    </style>
+    <script type="text/javascript">
+        var gDistrict;
+        var action = "add";
+        var $dialog;
+		var initData;
+        var $cboCity, $cboCitySrh, $cboProv, $cboProvSrh;
+
+        $(function () {
+            gDistrict = $("#grdDistrict").ligerGrid({
+                columns: [
+					{ display: '省份', name: 'ProvinceName', width: 100, align: 'left' },
+					{ display: '城市', name: 'CityName', width: 100, align: 'left' },
+					{ display: '名称', name: 'Name', width: 100, align: 'left' },
+					{ display: '电话区号', name: 'PhonePrefix', width: 100, align: 'left' },
+					{ display: '邮政编号', name: 'Postcode', width: 100, align: 'left' }
+                  ],
+                pageSize: 20, toolbar: {},
+                url: '@Url.Action("GetData", "District")', 
+                sortName: 'Name',
+                width: '98%', height: '100%', checkbox: false,
+                usePager:true,
+                toolbar: { items: [
+                { text: '增加', icon: 'add', click: addDistrict },
+                { line: true },
+                { text: '修改', icon: 'modify', click: editDistrict },
+                { line: true },
+                { text: '删除', icon: 'delete', click: deleteDistrict }
+                ]
+                }
+            });
+            $("#btnSearch").click(function () {
+                //alert($("#formsearch").serialize());
+                gDistrict.set({ 
+                    parms : [
+                    { name: 'CityIdSrh', value: $("#CityIdSrh").val() },
+                    { name: 'Name', value: $("#Name").val() }
+                    ]
+                });
+                gDistrict.loadData();
+            });
+			
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp)
+	            {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frmDistrict").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    saveDistrict();
+                    return false;
+                }
+            });
+
+            $cboCity = $("#f_CityId").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'CityId' });
+            $cboCitySrh = $("#f_CityIdSrh").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'CityIdSrh' });
+            $cboProv = $("#f_ProvinceId").ligerComboBox({
+                textField:'Name',valueField:'Id',valueFieldID:'ProvinceId', 
+                onSelected:function(v,t){
+                    var cities = [{Id:'',Name:'所有'}];
+                    for(i=0; i < initData.Provinces.length; i++){
+                        if(initData.Provinces[i].Id!=v)continue;
+                        $cboCity.setData(initData.Provinces[i].Cities);
+                        $cboCity.selectValue(initData.Provinces[i].Cities[0].Id);
+                    }
+                } 
+            });
+            $cboProvSrh = $("#f_ProvinceIdSrh").ligerComboBox({
+                textField:'Name',valueField:'Id',valueFieldID:'ProvinceIdSrh',
+                onSelected:function(v,t){
+                    if(v==null || v.length==0){
+                        $cboCitySrh.setData([{Id:'',Name:'所有'}]);
+                        $cboCitySrh.selectValue('');
+                        return;
+                    }
+                    var cities = [{Id:'',Name:'所有'}];
+                    for(i=0; i < initData.Provinces.length; i++){
+                       if(initData.Provinces[i].Id!=v)continue;
+                         //alert(initData.Provinces[i].Id + " - " + v + " ~ " + (initData.Provinces[i].Id!=v ? "T" : "F"));
+                       for(j=0;j<initData.Provinces[i].Cities.length;j++){
+                            cities.push({Id:initData.Provinces[i].Cities[j].Id,Name:initData.Provinces[i].Cities[j].Name});                    
+                        }
+                        $cboCitySrh.setData(cities);
+                        $cboCitySrh.selectValue(initData.Provinces[i].Cities[0].Id);
+                    }
+                } 
+            });
+
+			$.getJSON("@Url.Action("GetInitData", "District")", function(data){
+                initData=data;
+				$cboProv.setData(data.Provinces);
+                $cboProv.selectValue(data.Provinces[0].Id);
+                data.Provinces.unshift({ Id:'', Name:'所有' });
+				$cboProvSrh.setData(data.Provinces);
+                $cboProvSrh.selectValue(data.Provinces[0].Id);
+
+	            $("#formsearch").ligerForm();
+				$("#frmDistrict").ligerForm();
+            });
+
+
+        });
+
+        function setCityCombox(addall, pid, v){
+            var cities = [];
+            if(addall){
+                cities.push({Id:'',Name:'所有'});                    
+            }
+            for(i=0; i < initData.Provinces.length; i++){
+                if(initData.Provinces[i].Id!=pid)continue;
+                for(j=0;j<initData.Provinces[i].Cities.length;j++){
+                    cities.push({Id:initData.Provinces[i].Cities[j].Id,Name:initData.Provinces[i].Cities[j].Name});                    
+                }
+                $cboCitySrh.setData(cities);
+                if(v==null || v.length==0){
+                    $cboCitySrh.selectValue(initData.Provinces[i].Cities[0].Id);
+                }else{
+                    $cboCitySrh.selectValue(v);
+                }
+            }        
+        }
+		
+        function addDistrict(){
+            action = "add";
+			$("#f_District_Id").val("");
+			$("#f_District_Name").val("");
+			$("#f_District_CityId").val("");
+			$("#f_District_PhonePrefix").val("");
+			$("#f_District_Postcode").val("");
+            $("#CityId").val("");
+
+			$dialog = $.ligerDialog.open({ target: $("#dDistrict"), width: 600, height: 250 });
+        }
+        function editDistrict() {
+            action = "edit";
+            var row = gDistrict.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+			$("#f_District_Id").val(row.Id);
+			$("#f_District_Name").val(row.Name);
+			$("#f_District_CityId").val(row.CityId);
+			$("#f_District_PhonePrefix").val(row.PhonePrefix);
+			$("#f_District_Postcode").val(row.Postcode);
+            $("#CityId").val(row.CityId);
+            $cboProv.selectValue(row.ProvinceId);
+            //setCityCombox(false, row.ProvinceId, row.CityId);
+            $cboCity.selectValue(row.CityId);
+
+            $dialog = $.ligerDialog.open({ target: $("#dDistrict"), width: 600, height: 250 });
+        }
+        function deleteDistrict() {
+            var row = gDistrict.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？",function (r) { 
+                if(r){
+                    $.post('@Url.Action("Delete", "District")', { id: row.Id }
+                        , function (result) {
+                            if (result.Successful) {
+                                gDistrict.deleteSelectedRow();
+                            } else {
+                                $.ligerMessageBox.error('错误', result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+        function saveDistrict(){
+            if(action=="add"){
+                $.post('@Url.Action("Add", "District")', $("#frmDistrict").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            gDistrict.addRow(result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }else{
+                $.post('@Url.Action("Update", "District")', $("#frmDistrict").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            var row = gDistrict.getSelected();
+                            if (!row) { alert('请选择行'); return; }
+                            gDistrict.updateRow(row,result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+<body style="padding: 10px; height: 100%; text-align: center;">
+    <div id="mainsearch" style="width: 98%">
+        <div class="searchtitle">
+            <span>搜索</span><img src="@Url.Content("~/Content/lib/icons/32X32/searchtool.gif")" alt="" />
+            <div class="togglebtn">
+            </div>
+        </div>
+        <div class="navline" style="margin-bottom: 4px; margin-top: 4px;">
+        </div>
+        <div class="searchbox">
+            <form id="formsearch" class="l-form" action="">
+            <table cellpadding="0" cellspacing="0" class="l-table-edit">
+                <tr>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        省份
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <input name='f_ProvinceIdSrh' type='text' id='f_ProvinceIdSrh' ltype='text' />
+                        <input name='ProvinceIdSrh' type='hidden' id='ProvinceIdSrh' />
+                    </td>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        城市
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <input name='f_CityIdSrh' type='text' id='f_CityIdSrh' ltype='text' />
+                        <input name='CityIdSrh' type='hidden' id='CityIdSrh' />
+                    </td>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        名称
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <input name='NameSrh' type='text' id='NameSrh' ltype='text'  />
+                    </td>
+                    </tr>
+                    <tr>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        电话区号
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <input name='PhonePrefixSrh' type='text' id='PhonePrefixSrh' ltype='text' />
+                    </td>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        邮政编码
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <input name='PostcodeSrh' type='text' id='PostcodeSrh' ltype='text' />
+                    </td>
+                    <td style="text-align: center;" class="l-table-edit-td" colspan="3">
+                        <input type="button" value="查询" id="btnSearch" />
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div>
+    </div>
+    <div id="grdDistrict">
+    </div>
+    <div id="dDistrict" style="display: none;">
+        <form action="" method="post" id="frmDistrict">
+        <input type="hidden" id="f_District_Id" name="Id" value="" />
+        <table cellpadding="0" cellspacing="0" class="l-table-edit">
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>
+                    省份
+                </td>
+                <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                    <input name='f_ProvinceId' type='text' id='f_ProvinceId' ltype='text' />
+                    <input name='ProvinceId' type='hidden' id='f_District_ProvinceId' />
+                </td>
+                <td style='text-align: left;'>
+                </td>
+                <td class='l-table-edit-td' style='text-align: right;'>
+                    城市
+                </td>
+                <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                    <input name='f_CityId' type='text' id='f_CityId' ltype='text' />
+                    <input name='CityId' type='hidden' id='CityId' />
+                </td>
+                <td style='text-align: left;'>
+                </td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>
+                    名称
+                </td>
+                <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                    <input name='Name' type='text' id='f_District_Name' ltype='text' validate='{required:true}' />
+                </td>
+                <td style='text-align: left;'>
+                </td>
+                <td class='l-table-edit-td' style='text-align: right;'>
+                    电话区号
+                </td>
+                <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                    <input name='PhonePrefix' type='text' id='f_District_PhonePrefix' ltype='text' />
+                </td>
+                <td style='text-align: left;'>
+                </td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>
+                    邮政编码
+                </td>
+                <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                    <input name='Postcode' type='text' id='f_District_Postcode' ltype='text' />
+                </td>
+                <td style='text-align: left;'>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6" style="text-align: center;">
+                    <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();'
+                        class="l-button l-button-reset" />
+                </td>
+            </tr>
+        </table>
+        </form>
+    </div>
+</body>
+</html>

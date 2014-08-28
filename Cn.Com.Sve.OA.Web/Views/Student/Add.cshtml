@@ -1,0 +1,645 @@
+﻿@{
+	Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title></title>
+	<meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.autocomplete.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.core.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.widget.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.position.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.autocomplete.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.form.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script>
+	<style type="text/css">
+		body
+		{
+			font-size: 12px;
+		}
+		.l-table-edit
+		{
+		}
+		.l-table-edit-td
+		{
+			padding: 4px;
+		}
+		.l-button-submit, .l-button-reset
+		{
+			width: 80px;
+			float: left;
+			margin-left: 10px;
+			padding-bottom: 2px;
+		}
+		.l-verify-tip
+		{
+			left: 230px;
+			top: 120px;
+			z-index: 9999;
+		}
+		.txt {width:98%;}
+		.yellowbg { background-color:#FFFFDD; }
+
+	</style>
+	<script type="text/javascript">
+        var gStudent;
+        var action = "add";
+        var $dialog;
+		var initData;
+
+		$(function () {
+			$("#Birthday").ligerDateEditor();
+			$("#GraduateDate").ligerDateEditor();
+			$("#InSchoolDate").ligerDateEditor();
+
+			$("#GruduateSchoolName").autocomplete({
+				source: function (request, response) {
+					$.ajax({
+						url: '@Url.Action("Suggest", "School")',
+						dataType: "json",
+						data: {
+							qty: 12,
+							prefix: request.term
+						},
+						success: function (data) {
+							response($.map(data, function (item) {
+								return {
+									label: item.Name,
+									value: item.Id
+								}
+							}));
+						}
+					});
+				},
+				minLength: 1,
+				select: function (event, ui) {
+					$("#GruduateSchoolId").val(ui.item.value);
+					$("#GruduateSchoolName").val(ui.item.label);
+					return false;
+				},
+				open: function () {
+					//$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+				},
+				close: function () {
+					//$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+				}
+			});
+			$("#DistrictName").autocomplete({
+				source: function (request, response) {
+					$.ajax({
+						url: '@Url.Action("Suggest", "District")',
+						dataType: "json",
+						data: {
+							qty: 12,
+							prefix: request.term
+						},
+						success: function (data) {
+							response($.map(data, function (item) {
+								return {
+									label: item.Name,
+									value: item.Id
+								}
+							}));
+						}
+					});
+				},
+				minLength: 1,
+				select: function (event, ui) {
+					$("#DistrictId").val(ui.item.value);
+					$("#DistrictName").val(ui.item.label);
+					return false;
+				},
+				open: function () {
+					$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+				},
+				close: function () {
+					$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+				}
+			});
+
+			$cboSmall = $("#SmallSourceName").ligerComboBox(
+                { textField: 'Name', valueField: 'Id', valueFieldID: 'SmallInfoSourceId', width:90 });
+			$cboBig = $("#BigSourceName").ligerComboBox({
+				textField: 'Name', valueField: 'Id', valueFieldID: 'BigSourceId', width:90,
+				onSelected: function (v, t) {
+					for (i = 0; i < infoSourceData.BigSource.length; i++) {
+						if (infoSourceData.BigSource[i].Id != v) continue;
+						$cboSmall.setData(infoSourceData.BigSource[i].SmallSource);
+						if (infoSourceData.BigSource[i].SmallSource.length > 0) {
+							$cboSmall.selectValue(infoSourceData.BigSource[i].SmallSource[0].Id);
+						}
+					}
+				}
+			});
+
+			//GetCascadeComboData2
+			$.getJSON('@Url.Action("GetCascadeComboData", "BigInfoSource")', function (data) {
+				infoSourceData = data;
+				$cboBig.setData(data.BigSource);
+				$cboBig.selectValue(data.BigSource[0].Id);
+			});
+
+			$("#ClazzName").autocomplete({
+				source: function (request, response) {
+					$.ajax({
+						url: '@Url.Action("Suggest","Clazz")',
+						dataType: "json",
+						data: {
+							qty: 12,
+							prefix: request.term
+						},
+						success: function (data) {
+							response($.map(data, function (item) {
+								return {
+									label: item.Name,
+									value: item.Id
+								}
+							}));
+						}
+					});
+				},
+				minLength: 1,
+				select: function (event, ui) {
+					$("#ClazzId").val(ui.item.value);
+					$("#ClazzName").val(ui.item.label);
+					return false;
+				},
+				open: function () {
+					$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+				},
+				close: function () {
+					$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+				}
+			});
+			//$("#frmStudent").ligerForm();
+
+			//			$.getJSON("@Url.Action("GetInitData", "Student")", function(data){
+			//				initData = data;
+			//                /*
+			//				$("#f_City_ProvinceId").ligerComboBox(
+			//                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceId',data:data.Provinces });
+			//                data.Provinces.unshift({ Id:'', Name:'所有' });
+			//                $("#f_City_ProvinceIdSrh").ligerComboBox(
+			//                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceIdSrh',data:data.Provinces });
+			//				*/
+			//	            $("#formsearch").ligerForm();
+			//				//$("#frmStudent").ligerForm();
+			//            });
+
+
+		});
+		
+	</script>
+</head>
+<body style="padding: 10px; height: 100%; text-align: center;">
+	<form action="" method="post" id="frmStudent" enctype="multipart/form-data">
+    <div style="width: 98%">
+        <table style="border:1px solid black; width:1000px;" border="1">
+            <tr><td colspan="8" style="background-color:#cccccc;">个人基本信息</td></tr>
+            <tr>
+				<td class='l-table-edit-td' style='text-align: right; width:60px;'>姓名</td>
+				<td class='l-table-edit-td' style='text-align: left; width: 190px'>
+					<input name='Name' type='text' id='Name' class='txt yellowbg' ltype='text' />
+				</td>
+                <td class='l-table-edit-td' style='text-align: right; width:60px;'>姓名拼音</td>
+				<td class='l-table-edit-td' style='text-align: left; width: 190px'>
+					<input name='PinYin' type='text' id='PinYin' class='txt' ltype='text' />
+				</td>
+                <td class='l-table-edit-td' style='text-align: right; width:60px;'>学号</td>
+				<td class='l-table-edit-td' style='text-align: left; width: 190px'>
+					<input name='StudentNo' type='text' id='StudentNo' class='txt' ltype='text' />
+				</td>
+                <td colspan="2" rowspan="10" align="center" style="width:150px;">&nbsp;
+				</td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>性别</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='Gender' type='radio' value="男" checked="checked" />男&nbsp;&nbsp;<input name='Gender' type='radio' value="女" />女
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>出生日期</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='Birthday' type='text' id='Birthday' class='txt' ltype='text' />
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>高考批次</td>
+				<td class='l-table-edit-td' style='text-align: left; width: 190px'>
+                    <select id="GaoKaoBatch" name="GaoKaoBatch"  style="width:98%;">
+	                    <option value="落榜">落榜</option>
+	                    <option value="1批">1批</option>
+	                    <option value="2A">2A</option>
+	                    <option value="2B">2B</option>
+	                    <option value="3A">3A</option>
+	                    <option value="3B">3B</option>
+	                    <option value="初中">初中</option>
+                    </select>
+				</td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>学历</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+                    <select id="EduLevel" name="EduLevel"  style="width:98%;">
+	                    <option value="高中">高中</option>
+	                    <option value="初中">初中</option>
+	                    <option value="大专">大专</option>
+	                    <option value="本科">本科</option>
+	                    <option value="小学">小学</option>
+                    </select>
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>毕业时间</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='GraduateDate' type='text' id='GraduateDate' class='txt' ltype='text' />
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>高考成绩</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='Score' type='text' id='Score' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>毕业学校</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='GruduateSchoolName' type='text' id='GruduateSchoolName' class='txt yellowbg' ltype='text' />
+					<input name='GruduateSchoolId' type='hidden' id='GruduateSchoolId' />
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>专业</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='Profession' type='text' id='Profession' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>身份证号</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='IdCardNo' type='text' id='IdCardNo' class='txt' ltype='text' />
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>户口类型</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='HuKouType' type='radio' value="农业" checked="checked" />农业&nbsp;&nbsp;<input name='HuKouType' type='radio' value="非农" />非农
+				</td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>通讯地址</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="5">
+					<input name='Address' type='text' id='Address' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>居住区域</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='DistrictName' type='text' id='DistrictName' class='txt yellowbg' ltype='text' />
+					<input name='DistrictId' type='hidden' id='DistrictId' />
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>邮政编码</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='Postcode' type='text' id='Postcode' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>费用来源</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='FeeSource' type='text' id='FeeSource' class='txt' ltype='text' />
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>信息来源</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+				<table border="0" width="100%"><tr><td>
+                <input name='BigSourceName' type='text' id='BigSourceName' style="width:45%" />
+                <input name='BigSourceId' type='hidden' id='BigSourceId' />
+				</td><td width="50%" align="right">
+                <input name='SmallSourceName' type='text' id='SmallSourceName'  style="width:45%" />
+                <input name='SmallInfoSourceId' type='hidden' id='SmallInfoSourceId' />
+				</td></tr></table>
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>咨询老师</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='Consultants' type='text' id='Consultants' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>QQ号</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='QQ' type='text' id='QQ' class='txt' ltype='text' />
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>电子邮箱</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='Email' type='text' id='Email' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>手机</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='Mobile' type='text' id='Mobile' class='txt' ltype='text' />
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>家庭电话</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='HomeTelephone' type='text' id='HomeTelephone' class='txt' ltype='text' />
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>办公电话</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='OfficeTelephone' type='text' id='OfficeTelephone' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr><td colspan="8" style="background-color:#cccccc;">学员家庭成员关系</td></tr>
+            <tr>
+                <td align="center" class='l-table-edit-td'>关系</td>
+                <td align="center" class='l-table-edit-td'>姓名</td>
+                <td align="center" colspan="3" class='l-table-edit-td'>工作单位</td>
+                <td align="center" colspan="2" class='l-table-edit-td'>职位</td>
+                <td align="center" class='l-table-edit-td' style="width:190px">手机号码</td>
+            </tr>
+            <tr>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberRelType1' type='text' id='MemberRelType1' class='txt' ltype='text'  />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberName1' type='text' id='MemberName1' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='MemberCompany1' type='text' id='MemberCompany1' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='MemberPosition1' type='text' id='MemberPosition1' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberMobile1' type='text' id='MemberMobile1' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberRelType2' type='text' id='MemberRelType2' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberName2' type='text' id='MemberName2' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='MemberCompany2' type='text' id='MemberCompany2' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='MemberPosition2' type='text' id='MemberPosition2' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberMobile2' type='text' id='MemberMobile2' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberRelType3' type='text' id='MemberRelType3' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberName3' type='text' id='MemberName3' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='MemberCompany3' type='text' id='MemberCompany3' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='MemberPosition3' type='text' id='MemberPosition3' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberMobile3' type='text' id='MemberMobile3' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberRelType4' type='text' id='MemberRelType4' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberName4' type='text' id='MemberName4' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<input name='MemberCompany4' type='text' id='MemberCompany4' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='MemberPosition4' type='text' id='MemberPosition4' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='MemberMobile4' type='text' id='MemberMobile4' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr><td colspan="8" style="background-color:#cccccc;">入学前相关经历</td></tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;' colspan="2">学习/工作状况</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="6">
+					<input name='WorkState' type='text' id='WorkState' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr>
+                <td align="center" colspan="2">起止年月</td>
+                <td align="center" colspan="4">学校或工作单位</td>
+                <td align="center" colspan="2">职务</td>
+            </tr>
+            <tr>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='StudyDuration1' type='text' id='StudyDuration1' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="4">
+					<input name='StudySchool1' type='text' id='StudySchool1' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='StudyPosition1' type='text' id='StudyPosition1' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='StudyDuration2' type='text' id='StudyDuration2' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="4">
+					<input name='StudySchool2' type='text' id='StudySchool2' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='StudyPosition2' type='text' id='StudyPosition2' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='StudyDuration3' type='text' id='StudyDuration3' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="4">
+					<input name='StudySchool3' type='text' id='StudySchool3' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='StudyPosition3' type='text' id='StudyPosition3' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>软件使用</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='SoftwareExp' type='radio' value="是" />是&nbsp;&nbsp;<input name='SoftwareExp' type='radio' value="否" checked="checked" />否
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>软件编程</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='ProgramExp' type='radio' value="是" />是&nbsp;&nbsp;<input name='ProgramExp' type='radio' value="否" checked="checked" />否
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>网络操作</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='NetworkExp' type='radio' value="是" />是&nbsp;&nbsp;<input name='NetworkExp' type='radio' value="否" checked="checked" />否
+				</td>
+                <td class='l-table-edit-td' style='text-align: right; width:60px;'>学过相关课程</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='RelCourse' type='radio' value="是" />是&nbsp;&nbsp;<input name='RelCourse' type='radio' value="否" checked="checked" />否
+				</td>
+            </tr>
+            <tr><td colspan="8" style="background-color:#cccccc;">资料提交情况</td></tr>
+            <tr>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">照片电子档</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2"><input type="file" class='txt' ltype='text' id="pf1" name="pf1" /></td>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">四张彩照</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='Receive1' type='radio' value="未提交" checked="checked" />未提交&nbsp;&nbsp;<input name='Receive1' type='radio'  value="已提交" />已提交
+				</td>
+            </tr>
+            <tr>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">身份证正面扫描件</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2"><input type="file" class='txt' ltype='text' id="pf2" name="pf2" /></td>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">复印件</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='Receive2' type='radio' value="未提交" checked="checked" />未提交&nbsp;&nbsp;<input name='Receive2' type='radio'  value="已提交" />已提交
+                </td>
+            </tr>
+            <tr>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">身份证反面扫描件</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2"><input type="file" class='txt' ltype='text' id="pf3" name="pf3" /></td>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">复印件</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='Receive3' type='radio' value="未提交" checked="checked" />未提交&nbsp;&nbsp;<input name='Receive3' type='radio'  value="已提交" />已提交
+				</td>
+            </tr>
+            <tr>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">学历证件扫描件</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2"><input type="file" class='txt' ltype='text' id="pf4" name="pf4" /></td>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">复印件</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='Receive4' type='radio' value="未提交" checked="checked" />未提交&nbsp;&nbsp;<input name='Receive4' type='radio'  value="已提交" />已提交
+				</td>
+            </tr>
+            <tr>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">户口本首页扫描件</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2"><input type="file" class='txt' ltype='text' id="pf5" name="pf5" /></td>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">复印件</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='Receive5' type='radio' value="未提交" checked="checked" />未提交&nbsp;&nbsp;<input name='Receive5' type='radio'  value="已提交" />已提交
+				</td>
+            </tr>
+            <tr>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">户口本本人扫描件</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2"><input type="file" class='txt' ltype='text' id="pf6" name="pf6" /></td>
+				<td class='l-table-edit-td' style='text-align: right;' colspan="2">复印件</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='Receive6' type='radio' value="未提交" checked="checked" />未提交&nbsp;&nbsp;<input name='Receive6' type='radio'  value="已提交" />已提交
+				</td>
+            </tr>
+            <tr><td colspan="8" style="background-color:#cccccc;">学员在校相关信息</td></tr>
+            <tr>
+				<td class='l-table-edit-td' style='text-align: right;'>入学须知1</td>
+				<td class='l-table-edit-td' style='text-align: left;' >
+					<input name='Give1' type='radio' value="未领" checked="checked" />未领&nbsp;&nbsp;<input name='Give1' type='radio'  value="已领" />已领
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>入学须知2</td>
+				<td class='l-table-edit-td' style='text-align: left;' >
+					<input name='Give2' type='radio' value="未领" checked="checked" />未领&nbsp;&nbsp;<input name='Give2' type='radio'  value="已领" />已领
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>家长联系卡</td>
+				<td class='l-table-edit-td' style='text-align: left;' >
+					<input name='Give3' type='radio' value="未领" checked="checked" />未领&nbsp;&nbsp;<input name='Give3' type='radio'  value="已领" />已领
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;' >笔记本电脑</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='GiveNotebook' type='radio' value="未领" />未领&nbsp;&nbsp;<input name='GiveNotebook' type='radio'  value="已领" checked="checked" />已领
+				</td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>保险购买</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='InsuranceStatus' type='text' id='InsuranceStatus' class='txt' ltype='text' />
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>报读学历</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='IsGetQualification' type='radio' value="是" />是&nbsp;&nbsp;<input name='IsGetQualification' type='radio'  value="否" checked="checked" />否
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>学历院校</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">
+					<select name='QualificationSchoo' id='QualificationSchoo'>
+					<option value="未报读">未报读</option>
+					<option value="汕头大学">汕头大学</option>
+					<option value="嘉应学院">嘉应学院</option>
+					</select>
+<!--					<input name='QualificationSchool' type='text' id='QualificationSchool' class='txt' ltype='text' />-->
+				</td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>班级</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='ClazzName' type='text' id='ClazzName' class='txt yellowbg' ltype='text' />
+					<input name='ClazzId' type='hidden' id='ClazzId' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>目前状况</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+                    <select id="Status" name="Status"  style="width:98%;">
+	                    <option value="在读">在读</option>
+	                    <option value="已毕业">已毕业</option>
+	                    <option value="已就业">已就业</option>
+	                    <option value="已退学">已退学</option>
+                    </select>
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;' >教材领用</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='GiveCourseware' type='radio' value="未领" />未领&nbsp;&nbsp;<input name='GiveCourseware' type='radio'  value="已领" checked="checked" />已领
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>宿舍号</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='DormNo' type='text' id='DormNo' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr>
+            </tr>
+            <tr><td colspan="8" style="background-color:#cccccc;">学员情况说明</td></tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;' colspan="2">是否与学院老师有关系</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">
+					<input name='HasRelTeacher' type='radio' value="是" />是&nbsp;&nbsp;<input name='HasRelTeacher' type='radio'  value="否" checked="checked" />否
+				</td>
+                <td class='l-table-edit-td' style='text-align: right;'>关系人</td>
+				<td class='l-table-edit-td' style='text-align: left;' >
+					<input name='RelTeacher' type='text' id='RelTeacher' class='txt' ltype='text' />
+				</td>
+				<td class='l-table-edit-td' style='text-align: right;'>
+					入学日期
+				</td>
+				<td class='l-table-edit-td' style='text-align: left;'>
+					<input name='InSchoolDate' type='text' id='InSchoolDate' class='txt' ltype='text'  />
+				</td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>家庭情况</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="7">
+					<input name='HomeIntro' type='text' id='HomeIntro' class='txt' ltype='text' />
+				</td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>备注</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="7">
+					<input name='Remark' type='text' id='Remark' class='txt' ltype='text' />
+				</td>
+            </tr>
+
+            <tr>
+                <td align="center" colspan="8">
+					<input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+				</td>
+            </tr>
+        </table>
+    </div>
+
+	</form>
+
+</body>
+</html>

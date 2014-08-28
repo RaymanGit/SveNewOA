@@ -1,0 +1,282 @@
+﻿@model Cn.Com.Sve.OA.Entities.QualificationStudent
+@{
+	Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title></title>
+	<meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.autocomplete.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.core.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.widget.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.position.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.autocomplete.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.form.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script>
+	<style type="text/css">
+		body
+		{
+			font-size: 12px;
+		}
+		.l-table-edit
+		{
+		}
+		.l-table-edit-td
+		{
+			padding: 4px;
+		}
+		.l-button-submit, .l-button-reset
+		{
+			width: 80px;
+			float: left;
+			margin-left: 10px;
+			padding-bottom: 2px;
+		}
+		.l-verify-tip
+		{
+			left: 230px;
+			top: 120px;
+			z-index: 9999;
+		}
+		.txt {width:98%;}
+		.yellowbg { background-color:#FFFFDD; }
+
+	</style>
+	<script type="text/javascript">
+		var gStudent;
+		var action = "add";
+		var $dialog;
+		var initData;
+
+		$(function () {
+		});
+
+
+
+		
+	</script>
+</head>
+<body style="padding: 10px; height: 100%; text-align: center;">
+	<form action="@Url.Action("UpdateStudent","QualificationStudent")" method="post" id="frmStudent" enctype="multipart/form-data">
+    <div style="width: 98%">
+		<form action="@Url.Action("UpdateStudent", "QualificationStudent")" enctype="multipart/form-data">
+		<input type="hidden" name="Id" value="@this.Model.Id" />
+            <table border="1" cellspacing="3px" cellpadding="3" style="border-color:Black; border-style:solid;">
+                <tr>
+                    <td colspan="2" style="text-align:center;">报读学校</td>
+                    <td style="width:130px;">@this.Model.TargetSchoolName</select>
+                    </td>
+                    <td style="width:100px; text-align:center;">报名时间</td>
+                    <td style="width:130px;">@this.Model.SignUpTime</td>
+                    <td style="width:100px; text-align:center;">登记表编号</td>
+                    <td style="width:130px;">@this.Model.SeqNo</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">专　　业</td>
+                    <td>@this.Model.TargetProfession</td>
+                    <td>层次属性</td>
+                    <td>@this.Model.TargetLevel</td>
+                    <td>学习形式</td>
+                    <td>@this.Model.StudyType</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">上报状态</td>
+                    <td>@this.Model.SubmitStatus</td>
+                    <td>录取状态</td>
+                    <td>@this.Model.OfferStatus</td>
+                    <td>缴费状态</td>
+                    <td>@this.Model.PayStatus</td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" style="text-align:center;">姓　　名</td>
+                    <td>@this.Model.Name</td>
+                    <td style="text-align:center;">性　　别</td>
+                    <td>@this.Model.Sex</td>
+                    <td style="text-align:center;">出生日期</td>
+                    <td>@this.Model.Birthday</td>
+
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">籍　　贯</td>
+                    <td>@this.Model.JiGuang</td>
+                    <td style="text-align:center;">身份证号</td>
+                    <td colspan="3">@this.Model.IdCardNo</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">民　　族</td>
+                    <td>@this.Model.MinZu</td>
+                    <td style="text-align:center;">政治面貌</td>
+                    <td>@this.Model.ZhengZhiMianMao</td>
+                    <td style="text-align:center;">婚否</td>
+                    <td>@this.Model.IsMarried</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">家庭地址</td>
+                    <td colspan="3">@this.Model.HomeAddress</td>
+                    <td style="text-align:center;">户口所在地</td>
+                    <td>@this.Model.HuKouAddress</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">通信地址</td>
+                    <td colspan="3">@this.Model.CommAddress</td>
+                    <td style="text-align:center;">邮政编码</td>
+                    <td>@this.Model.Postcode</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">固定电话</td>
+                    <td>@this.Model.HomeTelephone</td>
+                    <td style="text-align:center;">手机号码</td>
+                    <td>@this.Model.Mobile</td>
+                    <td style="text-align:center;">QQ　号</td>
+                    <td>@this.Model.QQ</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">工作单位</td>
+                    <td colspan="3">@this.Model.Company</td>
+                    <td style="text-align:center;">职　　位</td>
+                    <td>@this.Model.Title</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">单位电话</td>
+                    <td>@this.Model.CompanyTelephoneNo</td>
+                    <td style="text-align:center;">参加工作时间</td>
+                    <td>@this.Model.BeginWorkTime</td>
+                    <td style="text-align:center;">工作年限</td>
+                    <td>@this.Model.WorkedYears</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">报名前最后学历</td>
+                    <td>@this.Model.HighestEduLevel</td>
+                    <td style="text-align:center;">报名前最后学位</td>
+                    <td>@this.Model.HighestQualification</td>
+                    <td style="text-align:center;">原毕业时间</td>
+                    <td>@this.Model.GraduateDate</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">原毕业学校</td>
+                    <td colspan="3">@this.Model.GruduateSchool</td>
+                    <td style="text-align:center;">原毕业证书编码</td>
+                    <td>@this.Model.HighestQualificationNo</td>
+                </tr>
+                <tr>
+                    <td rowspan="4" style="text-align:center;">本<br />人<br />简<br />历</td>
+                    <td colspan="2" style="text-align:center;">由何时至何时</td>
+                    <td colspan="3" style="text-align:center;">就读、就职情况（从初中开始）</td>
+                    <td style="text-align:center;">职务</td>
+                </tr>
+                <tr>
+                    <td colspan="2">@this.Model.StudyDuration1></td>
+                    <td colspan="3">@this.Model.StudySchool1</td>
+                    <td>@this.Model.StudyPosition1</td>
+                </tr>
+                <tr>
+                    <td colspan="2">@this.Model.StudyDuration2</td>
+                    <td colspan="3">@this.Model.StudySchool2</td>
+                    <td>@this.Model.StudyPosition2</td>
+                </tr>
+                <tr>
+                    <td colspan="2">@this.Model.StudyDuration3</td>
+                    <td colspan="3">@this.Model.StudySchool3</td>
+                    <td>@this.Model.StudyPosition3</td>
+                </tr>
+                <tr>
+                    <td rowspan="3" style="text-align:center;">家<br />庭<br />成<br />员</td>
+                    <td style="text-align:center;">关系</td>
+                    <td style="text-align:center;">姓名</td>
+                    <td style="text-align:center;">政治面貌</td>
+                    <td style="text-align:center;">工作单位</td>
+                    <td style="text-align:center;">职位</td>
+                    <td style="text-align:center;">手机号码</td>
+                </tr>
+                <tr>
+                    <td style="width:60px;">@this.Model.MemberRelType1</td>
+                    <td>@this.Model.MemberName1</td>
+                    <td>@this.Model.MemberMianMao1</td>
+                    <td>@this.Model.MemberCompany1</td>
+                    <td>@this.Model.MemberPosition1</td>
+                    <td>@this.Model.MemberMobile1</td>
+                </tr>
+                <tr>
+                    <td style="width:60px;">@this.Model.MemberRelType2</td>
+                    <td>@this.Model.MemberName2</td>
+                    <td>@this.Model.MemberMianMao2</td>
+                    <td>@this.Model.MemberCompany2</td>
+                    <td>@this.Model.MemberPosition2</td>
+                    <td>@this.Model.MemberMobile2</td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" style="text-align:center;">学院老师</td>
+                    <td>@this.Model.Consultant</td>
+                    <td style="text-align:center;">介 绍 人</td>
+                    <td>@this.Model.Referrer</td>
+                    <td style="text-align:center;">手机号码</td>
+                    <td>@this.Model.ReferrerMobile</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">QQ　　号</td>
+                    <td>@this.Model.ReferrerQQ</td>
+                    <td colspan="2" style="text-align:center;">本院学员所在的班级</td>
+                    <td colspan="2">@this.Model.Clazz</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">录取时间</td>
+                    <td>@this.Model.MatriculateTime</td>
+                    <td style="text-align:center;">用 户 名</td>
+                    <td>@this.Model.NetUserName</td>
+                    <td style="text-align:center;">密　　码</td>
+                    <td>@this.Model.NetPassword</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">备　　注</td>
+                    <td colspan="3">@this.Model.Remark</td>
+					<td>持证状态</td>
+					<td>@this.Model.PaperStatus</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">照　　片</td>
+                    <td colspan="5" style="text-align:left;">
+						<img src="@this.Model.Photo1" style="width:300px;" alt="" /><br />
+					</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">身 份 证</td>
+                    <td colspan="5" style="text-align:left;">
+						<img src="@this.Model.Photo2" style="width:300px;" alt="" /><br />
+					</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">毕 业 证</td>
+                    <td colspan="5" style="text-align:left;">
+						<img src="@this.Model.Photo3" style="width:300px;" alt="" /><br />
+					</td>
+                </tr>
+				@if (this.ViewBag.CanEdit) {
+            <tr>
+                <td align="center" colspan="7">
+                    <a href="#" onclick="top.f_addTab('tab-edit-qstudent-info-@this.Model.Id', '编辑 @this.Model.Name 的信息', '@Url.Action("EditStudent", "QualificationStudent")' + '?id=@this.Model.Id');return false;">编辑</a>
+				</td>
+            </tr>
+				}
+            </table>
+		</form>
+    </div>
+
+	</form>
+
+</body>
+</html>

@@ -1,0 +1,468 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.autocomplete.css")" rel="stylesheet" type="text/css" />
+
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.core.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.widget.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.position.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.autocomplete.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script>
+    <style type="text/css">
+        body
+        {
+            font-size: 12px;
+        }
+        .l-table-edit
+        {
+        }
+        .l-table-edit-td
+        {
+            padding: 4px;
+        }
+        .l-button-submit, .l-button-reset
+        {
+            width: 80px;
+            float: left;
+            margin-left: 10px;
+            padding-bottom: 2px;
+        }
+        .l-verify-tip
+        {
+            left: 230px;
+            top: 120px;
+            z-index: 9999;
+        }
+    </style>
+	<style>
+	.ui-autocomplete-loading { background: white url('@Url.Content("~/Content/themes/base/images/ui-anim_basic_16x16.gif")') right center no-repeat; }
+	#f_UserName { width: 25em; }
+	</style>
+
+    <script type="text/javascript">
+        var gSalesTeam;
+        var action = "add";
+        var $dialog;
+		var initData;
+        var $memberGrid;
+		
+        $(function () {
+            gSalesTeam = $("#grdSalesTeam").ligerGrid({
+                columns: [
+					{ display: '名称', name: 'Name', width: '90%', align: 'left' }
+                  ],
+                pageSize: 20, toolbar: {},
+                url: '@Url.Action("GetData", "SalesTeam")', 
+                sortName: 'Name',
+                width: '98%', height: '100%', checkbox: false,
+                usePager:true,
+                toolbar: { items: [
+                { text: '增加', icon: 'add', click: addSalesTeam },
+                { line: true },
+                { text: '修改', icon: 'modify', click: editSalesTeam },
+                { line: true },
+                { text: '删除', icon: 'delete', click: deleteSalesTeam }
+                ]
+                }
+                ,detail: { onShowDetail: function (row, detailPanel,callback) { 
+                    var divCityGrid = $("<div class='l-grid-detailpanel-inner'></div>");
+                    $(detailPanel).append(divCityGrid);
+                    var gCity = $(divCityGrid).css('margin',10).ligerGrid({
+                        columns: [
+					        { display: '组员名称', name: 'UserName', width: 100, align: 'left' },
+					        { display: '默认主页', name: 'DefaultUrl', width: 100, align: 'left' },
+					        { display: '是否组长', name: 'IsLeader', width: 100, align: 'left' }
+                          ],
+                        pageSize: 20, toolbar: {},
+                        url: '@Url.Action("GetData", "SalesTeamMember")?SalesTeamIdSrh='+row.Id, 
+                        sortName: 'Name',
+                        width: '600', height: 230, checkbox: false,
+                        usePager:false,
+                        isScroll: true,
+                        toolbar: { items: [
+                        { text: '增加', icon: 'add', click: function(){
+                            $memberGrid = gCity;
+                            action = "add";
+			                $("#f_SalesTeamMember_Id").val("");
+			                $("#f_SalesTeamMember_SalesTeamId").val(row.Id);
+			                $("#UserId").val("");
+			                $("#f_UserName").val("");
+                            $("#IsLeader").val("");
+			                $("#f_SalesTeamMember_IsLeader").ligerCheckBox().setValue(false);
+			                $dialog = $.ligerDialog.open({ target: $("#dSalesTeamMember"), width: 300, height: 250 });
+                        } },
+                        { line: true },
+                        { text: '修改', icon: 'modify', click: function(){
+                            $memberGrid = gCity;
+                            action = "edit";
+                            var member = gCity.getSelectedRow();
+                            if (!member) { LG.tip('请选择行!'); return }
+			                $("#f_SalesTeamMember_Id").val(member.Id);
+			                $("#f_SalesTeamMember_SalesTeamId").val(row.Id);
+			                $("#UserId").val(member.UserId);
+			                $("#f_UserName").val(member.UserName);
+                            $("#IsLeader").val(member.IsLeader);
+			                $("#f_SalesTeamMember_IsLeader").ligerCheckBox().setValue(member.IsLeader);
+                            $dialog = $.ligerDialog.open({ target: $("#dSalesTeamMember"), width: 300, height: 250 });
+                        } },
+                        { line: true },
+                        { text: '删除', icon: 'delete', click: function(){
+                            var member = gCity.getSelectedRow();
+                            if (!member) { LG.tip('请选择行!'); return }
+
+                            $.ligerDialog.confirm("您确定要删除选中记录么？", function (r) {
+                                if (r) {
+                                    $.post("@Url.Action("Delete", "SalesTeamMember")", { id: member.Id }
+                                        , function (result) {
+                                            if (result.Successful) {
+                                                gCity.deleteSelectedRow();
+                                            } else {
+                                                $.ligerMessageBox.error('错误', result.Message);
+                                            }
+                                        }
+                                    );
+                                }
+                            });
+                        } }
+                        ]
+                        }
+                    });
+                    $(detailPanel).show();
+                } }
+
+            });
+            $("#btnSearch").click(function () {
+                gSalesTeam.set({ 
+                    parms : [
+					{ name: 'NameSrh', value: $('#NameSrh').val() }
+                    ]
+                });
+                gSalesTeam.loadData();
+            });
+			
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp)
+	            {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frmSalesTeam").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    saveSalesTeam();
+                    return false;
+                }
+            });
+
+            $("#frmSalesTeamMember").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    if($("#f_SalesTeamMember_IsLeader").attr("checked")){
+                        $("#IsLeader").val(true);
+                    }else{
+                        $("#IsLeader").val(false);
+                    }
+
+                    if(action=="add"){
+                        $.post("@Url.Action("Add", "SalesTeamMember")", $("#frmSalesTeamMember").serialize(),
+                            function (result) {
+                                if (result.Successful) {
+                                    $memberGrid.addRow(result.Data);
+                                    $dialog.hidden();
+                                    LG.tip("操作成功！");
+                                }else{
+                                    LG.showError(result.Message);
+                                }
+                            }
+                        );
+                    }else{
+                        $.post("@Url.Action("Update", "SalesTeamMember")", $("#frmSalesTeamMember").serialize(),
+                            function (result) {
+                                if (result.Successful) {
+                                    var row = $memberGrid.getSelected();
+                                    if (!row) { alert('请选择行'); return; }
+                                    $memberGrid.updateRow(row,result.Data);
+                                    $dialog.hidden();
+                                    LG.tip("操作成功！");
+                                }else{
+                                    LG.showError(result.Message);
+                                }
+                            }
+                        );
+                    }
+                    return false;
+                }
+            });
+            
+            
+            $.getJSON("@Url.Action("GetInitData", "SalesTeam")", function(data){
+				initData = data;
+	            $("#formsearch").ligerForm();
+				$("#frmSalesTeam").ligerForm();
+				$("#frmSalesTeamMember").ligerForm();
+            });
+
+            $( "#f_UserName" ).autocomplete({
+	            source: function( request, response ) {
+		            $.ajax({
+			            url: '@Url.Action("Suggest","User")',
+			            dataType: "json",
+			            data: {
+				            qty: 12,
+				            prefix: request.term
+			            },
+			            success: function( data ) {
+				            response( $.map( data, function( item ) {
+					            return {
+						            label: item.Name,
+						            value: item.Id
+					            }
+				            }));
+			            }
+		            });
+	            },
+	            minLength: 1,
+	            select: function( event, ui ) {
+                    //alert(ui.item.value + " - " + ui.item.label);
+                    $("#UserId").val(ui.item.value);
+                    $("#f_UserName").val(ui.item.label);
+                    //alert($("#UserId").val());
+                    return false;
+		            //log( ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
+	            },
+	            open: function() {
+		            $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+	            },
+	            close: function() {
+		            $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+	            }
+            });
+        });
+		
+        function addSalesTeam(){
+            action = "add";
+			$("#f_SalesTeam_Id").val("");
+			$("#f_SalesTeam_Name").val("");
+			$dialog = $.ligerDialog.open({ target: $("#dSalesTeam"), width: 300, height: 150 });
+        }
+        function editSalesTeam() {
+            action = "edit";
+            var row = gSalesTeam.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+			$("#f_SalesTeam_Id").val(row.Id);
+			$("#f_SalesTeam_Name").val(row.Name);
+            $dialog = $.ligerDialog.open({ target: $("#dSalesTeam"), width: 300, height: 150 });
+        }
+        function deleteSalesTeam() {
+            var row = gSalesTeam.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？",function (r) { 
+                if(r){
+                    $.post("@Url.Action("Delete", "SalesTeam")", { id: row.Id }
+                        , function (result) {
+                            if (result.Successful) {
+                                gSalesTeam.deleteSelectedRow();
+                            } else {
+                                $.ligerMessageBox.error('错误', result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+        function saveSalesTeam(){
+            if(action=="add"){
+                $.post("@Url.Action("Add", "SalesTeam")", $("#frmSalesTeam").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            gSalesTeam.addRow(result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }else{
+                $.post("@Url.Action("Update", "SalesTeam")", $("#frmSalesTeam").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            var row = gSalesTeam.getSelected();
+                            if (!row) { alert('请选择行'); return; }
+                            gSalesTeam.updateRow(row,result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+<body style="padding: 10px; height: 100%; text-align: center;">
+    <div id="mainsearch" style="width: 98%">
+        <div class="searchtitle">
+            <span>搜索</span><img src="@Url.Content("~/Content/lib/icons/32X32/searchtool.gif")" alt="" />
+            <div class="togglebtn">
+            </div>
+        </div>
+        <div class="navline" style="margin-bottom: 4px; margin-top: 4px;">
+        </div>
+        <div class="searchbox">
+            <form id="formsearch" class="l-form" action="">
+            <table cellpadding="0" cellspacing="0" class="l-table-edit">
+                <tr>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        名称
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <input name='NameSrh' type='text' id='NameSrh' ltype='text' />
+                    </td>
+                    <td style="text-align: center;" class="l-table-edit-td" colspan="3">
+                        <input type="button" value="查询" id="btnSearch" />
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div>
+    </div>
+    <div id="grdSalesTeam">
+    </div>
+    <div id="dSalesTeam" style="display: none;">
+        <form action="" method="post" id="frmSalesTeam">
+        <input type="hidden" id="f_SalesTeam_Id" name="Id" value="" />
+        <table cellpadding="0" cellspacing="0" class="l-table-edit">
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>
+                    名称
+                </td>
+                <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                    <input name='Name' type='text' id='f_SalesTeam_Name' ltype='text' />
+                </td>
+                <td style='text-align: left;'>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align: center;">
+                    <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();'
+                        class="l-button l-button-reset" />
+                </td>
+            </tr>
+        </table>
+        </form>
+    </div>
+
+    <div id="dSalesTeamMember" style="display: none;">
+        <form action="" method="post" id="frmSalesTeamMember">
+        <input type="hidden" id="f_SalesTeamMember_Id" name="Id" value="" />
+        <input name='SalesTeamId' type='hidden' id='f_SalesTeamMember_SalesTeamId' value="" />
+        <table cellpadding="0" cellspacing="0" class="l-table-edit">
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>
+                    组员
+                </td>
+                <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                    <input name='f_UserName' type='text' id='f_UserName' ltype='text' />
+                    <input name='UserId' type='hidden' id='UserId' />
+                </td>
+                <td style='text-align: left;'>
+                </td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>
+                    默认主页
+                </td>
+                <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                    <select name='DefaultUrl' id='f_DefaultUrl' ltype='text'>
+                        <option value="学校列表">学校列表</option>
+                        <option value="组长跟进">组长跟进</option>
+                        <option value="常规咨询">常规咨询</option>
+                    </select>
+                </td>
+                <td style='text-align: left;'>
+                </td>
+            </tr>
+            <tr>
+                <td class='l-table-edit-td' style='text-align: right;'>
+                    组长
+                </td>
+                <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                    <input name='f_SalesTeamMember_IsLeader' type='checkbox' id='f_SalesTeamMember_IsLeader' ltype='checkbox' />
+                    <input name='IsLeader' type='hidden' id='IsLeader' />
+                </td>
+                <td style='text-align: left;'>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align: center;">
+                    <input type="submit" id="btnSaveMember" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnSaveMemberCancel" value="取消" onclick='$dialog.hidden();'
+                        class="l-button l-button-reset" />
+                </td>
+            </tr>
+        </table>
+        </form>
+    </div>
+
+</body>
+</html>

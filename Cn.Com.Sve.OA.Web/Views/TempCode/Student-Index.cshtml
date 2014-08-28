@@ -1,0 +1,2331 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />  
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script> 
+	
+    <style type="text/css">
+        body{ font-size:12px;}
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-verify-tip{ left:230px; top:120px; z-index:9999;}
+    </style>
+    <script type="text/javascript">
+        var gStudent;
+        var action = "add";
+        var $dialog;
+		var initData;
+		
+        $(function () {
+            gStudent = $("#grdStudent").ligerGrid({
+                columns: [
+                    { display: 'Id', name: 'Id', width: 100, align: 'left' },
+					{ display: 'Name', name: 'Name', width: 100, align: 'left' },
+					{ display: 'PinYin', name: 'PinYin', width: 100, align: 'left' },
+					{ display: 'Gender', name: 'Gender', width: 100, align: 'left' },
+					{ display: 'Birthday', name: 'Birthday', width: 100, align: 'left' },
+					{ display: 'EduLevel', name: 'EduLevel', width: 100, align: 'left' },
+					{ display: 'GraduateDate', name: 'GraduateDate', width: 100, align: 'left' },
+					{ display: 'Score', name: 'Score', width: 100, align: 'left' },
+					{ display: 'GruduateSchoolId', name: 'GruduateSchoolId', width: 100, align: 'left' },
+					{ display: 'Profession', name: 'Profession', width: 100, align: 'left' },
+					{ display: 'IdCardNo', name: 'IdCardNo', width: 100, align: 'left' },
+					{ display: 'HuKouType', name: 'HuKouType', width: 100, align: 'left' },
+					{ display: 'Address', name: 'Address', width: 100, align: 'left' },
+					{ display: 'Postcode', name: 'Postcode', width: 100, align: 'left' },
+					{ display: 'FeeSource', name: 'FeeSource', width: 100, align: 'left' },
+					{ display: 'SmallInfoSourceId', name: 'SmallInfoSourceId', width: 100, align: 'left' },
+					{ display: 'QQ', name: 'QQ', width: 100, align: 'left' },
+					{ display: 'Email', name: 'Email', width: 100, align: 'left' },
+					{ display: 'Mobile', name: 'Mobile', width: 100, align: 'left' },
+					{ display: 'HomeTelephone', name: 'HomeTelephone', width: 100, align: 'left' },
+					{ display: 'OfficeTelephone', name: 'OfficeTelephone', width: 100, align: 'left' },
+					{ display: 'MemberRelType1', name: 'MemberRelType1', width: 100, align: 'left' },
+					{ display: 'MemberName1', name: 'MemberName1', width: 100, align: 'left' },
+					{ display: 'MemberCompany1', name: 'MemberCompany1', width: 100, align: 'left' },
+					{ display: 'MemberPosition1', name: 'MemberPosition1', width: 100, align: 'left' },
+					{ display: 'MemberMobile1', name: 'MemberMobile1', width: 100, align: 'left' },
+					{ display: 'MemberRelType2', name: 'MemberRelType2', width: 100, align: 'left' },
+					{ display: 'MemberName2', name: 'MemberName2', width: 100, align: 'left' },
+					{ display: 'MemberCompany2', name: 'MemberCompany2', width: 100, align: 'left' },
+					{ display: 'MemberPosition2', name: 'MemberPosition2', width: 100, align: 'left' },
+					{ display: 'MemberMobile2', name: 'MemberMobile2', width: 100, align: 'left' },
+					{ display: 'MemberRelType3', name: 'MemberRelType3', width: 100, align: 'left' },
+					{ display: 'MemberName3', name: 'MemberName3', width: 100, align: 'left' },
+					{ display: 'MemberCompany3', name: 'MemberCompany3', width: 100, align: 'left' },
+					{ display: 'MemberPosition3', name: 'MemberPosition3', width: 100, align: 'left' },
+					{ display: 'MemberMobile3', name: 'MemberMobile3', width: 100, align: 'left' },
+					{ display: 'MemberRelType4', name: 'MemberRelType4', width: 100, align: 'left' },
+					{ display: 'MemberName4', name: 'MemberName4', width: 100, align: 'left' },
+					{ display: 'MemberCompany4', name: 'MemberCompany4', width: 100, align: 'left' },
+					{ display: 'MemberPosition4', name: 'MemberPosition4', width: 100, align: 'left' },
+					{ display: 'MemberMobile4', name: 'MemberMobile4', width: 100, align: 'left' },
+					{ display: 'WorkState', name: 'WorkState', width: 100, align: 'left' },
+					{ display: 'StudyDuration1', name: 'StudyDuration1', width: 100, align: 'left' },
+					{ display: 'StudySchool1', name: 'StudySchool1', width: 100, align: 'left' },
+					{ display: 'StudyPosition1', name: 'StudyPosition1', width: 100, align: 'left' },
+					{ display: 'StudyDuration2', name: 'StudyDuration2', width: 100, align: 'left' },
+					{ display: 'StudySchool2', name: 'StudySchool2', width: 100, align: 'left' },
+					{ display: 'StudyPosition2', name: 'StudyPosition2', width: 100, align: 'left' },
+					{ display: 'StudyDuration3', name: 'StudyDuration3', width: 100, align: 'left' },
+					{ display: 'StudySchool3', name: 'StudySchool3', width: 100, align: 'left' },
+					{ display: 'StudyPosition3', name: 'StudyPosition3', width: 100, align: 'left' },
+					{ display: 'SoftwareExp', name: 'SoftwareExp', width: 100, align: 'left' },
+					{ display: 'ProgramExp', name: 'ProgramExp', width: 100, align: 'left' },
+					{ display: 'NetworkExp', name: 'NetworkExp', width: 100, align: 'left' },
+					{ display: 'RelCourse', name: 'RelCourse', width: 100, align: 'left' },
+					{ display: 'DistrictId', name: 'DistrictId', width: 100, align: 'left' },
+					{ display: 'IntentCity', name: 'IntentCity', width: 100, align: 'left' },
+					{ display: 'ClazzId', name: 'ClazzId', width: 100, align: 'left' },
+					{ display: 'StudentNo', name: 'StudentNo', width: 100, align: 'left' },
+					{ display: 'InSchoolDate', name: 'InSchoolDate', width: 100, align: 'left' },
+					{ display: 'IsDorm', name: 'IsDorm', width: 100, align: 'left' },
+					{ display: 'DormNo', name: 'DormNo', width: 100, align: 'left' },
+					{ display: 'GiveCourseware', name: 'GiveCourseware', width: 100, align: 'left' },
+					{ display: 'Consultants', name: 'Consultants', width: 100, align: 'left' },
+					{ display: 'Remark', name: 'Remark', width: 100, align: 'left' },
+					{ display: 'CreateTime', name: 'CreateTime', width: 100, align: 'left' },
+					{ display: 'LastUpdateTime', name: 'LastUpdateTime', width: 100, align: 'left' },
+					{ display: 'IsGetQualification', name: 'IsGetQualification', width: 100, align: 'left' },
+					{ display: 'Status', name: 'Status', width: 100, align: 'left' },
+					{ display: 'TechnicalWay', name: 'TechnicalWay', width: 100, align: 'left' },
+					{ display: 'NeedObtainWork', name: 'NeedObtainWork', width: 100, align: 'left' },
+					{ display: 'IntentPosition', name: 'IntentPosition', width: 100, align: 'left' },
+					{ display: 'TargetSalary', name: 'TargetSalary', width: 100, align: 'left' },
+					{ display: 'InsuranceStartDate', name: 'InsuranceStartDate', width: 100, align: 'left' },
+					{ display: 'InsuranceEndDate', name: 'InsuranceEndDate', width: 100, align: 'left' },
+					{ display: 'GaoKaoBatch', name: 'GaoKaoBatch', width: 100, align: 'left' },
+					{ display: 'GiveNotebook', name: 'GiveNotebook', width: 100, align: 'left' },
+					{ display: 'MaxSalary', name: 'MaxSalary', width: 100, align: 'left' },
+					{ display: 'CurrentSalary', name: 'CurrentSalary', width: 100, align: 'left' },
+					{ display: 'FirstSalary', name: 'FirstSalary', width: 100, align: 'left' },
+					{ display: 'BeginSchoolTime', name: 'BeginSchoolTime', width: 100, align: 'left' },
+					{ display: 'MasterName1', name: 'MasterName1', width: 100, align: 'left' },
+					{ display: 'MasterName2', name: 'MasterName2', width: 100, align: 'left' },
+					{ display: 'MasterName3', name: 'MasterName3', width: 100, align: 'left' },
+					{ display: 'TeacherName1', name: 'TeacherName1', width: 100, align: 'left' },
+					{ display: 'TeacherName2', name: 'TeacherName2', width: 100, align: 'left' },
+					{ display: 'TeacherName3', name: 'TeacherName3', width: 100, align: 'left' },
+					{ display: 'MasterId1', name: 'MasterId1', width: 100, align: 'left' },
+					{ display: 'MasterId2', name: 'MasterId2', width: 100, align: 'left' },
+					{ display: 'MasterId3', name: 'MasterId3', width: 100, align: 'left' },
+					{ display: 'TeacherId1', name: 'TeacherId1', width: 100, align: 'left' },
+					{ display: 'TeacherId2', name: 'TeacherId2', width: 100, align: 'left' },
+					{ display: 'TeacherId3', name: 'TeacherId3', width: 100, align: 'left' },
+					{ display: 'QualificationSchool', name: 'QualificationSchool', width: 100, align: 'left' },
+					{ display: 'InsuranceStatus', name: 'InsuranceStatus', width: 100, align: 'left' },
+					{ display: 'OldOaId', name: 'OldOaId', width: 100, align: 'left' },
+					{ display: 'OldOaInfoSourceSubTypeName', name: 'OldOaInfoSourceSubTypeName', width: 100, align: 'left' },
+					{ display: 'OldOaClass', name: 'OldOaClass', width: 100, align: 'left' },
+					{ display: 'HasRelTeacher', name: 'HasRelTeacher', width: 100, align: 'left' },
+					{ display: 'RelTeacher', name: 'RelTeacher', width: 100, align: 'left' },
+					{ display: 'HomeIntro', name: 'HomeIntro', width: 100, align: 'left' },
+					{ display: 'Give1', name: 'Give1', width: 100, align: 'left' },
+					{ display: 'Give2', name: 'Give2', width: 100, align: 'left' },
+					{ display: 'Give3', name: 'Give3', width: 100, align: 'left' },
+					{ display: 'Receive1', name: 'Receive1', width: 100, align: 'left' },
+					{ display: 'Receive2', name: 'Receive2', width: 100, align: 'left' },
+					{ display: 'Receive3', name: 'Receive3', width: 100, align: 'left' },
+					{ display: 'Receive4', name: 'Receive4', width: 100, align: 'left' },
+					{ display: 'Receive5', name: 'Receive5', width: 100, align: 'left' },
+					{ display: 'Receive6', name: 'Receive6', width: 100, align: 'left' },
+					{ display: 'Pic1', name: 'Pic1', width: 100, align: 'left' },
+					{ display: 'Pic2', name: 'Pic2', width: 100, align: 'left' },
+					{ display: 'Pic3', name: 'Pic3', width: 100, align: 'left' },
+					{ display: 'Pic4', name: 'Pic4', width: 100, align: 'left' },
+					{ display: 'Pic5', name: 'Pic5', width: 100, align: 'left' },
+					{ display: 'Pic6', name: 'Pic6', width: 100, align: 'left' }
+                  ],
+                pageSize: 20, toolbar: {},
+                url: '@Url.Action("GetData","Student")', 
+                sortName: 'Name',
+                width: '98%', height: '100%', checkbox: false,
+                usePager:true,
+                toolbar: { items: [
+                { text: '增加', icon: 'add', click: addStudent },
+                { line: true },
+                { text: '修改', icon: 'modify', click: editStudent },
+                { line: true },
+                { text: '删除', icon: 'delete', click: deleteStudent }
+                ]
+                }
+            });
+            $("#btnSearch").click(function () {
+                gStudent.set({ 
+                    parms : [
+                    { name: 'IdSrh', value: $('#IdSrh').val() },
+					{ name: 'IdFromSrh', value: $('#IdFromSrh').val() },
+					{ name: 'IdToSrh', value: $('#IdToSrh').val() },
+					{ name: 'NameSrh', value: $('#NameSrh').val() },
+					{ name: 'PinYinSrh', value: $('#PinYinSrh').val() },
+					{ name: 'GenderSrh', value: $('#GenderSrh').val() },
+					{ name: 'BirthdaySrh', value: $('#BirthdaySrh').val() },
+					{ name: 'EduLevelSrh', value: $('#EduLevelSrh').val() },
+					{ name: 'GraduateDateSrh', value: $('#GraduateDateSrh').val() },
+					{ name: 'ScoreSrh', value: $('#ScoreSrh').val() },
+					{ name: 'ScoreFromSrh', value: $('#ScoreFromSrh').val() },
+					{ name: 'ScoreToSrh', value: $('#ScoreToSrh').val() },
+					{ name: 'GruduateSchoolIdSrh', value: $('#GruduateSchoolIdSrh').val() },
+					{ name: 'GruduateSchoolIdFromSrh', value: $('#GruduateSchoolIdFromSrh').val() },
+					{ name: 'GruduateSchoolIdToSrh', value: $('#GruduateSchoolIdToSrh').val() },
+					{ name: 'ProfessionSrh', value: $('#ProfessionSrh').val() },
+					{ name: 'IdCardNoSrh', value: $('#IdCardNoSrh').val() },
+					{ name: 'HuKouTypeSrh', value: $('#HuKouTypeSrh').val() },
+					{ name: 'AddressSrh', value: $('#AddressSrh').val() },
+					{ name: 'PostcodeSrh', value: $('#PostcodeSrh').val() },
+					{ name: 'FeeSourceSrh', value: $('#FeeSourceSrh').val() },
+					{ name: 'SmallInfoSourceIdSrh', value: $('#SmallInfoSourceIdSrh').val() },
+					{ name: 'SmallInfoSourceIdFromSrh', value: $('#SmallInfoSourceIdFromSrh').val() },
+					{ name: 'SmallInfoSourceIdToSrh', value: $('#SmallInfoSourceIdToSrh').val() },
+					{ name: 'QQSrh', value: $('#QQSrh').val() },
+					{ name: 'EmailSrh', value: $('#EmailSrh').val() },
+					{ name: 'MobileSrh', value: $('#MobileSrh').val() },
+					{ name: 'HomeTelephoneSrh', value: $('#HomeTelephoneSrh').val() },
+					{ name: 'OfficeTelephoneSrh', value: $('#OfficeTelephoneSrh').val() },
+					{ name: 'MemberRelType1Srh', value: $('#MemberRelType1Srh').val() },
+					{ name: 'MemberName1Srh', value: $('#MemberName1Srh').val() },
+					{ name: 'MemberCompany1Srh', value: $('#MemberCompany1Srh').val() },
+					{ name: 'MemberPosition1Srh', value: $('#MemberPosition1Srh').val() },
+					{ name: 'MemberMobile1Srh', value: $('#MemberMobile1Srh').val() },
+					{ name: 'MemberRelType2Srh', value: $('#MemberRelType2Srh').val() },
+					{ name: 'MemberName2Srh', value: $('#MemberName2Srh').val() },
+					{ name: 'MemberCompany2Srh', value: $('#MemberCompany2Srh').val() },
+					{ name: 'MemberPosition2Srh', value: $('#MemberPosition2Srh').val() },
+					{ name: 'MemberMobile2Srh', value: $('#MemberMobile2Srh').val() },
+					{ name: 'MemberRelType3Srh', value: $('#MemberRelType3Srh').val() },
+					{ name: 'MemberName3Srh', value: $('#MemberName3Srh').val() },
+					{ name: 'MemberCompany3Srh', value: $('#MemberCompany3Srh').val() },
+					{ name: 'MemberPosition3Srh', value: $('#MemberPosition3Srh').val() },
+					{ name: 'MemberMobile3Srh', value: $('#MemberMobile3Srh').val() },
+					{ name: 'MemberRelType4Srh', value: $('#MemberRelType4Srh').val() },
+					{ name: 'MemberName4Srh', value: $('#MemberName4Srh').val() },
+					{ name: 'MemberCompany4Srh', value: $('#MemberCompany4Srh').val() },
+					{ name: 'MemberPosition4Srh', value: $('#MemberPosition4Srh').val() },
+					{ name: 'MemberMobile4Srh', value: $('#MemberMobile4Srh').val() },
+					{ name: 'WorkStateSrh', value: $('#WorkStateSrh').val() },
+					{ name: 'StudyDuration1Srh', value: $('#StudyDuration1Srh').val() },
+					{ name: 'StudySchool1Srh', value: $('#StudySchool1Srh').val() },
+					{ name: 'StudyPosition1Srh', value: $('#StudyPosition1Srh').val() },
+					{ name: 'StudyDuration2Srh', value: $('#StudyDuration2Srh').val() },
+					{ name: 'StudySchool2Srh', value: $('#StudySchool2Srh').val() },
+					{ name: 'StudyPosition2Srh', value: $('#StudyPosition2Srh').val() },
+					{ name: 'StudyDuration3Srh', value: $('#StudyDuration3Srh').val() },
+					{ name: 'StudySchool3Srh', value: $('#StudySchool3Srh').val() },
+					{ name: 'StudyPosition3Srh', value: $('#StudyPosition3Srh').val() },
+					{ name: 'SoftwareExpSrh', value: $('#SoftwareExpSrh').val() },
+					{ name: 'ProgramExpSrh', value: $('#ProgramExpSrh').val() },
+					{ name: 'NetworkExpSrh', value: $('#NetworkExpSrh').val() },
+					{ name: 'RelCourseSrh', value: $('#RelCourseSrh').val() },
+					{ name: 'DistrictIdSrh', value: $('#DistrictIdSrh').val() },
+					{ name: 'DistrictIdFromSrh', value: $('#DistrictIdFromSrh').val() },
+					{ name: 'DistrictIdToSrh', value: $('#DistrictIdToSrh').val() },
+					{ name: 'IntentCitySrh', value: $('#IntentCitySrh').val() },
+					{ name: 'ClazzIdSrh', value: $('#ClazzIdSrh').val() },
+					{ name: 'ClazzIdFromSrh', value: $('#ClazzIdFromSrh').val() },
+					{ name: 'ClazzIdToSrh', value: $('#ClazzIdToSrh').val() },
+					{ name: 'StudentNoSrh', value: $('#StudentNoSrh').val() },
+					{ name: 'InSchoolDateSrh', value: $('#InSchoolDateSrh').val() },
+					{ name: 'IsDormSrh', value: $('#IsDormSrh').val() },
+					{ name: 'DormNoSrh', value: $('#DormNoSrh').val() },
+					{ name: 'GiveCoursewareSrh', value: $('#GiveCoursewareSrh').val() },
+					{ name: 'ConsultantsSrh', value: $('#ConsultantsSrh').val() },
+					{ name: 'RemarkSrh', value: $('#RemarkSrh').val() },
+					{ name: 'CreateTimeSrh', value: $('#CreateTimeSrh').val() },
+					{ name: 'LastUpdateTimeSrh', value: $('#LastUpdateTimeSrh').val() },
+					{ name: 'IsGetQualificationSrh', value: $('#IsGetQualificationSrh').val() },
+					{ name: 'StatusSrh', value: $('#StatusSrh').val() },
+					{ name: 'TechnicalWaySrh', value: $('#TechnicalWaySrh').val() },
+					{ name: 'NeedObtainWorkSrh', value: $('#NeedObtainWorkSrh').val() },
+					{ name: 'IntentPositionSrh', value: $('#IntentPositionSrh').val() },
+					{ name: 'TargetSalarySrh', value: $('#TargetSalarySrh').val() },
+					{ name: 'TargetSalaryFromSrh', value: $('#TargetSalaryFromSrh').val() },
+					{ name: 'TargetSalaryToSrh', value: $('#TargetSalaryToSrh').val() },
+					{ name: 'InsuranceStartDateSrh', value: $('#InsuranceStartDateSrh').val() },
+					{ name: 'InsuranceEndDateSrh', value: $('#InsuranceEndDateSrh').val() },
+					{ name: 'GaoKaoBatchSrh', value: $('#GaoKaoBatchSrh').val() },
+					{ name: 'GiveNotebookSrh', value: $('#GiveNotebookSrh').val() },
+					{ name: 'MaxSalarySrh', value: $('#MaxSalarySrh').val() },
+					{ name: 'MaxSalaryFromSrh', value: $('#MaxSalaryFromSrh').val() },
+					{ name: 'MaxSalaryToSrh', value: $('#MaxSalaryToSrh').val() },
+					{ name: 'CurrentSalarySrh', value: $('#CurrentSalarySrh').val() },
+					{ name: 'CurrentSalaryFromSrh', value: $('#CurrentSalaryFromSrh').val() },
+					{ name: 'CurrentSalaryToSrh', value: $('#CurrentSalaryToSrh').val() },
+					{ name: 'FirstSalarySrh', value: $('#FirstSalarySrh').val() },
+					{ name: 'FirstSalaryFromSrh', value: $('#FirstSalaryFromSrh').val() },
+					{ name: 'FirstSalaryToSrh', value: $('#FirstSalaryToSrh').val() },
+					{ name: 'BeginSchoolTimeSrh', value: $('#BeginSchoolTimeSrh').val() },
+					{ name: 'MasterName1Srh', value: $('#MasterName1Srh').val() },
+					{ name: 'MasterName2Srh', value: $('#MasterName2Srh').val() },
+					{ name: 'MasterName3Srh', value: $('#MasterName3Srh').val() },
+					{ name: 'TeacherName1Srh', value: $('#TeacherName1Srh').val() },
+					{ name: 'TeacherName2Srh', value: $('#TeacherName2Srh').val() },
+					{ name: 'TeacherName3Srh', value: $('#TeacherName3Srh').val() },
+					{ name: 'MasterId1Srh', value: $('#MasterId1Srh').val() },
+					{ name: 'MasterId1FromSrh', value: $('#MasterId1FromSrh').val() },
+					{ name: 'MasterId1ToSrh', value: $('#MasterId1ToSrh').val() },
+					{ name: 'MasterId2Srh', value: $('#MasterId2Srh').val() },
+					{ name: 'MasterId2FromSrh', value: $('#MasterId2FromSrh').val() },
+					{ name: 'MasterId2ToSrh', value: $('#MasterId2ToSrh').val() },
+					{ name: 'MasterId3Srh', value: $('#MasterId3Srh').val() },
+					{ name: 'MasterId3FromSrh', value: $('#MasterId3FromSrh').val() },
+					{ name: 'MasterId3ToSrh', value: $('#MasterId3ToSrh').val() },
+					{ name: 'TeacherId1Srh', value: $('#TeacherId1Srh').val() },
+					{ name: 'TeacherId1FromSrh', value: $('#TeacherId1FromSrh').val() },
+					{ name: 'TeacherId1ToSrh', value: $('#TeacherId1ToSrh').val() },
+					{ name: 'TeacherId2Srh', value: $('#TeacherId2Srh').val() },
+					{ name: 'TeacherId2FromSrh', value: $('#TeacherId2FromSrh').val() },
+					{ name: 'TeacherId2ToSrh', value: $('#TeacherId2ToSrh').val() },
+					{ name: 'TeacherId3Srh', value: $('#TeacherId3Srh').val() },
+					{ name: 'TeacherId3FromSrh', value: $('#TeacherId3FromSrh').val() },
+					{ name: 'TeacherId3ToSrh', value: $('#TeacherId3ToSrh').val() },
+					{ name: 'QualificationSchoolSrh', value: $('#QualificationSchoolSrh').val() },
+					{ name: 'InsuranceStatusSrh', value: $('#InsuranceStatusSrh').val() },
+					{ name: 'OldOaIdSrh', value: $('#OldOaIdSrh').val() },
+					{ name: 'OldOaInfoSourceSubTypeNameSrh', value: $('#OldOaInfoSourceSubTypeNameSrh').val() },
+					{ name: 'OldOaClassSrh', value: $('#OldOaClassSrh').val() },
+					{ name: 'HasRelTeacherSrh', value: $('#HasRelTeacherSrh').val() },
+					{ name: 'RelTeacherSrh', value: $('#RelTeacherSrh').val() },
+					{ name: 'HomeIntroSrh', value: $('#HomeIntroSrh').val() },
+					{ name: 'Give1Srh', value: $('#Give1Srh').val() },
+					{ name: 'Give2Srh', value: $('#Give2Srh').val() },
+					{ name: 'Give3Srh', value: $('#Give3Srh').val() },
+					{ name: 'Receive1Srh', value: $('#Receive1Srh').val() },
+					{ name: 'Receive2Srh', value: $('#Receive2Srh').val() },
+					{ name: 'Receive3Srh', value: $('#Receive3Srh').val() },
+					{ name: 'Receive4Srh', value: $('#Receive4Srh').val() },
+					{ name: 'Receive5Srh', value: $('#Receive5Srh').val() },
+					{ name: 'Receive6Srh', value: $('#Receive6Srh').val() },
+					{ name: 'Pic1Srh', value: $('#Pic1Srh').val() },
+					{ name: 'Pic2Srh', value: $('#Pic2Srh').val() },
+					{ name: 'Pic3Srh', value: $('#Pic3Srh').val() },
+					{ name: 'Pic4Srh', value: $('#Pic4Srh').val() },
+					{ name: 'Pic5Srh', value: $('#Pic5Srh').val() },
+					{ name: 'Pic6Srh', value: $('#Pic6Srh').val() }
+                    ]
+                });
+                gStudent.loadData();
+            });
+			
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp)
+	            {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frmStudent").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    saveStudent();
+                    return false;
+                }
+            });
+
+			$.getJSON("@Url.Action("GetInitData","Student")", function(data){
+				initData = data;
+                /*
+				$("#f_City_ProvinceId").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceId',data:data.Provinces });
+                data.Provinces.unshift({ Id:'', Name:'所有' });
+                $("#f_City_ProvinceIdSrh").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceIdSrh',data:data.Provinces });
+				*/
+	            $("#formsearch").ligerForm();
+				$("#frmStudent").ligerForm();
+            });
+
+
+        });
+		
+        function addStudent(){
+            action = "add";
+			$("#f_Student_Id").val("");
+			$("#f_Student_Name").val("");
+			$("#f_Student_PinYin").val("");
+			$("#f_Student_Gender").val("");
+			$("#f_Student_Birthday").val("");
+			$("#f_Student_EduLevel").val("");
+			$("#f_Student_GraduateDate").val("");
+			$("#f_Student_Score").val("");
+			$("#f_Student_GruduateSchoolId").val("");
+			$("#f_Student_Profession").val("");
+			$("#f_Student_IdCardNo").val("");
+			$("#f_Student_HuKouType").val("");
+			$("#f_Student_Address").val("");
+			$("#f_Student_Postcode").val("");
+			$("#f_Student_FeeSource").val("");
+			$("#f_Student_SmallInfoSourceId").val("");
+			$("#f_Student_QQ").val("");
+			$("#f_Student_Email").val("");
+			$("#f_Student_Mobile").val("");
+			$("#f_Student_HomeTelephone").val("");
+			$("#f_Student_OfficeTelephone").val("");
+			$("#f_Student_MemberRelType1").val("");
+			$("#f_Student_MemberName1").val("");
+			$("#f_Student_MemberCompany1").val("");
+			$("#f_Student_MemberPosition1").val("");
+			$("#f_Student_MemberMobile1").val("");
+			$("#f_Student_MemberRelType2").val("");
+			$("#f_Student_MemberName2").val("");
+			$("#f_Student_MemberCompany2").val("");
+			$("#f_Student_MemberPosition2").val("");
+			$("#f_Student_MemberMobile2").val("");
+			$("#f_Student_MemberRelType3").val("");
+			$("#f_Student_MemberName3").val("");
+			$("#f_Student_MemberCompany3").val("");
+			$("#f_Student_MemberPosition3").val("");
+			$("#f_Student_MemberMobile3").val("");
+			$("#f_Student_MemberRelType4").val("");
+			$("#f_Student_MemberName4").val("");
+			$("#f_Student_MemberCompany4").val("");
+			$("#f_Student_MemberPosition4").val("");
+			$("#f_Student_MemberMobile4").val("");
+			$("#f_Student_WorkState").val("");
+			$("#f_Student_StudyDuration1").val("");
+			$("#f_Student_StudySchool1").val("");
+			$("#f_Student_StudyPosition1").val("");
+			$("#f_Student_StudyDuration2").val("");
+			$("#f_Student_StudySchool2").val("");
+			$("#f_Student_StudyPosition2").val("");
+			$("#f_Student_StudyDuration3").val("");
+			$("#f_Student_StudySchool3").val("");
+			$("#f_Student_StudyPosition3").val("");
+			$("#f_Student_SoftwareExp").val("");
+			$("#f_Student_ProgramExp").val("");
+			$("#f_Student_NetworkExp").val("");
+			$("#f_Student_RelCourse").val("");
+			$("#f_Student_DistrictId").val("");
+			$("#f_Student_IntentCity").val("");
+			$("#f_Student_ClazzId").val("");
+			$("#f_Student_StudentNo").val("");
+			$("#f_Student_InSchoolDate").val("");
+			$("#f_Student_IsDorm").val("");
+			$("#f_Student_DormNo").val("");
+			$("#f_Student_GiveCourseware").val("");
+			$("#f_Student_Consultants").val("");
+			$("#f_Student_Remark").val("");
+			$("#f_Student_CreateTime").val("");
+			$("#f_Student_LastUpdateTime").val("");
+			$("#f_Student_IsGetQualification").val("");
+			$("#f_Student_Status").val("");
+			$("#f_Student_TechnicalWay").val("");
+			$("#f_Student_NeedObtainWork").val("");
+			$("#f_Student_IntentPosition").val("");
+			$("#f_Student_TargetSalary").val("");
+			$("#f_Student_InsuranceStartDate").val("");
+			$("#f_Student_InsuranceEndDate").val("");
+			$("#f_Student_GaoKaoBatch").val("");
+			$("#f_Student_GiveNotebook").val("");
+			$("#f_Student_MaxSalary").val("");
+			$("#f_Student_CurrentSalary").val("");
+			$("#f_Student_FirstSalary").val("");
+			$("#f_Student_BeginSchoolTime").val("");
+			$("#f_Student_MasterName1").val("");
+			$("#f_Student_MasterName2").val("");
+			$("#f_Student_MasterName3").val("");
+			$("#f_Student_TeacherName1").val("");
+			$("#f_Student_TeacherName2").val("");
+			$("#f_Student_TeacherName3").val("");
+			$("#f_Student_MasterId1").val("");
+			$("#f_Student_MasterId2").val("");
+			$("#f_Student_MasterId3").val("");
+			$("#f_Student_TeacherId1").val("");
+			$("#f_Student_TeacherId2").val("");
+			$("#f_Student_TeacherId3").val("");
+			$("#f_Student_QualificationSchool").val("");
+			$("#f_Student_InsuranceStatus").val("");
+			$("#f_Student_OldOaId").val("");
+			$("#f_Student_OldOaInfoSourceSubTypeName").val("");
+			$("#f_Student_OldOaClass").val("");
+			$("#f_Student_HasRelTeacher").val("");
+			$("#f_Student_RelTeacher").val("");
+			$("#f_Student_HomeIntro").val("");
+			$("#f_Student_Give1").val("");
+			$("#f_Student_Give2").val("");
+			$("#f_Student_Give3").val("");
+			$("#f_Student_Receive1").val("");
+			$("#f_Student_Receive2").val("");
+			$("#f_Student_Receive3").val("");
+			$("#f_Student_Receive4").val("");
+			$("#f_Student_Receive5").val("");
+			$("#f_Student_Receive6").val("");
+			$("#f_Student_Pic1").val("");
+			$("#f_Student_Pic2").val("");
+			$("#f_Student_Pic3").val("");
+			$("#f_Student_Pic4").val("");
+			$("#f_Student_Pic5").val("");
+			$("#f_Student_Pic6").val("");
+			$dialog = $.ligerDialog.open({ target: $("#dStudent"), width: 300, height: 150 });
+        }
+        function editStudent() {
+            action = "edit";
+            var row = gStudent.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+			$("#f_Student_Id").val(row.Id);
+			$("#f_Student_Name").val(row.Name);
+			$("#f_Student_PinYin").val(row.PinYin);
+			$("#f_Student_Gender").val(row.Gender);
+			$("#f_Student_Birthday").val(row.Birthday);
+			$("#f_Student_EduLevel").val(row.EduLevel);
+			$("#f_Student_GraduateDate").val(row.GraduateDate);
+			$("#f_Student_Score").val(row.Score);
+			$("#f_Student_GruduateSchoolId").val(row.GruduateSchoolId);
+			$("#f_Student_Profession").val(row.Profession);
+			$("#f_Student_IdCardNo").val(row.IdCardNo);
+			$("#f_Student_HuKouType").val(row.HuKouType);
+			$("#f_Student_Address").val(row.Address);
+			$("#f_Student_Postcode").val(row.Postcode);
+			$("#f_Student_FeeSource").val(row.FeeSource);
+			$("#f_Student_SmallInfoSourceId").val(row.SmallInfoSourceId);
+			$("#f_Student_QQ").val(row.QQ);
+			$("#f_Student_Email").val(row.Email);
+			$("#f_Student_Mobile").val(row.Mobile);
+			$("#f_Student_HomeTelephone").val(row.HomeTelephone);
+			$("#f_Student_OfficeTelephone").val(row.OfficeTelephone);
+			$("#f_Student_MemberRelType1").val(row.MemberRelType1);
+			$("#f_Student_MemberName1").val(row.MemberName1);
+			$("#f_Student_MemberCompany1").val(row.MemberCompany1);
+			$("#f_Student_MemberPosition1").val(row.MemberPosition1);
+			$("#f_Student_MemberMobile1").val(row.MemberMobile1);
+			$("#f_Student_MemberRelType2").val(row.MemberRelType2);
+			$("#f_Student_MemberName2").val(row.MemberName2);
+			$("#f_Student_MemberCompany2").val(row.MemberCompany2);
+			$("#f_Student_MemberPosition2").val(row.MemberPosition2);
+			$("#f_Student_MemberMobile2").val(row.MemberMobile2);
+			$("#f_Student_MemberRelType3").val(row.MemberRelType3);
+			$("#f_Student_MemberName3").val(row.MemberName3);
+			$("#f_Student_MemberCompany3").val(row.MemberCompany3);
+			$("#f_Student_MemberPosition3").val(row.MemberPosition3);
+			$("#f_Student_MemberMobile3").val(row.MemberMobile3);
+			$("#f_Student_MemberRelType4").val(row.MemberRelType4);
+			$("#f_Student_MemberName4").val(row.MemberName4);
+			$("#f_Student_MemberCompany4").val(row.MemberCompany4);
+			$("#f_Student_MemberPosition4").val(row.MemberPosition4);
+			$("#f_Student_MemberMobile4").val(row.MemberMobile4);
+			$("#f_Student_WorkState").val(row.WorkState);
+			$("#f_Student_StudyDuration1").val(row.StudyDuration1);
+			$("#f_Student_StudySchool1").val(row.StudySchool1);
+			$("#f_Student_StudyPosition1").val(row.StudyPosition1);
+			$("#f_Student_StudyDuration2").val(row.StudyDuration2);
+			$("#f_Student_StudySchool2").val(row.StudySchool2);
+			$("#f_Student_StudyPosition2").val(row.StudyPosition2);
+			$("#f_Student_StudyDuration3").val(row.StudyDuration3);
+			$("#f_Student_StudySchool3").val(row.StudySchool3);
+			$("#f_Student_StudyPosition3").val(row.StudyPosition3);
+			$("#f_Student_SoftwareExp").val(row.SoftwareExp);
+			$("#f_Student_ProgramExp").val(row.ProgramExp);
+			$("#f_Student_NetworkExp").val(row.NetworkExp);
+			$("#f_Student_RelCourse").val(row.RelCourse);
+			$("#f_Student_DistrictId").val(row.DistrictId);
+			$("#f_Student_IntentCity").val(row.IntentCity);
+			$("#f_Student_ClazzId").val(row.ClazzId);
+			$("#f_Student_StudentNo").val(row.StudentNo);
+			$("#f_Student_InSchoolDate").val(row.InSchoolDate);
+			$("#f_Student_IsDorm").val(row.IsDorm);
+			$("#f_Student_DormNo").val(row.DormNo);
+			$("#f_Student_GiveCourseware").val(row.GiveCourseware);
+			$("#f_Student_Consultants").val(row.Consultants);
+			$("#f_Student_Remark").val(row.Remark);
+			$("#f_Student_CreateTime").val(row.CreateTime);
+			$("#f_Student_LastUpdateTime").val(row.LastUpdateTime);
+			$("#f_Student_IsGetQualification").val(row.IsGetQualification);
+			$("#f_Student_Status").val(row.Status);
+			$("#f_Student_TechnicalWay").val(row.TechnicalWay);
+			$("#f_Student_NeedObtainWork").val(row.NeedObtainWork);
+			$("#f_Student_IntentPosition").val(row.IntentPosition);
+			$("#f_Student_TargetSalary").val(row.TargetSalary);
+			$("#f_Student_InsuranceStartDate").val(row.InsuranceStartDate);
+			$("#f_Student_InsuranceEndDate").val(row.InsuranceEndDate);
+			$("#f_Student_GaoKaoBatch").val(row.GaoKaoBatch);
+			$("#f_Student_GiveNotebook").val(row.GiveNotebook);
+			$("#f_Student_MaxSalary").val(row.MaxSalary);
+			$("#f_Student_CurrentSalary").val(row.CurrentSalary);
+			$("#f_Student_FirstSalary").val(row.FirstSalary);
+			$("#f_Student_BeginSchoolTime").val(row.BeginSchoolTime);
+			$("#f_Student_MasterName1").val(row.MasterName1);
+			$("#f_Student_MasterName2").val(row.MasterName2);
+			$("#f_Student_MasterName3").val(row.MasterName3);
+			$("#f_Student_TeacherName1").val(row.TeacherName1);
+			$("#f_Student_TeacherName2").val(row.TeacherName2);
+			$("#f_Student_TeacherName3").val(row.TeacherName3);
+			$("#f_Student_MasterId1").val(row.MasterId1);
+			$("#f_Student_MasterId2").val(row.MasterId2);
+			$("#f_Student_MasterId3").val(row.MasterId3);
+			$("#f_Student_TeacherId1").val(row.TeacherId1);
+			$("#f_Student_TeacherId2").val(row.TeacherId2);
+			$("#f_Student_TeacherId3").val(row.TeacherId3);
+			$("#f_Student_QualificationSchool").val(row.QualificationSchool);
+			$("#f_Student_InsuranceStatus").val(row.InsuranceStatus);
+			$("#f_Student_OldOaId").val(row.OldOaId);
+			$("#f_Student_OldOaInfoSourceSubTypeName").val(row.OldOaInfoSourceSubTypeName);
+			$("#f_Student_OldOaClass").val(row.OldOaClass);
+			$("#f_Student_HasRelTeacher").val(row.HasRelTeacher);
+			$("#f_Student_RelTeacher").val(row.RelTeacher);
+			$("#f_Student_HomeIntro").val(row.HomeIntro);
+			$("#f_Student_Give1").val(row.Give1);
+			$("#f_Student_Give2").val(row.Give2);
+			$("#f_Student_Give3").val(row.Give3);
+			$("#f_Student_Receive1").val(row.Receive1);
+			$("#f_Student_Receive2").val(row.Receive2);
+			$("#f_Student_Receive3").val(row.Receive3);
+			$("#f_Student_Receive4").val(row.Receive4);
+			$("#f_Student_Receive5").val(row.Receive5);
+			$("#f_Student_Receive6").val(row.Receive6);
+			$("#f_Student_Pic1").val(row.Pic1);
+			$("#f_Student_Pic2").val(row.Pic2);
+			$("#f_Student_Pic3").val(row.Pic3);
+			$("#f_Student_Pic4").val(row.Pic4);
+			$("#f_Student_Pic5").val(row.Pic5);
+			$("#f_Student_Pic6").val(row.Pic6);
+            $dialog = $.ligerDialog.open({ target: $("#dStudent"), width: 300, height: 150 });
+        }
+        function deleteStudent() {
+            var row = gStudent.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？",function (r) { 
+                if(r){
+                    $.post("@Url.Action("Delete","Student")", { id: row.Id }
+                        , function (result) {
+                            if (result.Successful) {
+                                gStudent.deleteSelectedRow();
+                            } else {
+                                $.ligerMessageBox.error('错误', result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+        function saveStudent(){
+            if(action=="add"){
+                $.post("@Url.Action("Add","Student")", $("#frmStudent").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            gStudent.addRow(result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }else{
+                $.post("@Url.Action("Update","Student")", $("#frmStudent").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            var row = gStudent.getSelected();
+                            if (!row) { alert('请选择行'); return; }
+                            gStudent.updateRow(row,result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+<body style="padding:10px;height:100%; text-align:center;">
+  <div id="mainsearch" style=" width:98%">
+    <div class="searchtitle">
+        <span>搜索</span><img src="@Url.Content("~/Content/lib/icons/32X32/searchtool.gif")" alt="" />
+        <div class="togglebtn"></div> 
+    </div>
+    <div class="navline" style="margin-bottom:4px; margin-top:4px;"></div>
+    <div class="searchbox">
+        <form id="formsearch" class="l-form" action="">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+			<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Id</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdSrh' type='text' id='IdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdFromSrh' type='text' id='IdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdToSrh' type='text' id='IdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Name</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NameSrh' type='text' id='NameSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>PinYin</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='PinYinSrh' type='text' id='PinYinSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Gender</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GenderSrh' type='text' id='GenderSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Birthday</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='BirthdaySrh' type='text' id='BirthdaySrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>EduLevel</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='EduLevelSrh' type='text' id='EduLevelSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GraduateDate</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GraduateDateSrh' type='text' id='GraduateDateSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Score</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ScoreSrh' type='text' id='ScoreSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ScoreFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ScoreFromSrh' type='text' id='ScoreFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ScoreTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ScoreToSrh' type='text' id='ScoreToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GruduateSchoolId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GruduateSchoolIdSrh' type='text' id='GruduateSchoolIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GruduateSchoolIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GruduateSchoolIdFromSrh' type='text' id='GruduateSchoolIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GruduateSchoolIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GruduateSchoolIdToSrh' type='text' id='GruduateSchoolIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Profession</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ProfessionSrh' type='text' id='ProfessionSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdCardNo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdCardNoSrh' type='text' id='IdCardNoSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HuKouType</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HuKouTypeSrh' type='text' id='HuKouTypeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Address</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='AddressSrh' type='text' id='AddressSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Postcode</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='PostcodeSrh' type='text' id='PostcodeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>FeeSource</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='FeeSourceSrh' type='text' id='FeeSourceSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SmallInfoSourceId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SmallInfoSourceIdSrh' type='text' id='SmallInfoSourceIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SmallInfoSourceIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SmallInfoSourceIdFromSrh' type='text' id='SmallInfoSourceIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SmallInfoSourceIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SmallInfoSourceIdToSrh' type='text' id='SmallInfoSourceIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>QQ</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='QQSrh' type='text' id='QQSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Email</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='EmailSrh' type='text' id='EmailSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Mobile</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MobileSrh' type='text' id='MobileSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HomeTelephone</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HomeTelephoneSrh' type='text' id='HomeTelephoneSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>OfficeTelephone</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='OfficeTelephoneSrh' type='text' id='OfficeTelephoneSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberRelType1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberRelType1Srh' type='text' id='MemberRelType1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberName1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberName1Srh' type='text' id='MemberName1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberCompany1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberCompany1Srh' type='text' id='MemberCompany1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberPosition1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberPosition1Srh' type='text' id='MemberPosition1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberMobile1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberMobile1Srh' type='text' id='MemberMobile1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberRelType2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberRelType2Srh' type='text' id='MemberRelType2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberName2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberName2Srh' type='text' id='MemberName2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberCompany2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberCompany2Srh' type='text' id='MemberCompany2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberPosition2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberPosition2Srh' type='text' id='MemberPosition2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberMobile2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberMobile2Srh' type='text' id='MemberMobile2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberRelType3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberRelType3Srh' type='text' id='MemberRelType3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberName3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberName3Srh' type='text' id='MemberName3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberCompany3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberCompany3Srh' type='text' id='MemberCompany3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberPosition3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberPosition3Srh' type='text' id='MemberPosition3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberMobile3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberMobile3Srh' type='text' id='MemberMobile3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberRelType4</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberRelType4Srh' type='text' id='MemberRelType4Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberName4</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberName4Srh' type='text' id='MemberName4Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberCompany4</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberCompany4Srh' type='text' id='MemberCompany4Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberPosition4</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberPosition4Srh' type='text' id='MemberPosition4Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MemberMobile4</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MemberMobile4Srh' type='text' id='MemberMobile4Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>WorkState</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='WorkStateSrh' type='text' id='WorkStateSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudyDuration1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudyDuration1Srh' type='text' id='StudyDuration1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudySchool1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudySchool1Srh' type='text' id='StudySchool1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudyPosition1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudyPosition1Srh' type='text' id='StudyPosition1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudyDuration2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudyDuration2Srh' type='text' id='StudyDuration2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudySchool2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudySchool2Srh' type='text' id='StudySchool2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudyPosition2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudyPosition2Srh' type='text' id='StudyPosition2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudyDuration3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudyDuration3Srh' type='text' id='StudyDuration3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudySchool3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudySchool3Srh' type='text' id='StudySchool3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudyPosition3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudyPosition3Srh' type='text' id='StudyPosition3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SoftwareExp</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SoftwareExpSrh' type='text' id='SoftwareExpSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ProgramExp</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ProgramExpSrh' type='text' id='ProgramExpSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>NetworkExp</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NetworkExpSrh' type='text' id='NetworkExpSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>RelCourse</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='RelCourseSrh' type='text' id='RelCourseSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DistrictId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DistrictIdSrh' type='text' id='DistrictIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DistrictIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DistrictIdFromSrh' type='text' id='DistrictIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DistrictIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DistrictIdToSrh' type='text' id='DistrictIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IntentCity</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IntentCitySrh' type='text' id='IntentCitySrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ClazzId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ClazzIdSrh' type='text' id='ClazzIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ClazzIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ClazzIdFromSrh' type='text' id='ClazzIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ClazzIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ClazzIdToSrh' type='text' id='ClazzIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudentNo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudentNoSrh' type='text' id='StudentNoSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>InSchoolDate</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='InSchoolDateSrh' type='text' id='InSchoolDateSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsDorm</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsDormSrh' type='text' id='IsDormSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DormNo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DormNoSrh' type='text' id='DormNoSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GiveCourseware</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GiveCoursewareSrh' type='text' id='GiveCoursewareSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Consultants</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ConsultantsSrh' type='text' id='ConsultantsSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Remark</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='RemarkSrh' type='text' id='RemarkSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>CreateTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='CreateTimeSrh' type='text' id='CreateTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>LastUpdateTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LastUpdateTimeSrh' type='text' id='LastUpdateTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsGetQualification</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsGetQualificationSrh' type='text' id='IsGetQualificationSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Status</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StatusSrh' type='text' id='StatusSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TechnicalWay</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TechnicalWaySrh' type='text' id='TechnicalWaySrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>NeedObtainWork</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NeedObtainWorkSrh' type='text' id='NeedObtainWorkSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IntentPosition</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IntentPositionSrh' type='text' id='IntentPositionSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TargetSalary</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TargetSalarySrh' type='text' id='TargetSalarySrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TargetSalaryFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TargetSalaryFromSrh' type='text' id='TargetSalaryFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TargetSalaryTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TargetSalaryToSrh' type='text' id='TargetSalaryToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>InsuranceStartDate</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='InsuranceStartDateSrh' type='text' id='InsuranceStartDateSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>InsuranceEndDate</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='InsuranceEndDateSrh' type='text' id='InsuranceEndDateSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GaoKaoBatch</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GaoKaoBatchSrh' type='text' id='GaoKaoBatchSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>GiveNotebook</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GiveNotebookSrh' type='text' id='GiveNotebookSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MaxSalary</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MaxSalarySrh' type='text' id='MaxSalarySrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MaxSalaryFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MaxSalaryFromSrh' type='text' id='MaxSalaryFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MaxSalaryTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MaxSalaryToSrh' type='text' id='MaxSalaryToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>CurrentSalary</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='CurrentSalarySrh' type='text' id='CurrentSalarySrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>CurrentSalaryFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='CurrentSalaryFromSrh' type='text' id='CurrentSalaryFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>CurrentSalaryTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='CurrentSalaryToSrh' type='text' id='CurrentSalaryToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>FirstSalary</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='FirstSalarySrh' type='text' id='FirstSalarySrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>FirstSalaryFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='FirstSalaryFromSrh' type='text' id='FirstSalaryFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>FirstSalaryTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='FirstSalaryToSrh' type='text' id='FirstSalaryToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>BeginSchoolTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='BeginSchoolTimeSrh' type='text' id='BeginSchoolTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MasterName1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MasterName1Srh' type='text' id='MasterName1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MasterName2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MasterName2Srh' type='text' id='MasterName2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MasterName3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MasterName3Srh' type='text' id='MasterName3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeacherName1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherName1Srh' type='text' id='TeacherName1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeacherName2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherName2Srh' type='text' id='TeacherName2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeacherName3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherName3Srh' type='text' id='TeacherName3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MasterId1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MasterId1Srh' type='text' id='MasterId1Srh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MasterId1From</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MasterId1FromSrh' type='text' id='MasterId1FromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MasterId1To</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MasterId1ToSrh' type='text' id='MasterId1ToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MasterId2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MasterId2Srh' type='text' id='MasterId2Srh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MasterId2From</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MasterId2FromSrh' type='text' id='MasterId2FromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MasterId2To</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MasterId2ToSrh' type='text' id='MasterId2ToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MasterId3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MasterId3Srh' type='text' id='MasterId3Srh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MasterId3From</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MasterId3FromSrh' type='text' id='MasterId3FromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MasterId3To</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MasterId3ToSrh' type='text' id='MasterId3ToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeacherId1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherId1Srh' type='text' id='TeacherId1Srh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeacherId1From</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherId1FromSrh' type='text' id='TeacherId1FromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeacherId1To</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherId1ToSrh' type='text' id='TeacherId1ToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeacherId2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherId2Srh' type='text' id='TeacherId2Srh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeacherId2From</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherId2FromSrh' type='text' id='TeacherId2FromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeacherId2To</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherId2ToSrh' type='text' id='TeacherId2ToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeacherId3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherId3Srh' type='text' id='TeacherId3Srh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeacherId3From</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherId3FromSrh' type='text' id='TeacherId3FromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeacherId3To</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherId3ToSrh' type='text' id='TeacherId3ToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>QualificationSchool</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='QualificationSchoolSrh' type='text' id='QualificationSchoolSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>InsuranceStatus</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='InsuranceStatusSrh' type='text' id='InsuranceStatusSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>OldOaId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='OldOaIdSrh' type='text' id='OldOaIdSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>OldOaInfoSourceSubTypeName</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='OldOaInfoSourceSubTypeNameSrh' type='text' id='OldOaInfoSourceSubTypeNameSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>OldOaClass</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='OldOaClassSrh' type='text' id='OldOaClassSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HasRelTeacher</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HasRelTeacherSrh' type='text' id='HasRelTeacherSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>RelTeacher</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='RelTeacherSrh' type='text' id='RelTeacherSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>HomeIntro</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='HomeIntroSrh' type='text' id='HomeIntroSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Give1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Give1Srh' type='text' id='Give1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Give2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Give2Srh' type='text' id='Give2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Give3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Give3Srh' type='text' id='Give3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Receive1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Receive1Srh' type='text' id='Receive1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Receive2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Receive2Srh' type='text' id='Receive2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Receive3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Receive3Srh' type='text' id='Receive3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Receive4</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Receive4Srh' type='text' id='Receive4Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Receive5</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Receive5Srh' type='text' id='Receive5Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Receive6</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Receive6Srh' type='text' id='Receive6Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Pic1</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Pic1Srh' type='text' id='Pic1Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Pic2</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Pic2Srh' type='text' id='Pic2Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Pic3</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Pic3Srh' type='text' id='Pic3Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Pic4</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Pic4Srh' type='text' id='Pic4Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Pic5</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Pic5Srh' type='text' id='Pic5Srh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Pic6</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='Pic6Srh' type='text' id='Pic6Srh' ltype='text' /></td>
+</tr>
+
+            <tr>
+                <td style="text-align:center;" class="l-table-edit-td" colspan="3"><input type="button" value="查询" id="btnSearch"  /></td>
+            </tr>
+        </table>
+        
+        </form>
+    </div>
+  </div>
+  <div id="grdStudent"></div> 
+  
+   <div id="dStudent" style="display: none;">
+        <form action="" method="post" id="frmStudent">
+			<input type="hidden" id="f_Student_Id" name="Id" value="" />
+			<table cellpadding="0" cellspacing="0" class="l-table-edit" >
+	            
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Name</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Name' type='text' id='f_Student_Name' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>PinYin</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='PinYin' type='text' id='f_Student_PinYin' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Gender</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Gender' type='text' id='f_Student_Gender' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Birthday</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Birthday' type='text' id='f_Student_Birthday' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>EduLevel</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='EduLevel' type='text' id='f_Student_EduLevel' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>GraduateDate</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='GraduateDate' type='text' id='f_Student_GraduateDate' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Score</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Score' type='text' id='f_Student_Score' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>GruduateSchoolId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='GruduateSchoolId' type='text' id='f_Student_GruduateSchoolId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Profession</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Profession' type='text' id='f_Student_Profession' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IdCardNo</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IdCardNo' type='text' id='f_Student_IdCardNo' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>HuKouType</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='HuKouType' type='text' id='f_Student_HuKouType' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Address</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Address' type='text' id='f_Student_Address' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Postcode</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Postcode' type='text' id='f_Student_Postcode' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>FeeSource</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='FeeSource' type='text' id='f_Student_FeeSource' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>SmallInfoSourceId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='SmallInfoSourceId' type='text' id='f_Student_SmallInfoSourceId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>QQ</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='QQ' type='text' id='f_Student_QQ' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Email</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Email' type='text' id='f_Student_Email' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Mobile</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Mobile' type='text' id='f_Student_Mobile' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>HomeTelephone</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='HomeTelephone' type='text' id='f_Student_HomeTelephone' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>OfficeTelephone</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='OfficeTelephone' type='text' id='f_Student_OfficeTelephone' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberRelType1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberRelType1' type='text' id='f_Student_MemberRelType1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberName1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberName1' type='text' id='f_Student_MemberName1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberCompany1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberCompany1' type='text' id='f_Student_MemberCompany1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberPosition1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberPosition1' type='text' id='f_Student_MemberPosition1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberMobile1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberMobile1' type='text' id='f_Student_MemberMobile1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberRelType2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberRelType2' type='text' id='f_Student_MemberRelType2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberName2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberName2' type='text' id='f_Student_MemberName2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberCompany2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberCompany2' type='text' id='f_Student_MemberCompany2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberPosition2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberPosition2' type='text' id='f_Student_MemberPosition2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberMobile2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberMobile2' type='text' id='f_Student_MemberMobile2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberRelType3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberRelType3' type='text' id='f_Student_MemberRelType3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberName3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberName3' type='text' id='f_Student_MemberName3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberCompany3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberCompany3' type='text' id='f_Student_MemberCompany3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberPosition3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberPosition3' type='text' id='f_Student_MemberPosition3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberMobile3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberMobile3' type='text' id='f_Student_MemberMobile3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberRelType4</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberRelType4' type='text' id='f_Student_MemberRelType4' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberName4</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberName4' type='text' id='f_Student_MemberName4' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberCompany4</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberCompany4' type='text' id='f_Student_MemberCompany4' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberPosition4</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberPosition4' type='text' id='f_Student_MemberPosition4' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MemberMobile4</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MemberMobile4' type='text' id='f_Student_MemberMobile4' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>WorkState</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='WorkState' type='text' id='f_Student_WorkState' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudyDuration1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudyDuration1' type='text' id='f_Student_StudyDuration1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudySchool1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudySchool1' type='text' id='f_Student_StudySchool1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudyPosition1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudyPosition1' type='text' id='f_Student_StudyPosition1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudyDuration2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudyDuration2' type='text' id='f_Student_StudyDuration2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudySchool2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudySchool2' type='text' id='f_Student_StudySchool2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudyPosition2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudyPosition2' type='text' id='f_Student_StudyPosition2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudyDuration3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudyDuration3' type='text' id='f_Student_StudyDuration3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudySchool3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudySchool3' type='text' id='f_Student_StudySchool3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudyPosition3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudyPosition3' type='text' id='f_Student_StudyPosition3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>SoftwareExp</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='SoftwareExp' type='text' id='f_Student_SoftwareExp' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ProgramExp</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ProgramExp' type='text' id='f_Student_ProgramExp' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>NetworkExp</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='NetworkExp' type='text' id='f_Student_NetworkExp' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>RelCourse</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='RelCourse' type='text' id='f_Student_RelCourse' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>DistrictId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='DistrictId' type='text' id='f_Student_DistrictId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IntentCity</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IntentCity' type='text' id='f_Student_IntentCity' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ClazzId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ClazzId' type='text' id='f_Student_ClazzId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudentNo</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudentNo' type='text' id='f_Student_StudentNo' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>InSchoolDate</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='InSchoolDate' type='text' id='f_Student_InSchoolDate' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsDorm</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsDorm' type='text' id='f_Student_IsDorm' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>DormNo</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='DormNo' type='text' id='f_Student_DormNo' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>GiveCourseware</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='GiveCourseware' type='text' id='f_Student_GiveCourseware' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Consultants</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Consultants' type='text' id='f_Student_Consultants' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Remark</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Remark' type='text' id='f_Student_Remark' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>CreateTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='CreateTime' type='text' id='f_Student_CreateTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>LastUpdateTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='LastUpdateTime' type='text' id='f_Student_LastUpdateTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsGetQualification</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsGetQualification' type='text' id='f_Student_IsGetQualification' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Status</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Status' type='text' id='f_Student_Status' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TechnicalWay</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TechnicalWay' type='text' id='f_Student_TechnicalWay' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>NeedObtainWork</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='NeedObtainWork' type='text' id='f_Student_NeedObtainWork' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IntentPosition</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IntentPosition' type='text' id='f_Student_IntentPosition' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TargetSalary</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TargetSalary' type='text' id='f_Student_TargetSalary' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>InsuranceStartDate</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='InsuranceStartDate' type='text' id='f_Student_InsuranceStartDate' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>InsuranceEndDate</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='InsuranceEndDate' type='text' id='f_Student_InsuranceEndDate' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>GaoKaoBatch</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='GaoKaoBatch' type='text' id='f_Student_GaoKaoBatch' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>GiveNotebook</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='GiveNotebook' type='text' id='f_Student_GiveNotebook' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MaxSalary</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MaxSalary' type='text' id='f_Student_MaxSalary' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>CurrentSalary</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='CurrentSalary' type='text' id='f_Student_CurrentSalary' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>FirstSalary</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='FirstSalary' type='text' id='f_Student_FirstSalary' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>BeginSchoolTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='BeginSchoolTime' type='text' id='f_Student_BeginSchoolTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MasterName1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MasterName1' type='text' id='f_Student_MasterName1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MasterName2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MasterName2' type='text' id='f_Student_MasterName2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MasterName3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MasterName3' type='text' id='f_Student_MasterName3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TeacherName1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TeacherName1' type='text' id='f_Student_TeacherName1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TeacherName2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TeacherName2' type='text' id='f_Student_TeacherName2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TeacherName3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TeacherName3' type='text' id='f_Student_TeacherName3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MasterId1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MasterId1' type='text' id='f_Student_MasterId1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MasterId2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MasterId2' type='text' id='f_Student_MasterId2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MasterId3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MasterId3' type='text' id='f_Student_MasterId3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TeacherId1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TeacherId1' type='text' id='f_Student_TeacherId1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TeacherId2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TeacherId2' type='text' id='f_Student_TeacherId2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TeacherId3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TeacherId3' type='text' id='f_Student_TeacherId3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>QualificationSchool</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='QualificationSchool' type='text' id='f_Student_QualificationSchool' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>InsuranceStatus</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='InsuranceStatus' type='text' id='f_Student_InsuranceStatus' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>OldOaId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='OldOaId' type='text' id='f_Student_OldOaId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>OldOaInfoSourceSubTypeName</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='OldOaInfoSourceSubTypeName' type='text' id='f_Student_OldOaInfoSourceSubTypeName' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>OldOaClass</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='OldOaClass' type='text' id='f_Student_OldOaClass' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>HasRelTeacher</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='HasRelTeacher' type='text' id='f_Student_HasRelTeacher' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>RelTeacher</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='RelTeacher' type='text' id='f_Student_RelTeacher' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>HomeIntro</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='HomeIntro' type='text' id='f_Student_HomeIntro' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Give1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Give1' type='text' id='f_Student_Give1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Give2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Give2' type='text' id='f_Student_Give2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Give3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Give3' type='text' id='f_Student_Give3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Receive1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Receive1' type='text' id='f_Student_Receive1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Receive2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Receive2' type='text' id='f_Student_Receive2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Receive3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Receive3' type='text' id='f_Student_Receive3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Receive4</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Receive4' type='text' id='f_Student_Receive4' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Receive5</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Receive5' type='text' id='f_Student_Receive5' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Receive6</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Receive6' type='text' id='f_Student_Receive6' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Pic1</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Pic1' type='text' id='f_Student_Pic1' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Pic2</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Pic2' type='text' id='f_Student_Pic2' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Pic3</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Pic3' type='text' id='f_Student_Pic3' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Pic4</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Pic4' type='text' id='f_Student_Pic4' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Pic5</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Pic5' type='text' id='f_Student_Pic5' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Pic6</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Pic6' type='text' id='f_Student_Pic6' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+            <tr>
+                <td colspan="3" style="text-align:center;">
+                    <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
+                </td>
+            </tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

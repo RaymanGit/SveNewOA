@@ -1,0 +1,572 @@
+﻿@model Cn.Com.Sve.OA.Web.Models.ViewModels.TeleSaleViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.autocomplete.css")" rel="stylesheet" type="text/css" />
+
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.core.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.widget.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.position.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.autocomplete.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.form.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script>
+
+    <style type="text/css">
+        body
+        {
+            font-size: 12px;
+        }
+        .l-table-edit
+        {
+        }
+        .l-table-edit-td
+        {
+            padding: 4px;
+        }
+        .l-button-submit, .l-button-reset
+        {
+            width: 80px;
+            float: left;
+            margin-left: 10px;
+            padding-bottom: 2px;
+        }
+        .l-verify-tip
+        {
+            left: 230px;
+            top: 120px;
+            z-index: 9999;
+        }
+        #layout1
+        {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script type="text/javascript">
+        var gKnowledge, grdLogs, grdSomeSchoolReading,grdSomeSchoolFinish;
+        var action = "add"; // 标识电话回访记录是新增状态还是修改状态
+
+        $(function () {
+            //显示右侧边栏
+            $("#layout1").ligerLayout({ rightWidth: 300, isRightCollapse: true });
+
+            gKnowledge = $("#grdKnowledge").ligerGrid({
+                columns: [
+					{ display: '标题', name: 'Subject', width: 260, align: 'left' }
+                  ],
+                pageSize: 20, 
+                sortName: 'Name',
+                width: '98%', height: '85%', checkbox: false,
+                usePager: true, 
+                detail:{
+                    height:'auto', 
+                    onShowDetail: function (r, p) {
+                        $(p).append($('<div>' + r.Content + '</div>').css('margin', 20));
+                    }
+                }
+            });
+
+            grdSomeSchoolReading = $("#grdSomeSchoolReading").ligerGrid({
+                columns: [
+					{ display: '姓名', name: 'Name', width: 70, align: 'left' },
+					{ display: '手机', name: 'Mobile', width: 80, align: 'left' },
+					{ display: '班级', name: 'ClazzName', width: 70, align: 'left' },
+					{ display: '地区', name: 'FullDistrictName', width: 130, align: 'left' },
+					{ display: '地址', name: 'Address', width: 260, align: 'left' }
+                  ],
+                url: '@Url.Action("GetStudentsForTeleSale","Student")', 
+                parms : [{ name: 'GruduateSchoolIdSrh', value: @Model.Customer.SchoolId }, 
+                    {name:'StatusSrh',value:'在读'}],
+                sortName: 'Id',
+                sortOrder:'desc',
+                pageSize: 20, 
+                width: '98%', height: '80%', checkbox: false,
+                usePager: true,
+                detail:{
+                    height:'auto', 
+                    onShowDetail: function (r, p) {
+                        $(p).append($('<div>' + 
+                            '姓名：' + r.Name + '<br />' +
+                            '地区：' + r.FullDistrictName +  '<br />' +
+                            '地址：' + r.Address +  '<br />' +
+                            '手机：' + r.Mobile +  '<br />' +
+                            '班级：' + r.ClazzName + 
+                            '</div>').css('margin', 10));
+                    }
+                }            
+            });
+
+            grdSomeSchoolFinish = $("#grdSomeSchoolFinish").ligerGrid({
+                columns: [
+					{ display: '姓名', name: 'Name', width: 70, align: 'left' },
+					{ display: '薪水', name: 'MaxSalary', width: 70, align: 'left' },
+					{ display: '手机', name: 'Mobile', width: 80, align: 'left' },
+					{ display: '地区', name: 'FullDistrictName', width: 130, align: 'left' },
+					{ display: '地址', name: 'Address', width: 260, align: 'left' }
+                  ],
+                url: '@Url.Action("GetStudentsForTeleSale","Student")', 
+                parms : [{ name: 'GruduateSchoolIdSrh', value: @Model.Customer.SchoolId }, 
+                    {name:'StatusSrh',value:'已就业'}],
+                sortName: 'MaxSalary',
+                sortOrder:'desc',
+                pageSize: 20, 
+                width: '98%', height: '85%', checkbox: false,
+                usePager: true,
+                detail:{
+                    height:'auto', 
+                    onShowDetail: function (r, p) {
+                        $(p).append($('<div>' + 
+                            '姓名：' + r.Name + '<br />' +
+                            '薪水：' + r.MaxSalary + '<br />' +
+                            '手机：' + r.Mobile +  '<br />' +
+                            '地区：' + r.FullDistrictName +  '<br />' +
+                            '地址：' + r.Address +  
+                            '</div>').css('margin', 10));
+                    }
+                }            
+            });
+
+            grdLogs = $("#grdLogs").ligerGrid({
+                columns: [
+					{ display: '回访时间', name: 'TelTime', width: 100, align: 'left', type:'date' },
+					{ display: '下次回访时间', name: 'NextTelTime', width: 100, align: 'left', type:'date' },
+					{ display: '分类', name: 'ConsultType', width: 60, align: 'left' },
+					{ display: '回访人', name: 'SalesmanName', width: 60, align: 'left' },
+					{ display: '回访记录', name: 'Content', width: 430, align: 'left' }
+                  ],
+                pageSize: 10, 
+                url: '@Url.Action("GetData","TelSaleLog")', 
+                parms : [{ name: 'CustomerIdSrh', value : @Model.Customer.Id }],
+                sortName: 'Id',
+                sortOrder:'desc',
+                width: '98%', height: '100%', checkbox: false,
+                usePager:false,
+                detail:{
+                    height:'auto', 
+                    onShowDetail : function (r, p) {
+                        $(p).append($('<div>' + r.Content + '</div>').css('margin', 20));
+                    }
+                }
+            });
+
+
+            $("#frmKnowledgeSrh").ligerForm();
+            $("#btnSearchKnowledge").click(function () {
+                gKnowledge.set({ 
+                    url: '@Url.Action("Search", "Knowledge")',
+                    parms : [
+					    { name: 'KeywordSrh', value: $('#KnowledgeKeywordSrh').val() },
+   					    { name: 'KnowledgeTypeSrh', value: '咨询说辞' }
+                    ]
+                });
+                gKnowledge.loadData();
+            });
+
+            $("#f_SchoolName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("Suggest","School")',
+                        dataType: "json",
+                        data: {
+                            qty: 12,
+                            prefix: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.Name,
+                                    value: item.Id
+                                }
+                            }));
+                        }
+                    });
+                },
+                minLength: 1,
+                select: function (event, ui) {
+                    $("#SchoolId").val(ui.item.value);
+                    $("#f_SchoolName").val(ui.item.label);
+                    return false;
+                },
+                open: function () {
+                    $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                },
+                close: function () {
+                    $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                }
+            });
+
+            $("#f_DistrictName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("Suggest","District")',
+                        dataType: "json",
+                        data: {
+                            qty: 12,
+                            prefix: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.Name,
+                                    value: item.Id
+                                }
+                            }));
+                        }
+                    });
+                },
+                minLength: 1,
+                select: function (event, ui) {
+                    $("#DistrictId").val(ui.item.value);
+                    $("#f_DistrictName").val(ui.item.label);
+                    return false;
+                },
+                open: function () {
+                    $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                },
+                close: function () {
+                    $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                }
+            });
+
+            $("#frmCustomer").ligerForm();
+            $("#btnUpdateCustomer").click(function () {
+                $.post("@Url.Action("UpdateInTelSale","Customer")", $("#frmCustomer").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            });
+
+
+            $("#f_add_NextTeleSalesTime").ligerDateEditor({showTime:true, initValue:'@(Model.Customer.NextTeleSalesTime==null ? "" : Model.Customer.NextTeleSalesTime.Value.ToString("yyyy-MM-dd HH:mm"))'});
+            $("#frmAddLog").ligerForm();
+            $("#btnAddLog").click(function () {
+                if(action=='add'){
+                    $.post('@Url.Action("Add","TelSaleLog")', $("#frmAddLog").serialize(),
+                        function (result) {
+                            if (result.Successful) {
+                                $("#logId").val(result.Data.Id);
+                                action="edit";
+                                LG.tip("操作成功！");
+                                grdLogs.loadData();
+                            }else{
+                                LG.showError(result.Message);
+                            }
+                        }
+                    );
+                } else {
+                    $.post('@Url.Action("Update","TelSaleLog")', $("#frmAddLog").serialize(),
+                        function (result) {
+                            if (result.Successful) {
+                                LG.tip("操作成功！");
+                                grdLogs.loadData();
+                            }else{
+                                LG.showError(result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+
+
+
+
+            //收缩/展开
+            $(".searchtitle .togglebtn2").live('click',function(){ 
+                if($(this).hasClass("togglebtn-down")) $(this).removeClass("togglebtn-down");
+                else $(this).addClass("togglebtn-down");
+                var searchbox = $(this).parent().nextAll("div.searchbox:first");
+                searchbox.slideToggle('fast',function(){
+                    var h =$("#pnlMain").height()-$("#grdLogs").position().top;
+                    grdLogs.set({height:h});
+                });
+
+            }); 
+
+            $("#accordionRight").ligerAccordion({});
+       });
+
+    </script>
+</head>
+<body style="padding: 10px; height: 100%; text-align: center;">
+    <div id="layout1">
+        <div position="right" title="咨询说辞" id="accordionRight">
+            <div title="咨询说辞">
+                <form id="frmKnowledgeSrh" class="l-form" action="">
+                <table cellpadding="0" cellspacing="0" class="l-table-edit">
+                    <tr>
+                        <td style='text-align: left;' class='l-table-edit-td'>
+                            关键词
+                        </td>
+                        <td style='text-align: left;' class='l-table-edit-td'>
+                            <input name='KeywordSrh' type='text' id='KnowledgeKeywordSrh' ltype='text' />
+                        </td>
+                        <td style="text-align: center;" class="l-table-edit-td" colspan="3">
+                            <input type="button" value="查询" id="btnSearchKnowledge" />
+                        </td>
+                    </tr>
+                </table>
+                </form>
+                <div id="grdKnowledge">
+                </div>
+            </div>
+            <div title="同校在读">
+                <div id="grdSomeSchoolReading">
+                </div>
+            </div>
+            <div title="同校已就业">
+                <div id="grdSomeSchoolFinish">
+                </div>
+            </div>
+        </div>
+        <div position="center" title="回访记录" style="padding-left:10px;" id="pnlMain">
+            <div id="pnlCustomer" style="width: 98%">
+                <div class="searchtitle">
+                    <span>生源资料</span><img src="@Url.Content("~/Content/lib/icons/32X32/member.gif")" alt="" />
+                    <div class="togglebtn2">
+                    </div>
+                </div>
+                <div class="navline" style="margin-bottom: 4px; margin-top: 4px;">
+                </div>
+                <div class="searchbox">
+                    <form id="frmCustomer" class="l-form" action="">
+                        <input name='Id' type='hidden' id='CustomerId1' value="@Model.Customer.Id" />
+                    <table cellpadding="0" cellspacing="0" class="l-table-edit">
+                        <tr>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                姓名
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input name='Name' type='text' id='Name' ltype='text' value="@Model.Customer.Name" />
+                            </td>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                性别
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                @if (Model.Customer.Gender.Equals("女")) {
+                                <input name='Gender' type='radio' id='GenderMale' ltype='text' value="男" /><label>男</label>
+                                <input name='Gender' type='radio' id='GenderFemale' ltype='text' value="女" checked="checked" /><label>女</label>
+                                } else {
+                                <input name='Gender' type='radio' id='GenderMale' ltype='text' value="男" checked="checked" /><label>男</label>
+                                <input name='Gender' type='radio' id='GenderFemale' ltype='text' value="女" /><label>女</label>
+                                }
+                            </td>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                学历
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <select name="EduLevel">
+                                    <option value="" @((Model.Customer.EduLevel == null) ? "selected='selected'" : "")>未指定</option>
+                                    <option value="高中" @((Model.Customer.EduLevel != null && Model.Customer.EduLevel.Equals("高中")) ? "selected='selected'" : "")>高中</option>
+                                    <option value="初中" @((Model.Customer.EduLevel != null && Model.Customer.EduLevel.Equals("初中")) ? "selected='selected'" : "")>初中</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                家庭电话
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input name='Telephone' type='text' id='Telephone' ltype='text' value="@Model.Customer.Telephone" />
+                            </td>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                手机
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input name='Mobile' type='text' id='Mobile' ltype='text' value="@Model.Customer.Mobile" />
+                            </td>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                QQ号
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input name='QQ' type='text' id='QQ' ltype='text' value="@Model.Customer.QQ" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                区/县
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input name='f_DistrictName' type='text' id='f_DistrictName' value="@Model.Customer.District.Name" />
+                                <input name='DistrictId' type='hidden' id='DistrictId' ltype='text' value="@Model.Customer.DistrictId" />
+                            </td>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                地址
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input name='Address' type='text' id="Address" value="@Model.Customer.Address" />
+                            </td>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                邮编
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input name='Postcode' type='text' id='Postcode' ltype='text' value="@Model.Customer.Postcode" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                学校名称
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input name='f_SchoolName' type='text' id='f_SchoolName' ltype='text' validate="{required:true}" value="@Model.Customer.School.Name" />
+                                <input name='SchoolId' type='hidden' id='SchoolId' ltype='text' value="@Model.Customer.School.Id" />
+                            </td>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                班级
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input name='Clazz' type='text' id='Clazz' ltype='text' value="@Model.Customer.Clazz" />
+                            </td>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                信息来源
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input  type='text' id='BigSource' ltype='text' value="@Model.Customer.InfoSource.BigInfoSource.Name - @Model.Customer.InfoSource.Name" disabled="disabled" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                咨询师1
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input  type='text' id='C1' ltype='text' value="@((Model.Customer.Consultant1 == null) ? "" : Model.Customer.Consultant1.Name)" disabled="disabled" />
+                            </td>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                咨询师2
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input  type='text' id='C2' ltype='text' value="@((Model.Customer.Consultant2 == null) ? "" : Model.Customer.Consultant2.Name)" disabled="disabled" />
+                            </td>
+                            <td style="text-align: center;" class="l-table-edit-td" colspan="2">
+                                <input type="button" value="更新资料" id="btnUpdateCustomer" />
+                            </td>
+                        </tr>
+                    </table>
+                    </form>
+                </div>
+            </div>
+        
+            <div id="pnlAddLog" style="width: 98%">
+                <div class="searchtitle">
+                    <span>录入回访记录</span><img src="@Url.Content("~/Content/lib/icons/32X32/my_account.gif")" alt="" />
+                    <div class="togglebtn2">
+                    </div>
+                </div>
+                <div class="navline" style="margin-bottom: 4px; margin-top: 4px;">
+                </div>
+                <div class="searchbox">
+                    <form id="frmAddLog" class="l-form" action="">
+                        <input name="Id" type='hidden' id='logId' value="0" />
+                        <input name='CustomerId' type='hidden' id='f_add_CustomerId' value="@Model.Customer.Id" />
+                    <table cellpadding="0" cellspacing="0" class="l-table-edit">
+                        <tr>
+                            <td class='l-table-edit-td' colspan="6">
+                                <textarea name='Content' id='f_add_Content' ltype='text' class="l-textarea" style="width:100%;height:200;"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                生源分类
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <select id="f_add_ConsultType" name="ConsultType"  style="width:98%;">
+								<!--
+                                    <option value="" @((Model.Customer.ConsultType == null) ? "selected='selected'" : "")>未指定</option>
+                                    <option value="未电访" @((Model.Customer.ConsultType != null && Model.Customer.ConsultType.Equals("未电访")) ? "selected='selected'" : "")>未电访</option>
+                                -->
+								    <option value="电访A" @((Model.Customer.ConsultType != null && Model.Customer.ConsultType.Equals("电访A")) ? "selected='selected'" : "")>电访A</option>
+                                    <option value="电访B" @((Model.Customer.ConsultType != null && Model.Customer.ConsultType.Equals("电访B")) ? "selected='selected'" : "")>电访B</option>
+                                    <option value="电访C" @((Model.Customer.ConsultType != null && Model.Customer.ConsultType.Equals("电访C")) ? "selected='selected'" : "")>电访C</option>
+                                    <option value="电访D" @((Model.Customer.ConsultType != null && Model.Customer.ConsultType.Equals("电访D")) ? "selected='selected'" : "")>电访D</option>
+                                    <option value="上门A" @((Model.Customer.ConsultType != null && Model.Customer.ConsultType.Equals("上门A")) ? "selected='selected'" : "")>上门A</option>
+                                    <option value="上门B" @((Model.Customer.ConsultType != null && Model.Customer.ConsultType.Equals("上门B")) ? "selected='selected'" : "")>上门B</option>
+                                    <option value="上门C" @((Model.Customer.ConsultType != null && Model.Customer.ConsultType.Equals("上门C")) ? "selected='selected'" : "")>上门C</option>
+                                    <option value="上门D" @((Model.Customer.ConsultType != null && Model.Customer.ConsultType.Equals("上门D")) ? "selected='selected'" : "")>上门D</option>
+                                    <option value="定位" @((Model.Customer.ConsultType != null && Model.Customer.ConsultType.Equals("定位")) ? "selected='selected'" : "")>定位</option>
+                                    <option value="报名" @((Model.Customer.ConsultType != null && Model.Customer.ConsultType.Equals("报名")) ? "selected='selected'" : "")>报名</option>
+                                </select>
+                            </td>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                高考成绩
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input name='GaoKaoScore' type='text' id='f_add_GaoKaoScore' ltype='text' value="@Model.Customer.GaoKaoScore" />
+                            </td>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                高考批次
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <select name="GaoKaoBatch">
+                                    <option value="" @((Model.Customer.GaoKaoBatch == null) ? "selected='selected'" : "")>未指定</option>
+                                    <option value="1批" @((Model.Customer.GaoKaoBatch != null && Model.Customer.GaoKaoBatch.Equals("1批")) ? "selected='selected'" : "")>1批</option>
+                                    <option value="2A" @((Model.Customer.GaoKaoBatch != null && Model.Customer.GaoKaoBatch.Equals("2A")) ? "selected='selected'" : "")>2A</option>
+                                    <option value="2B" @((Model.Customer.GaoKaoBatch != null && Model.Customer.GaoKaoBatch.Equals("2B")) ? "selected='selected'" : "")>2B</option>
+                                    <option value="3A" @((Model.Customer.GaoKaoBatch != null && Model.Customer.GaoKaoBatch.Equals("3A")) ? "selected='selected'" : "")>3A</option>
+                                    <option value="3B" @((Model.Customer.GaoKaoBatch != null && Model.Customer.GaoKaoBatch.Equals("3B")) ? "selected='selected'" : "")>3B</option>
+                                    <option value="落榜" @((Model.Customer.GaoKaoBatch != null && Model.Customer.GaoKaoBatch.Equals("落榜")) ? "selected='selected'" : "")>落榜</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                重点客户
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input type='checkbox' id='f_add_Important' name="Important" ltype='text' value="true" />
+                            </td>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                组长跟进
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input type='checkbox' id='f_add_IsLeaderFollow' name="IsLeaderFollow" ltype='text' value="true" />
+                            </td>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                下次回访时间
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td'>
+                                <input name='NextTeleSalesTime' type='text' id='f_add_NextTeleSalesTime' ltype='text' />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: right;' class='l-table-edit-td'>
+                                关键词
+                            </td>
+                            <td style='text-align: left;' class='l-table-edit-td' colspan="4">
+                                <input name='Keywords' type='text' id='f_add_Keywords' ltype='text' ligerui="width:500" />
+                            </td>
+                            <td style="text-align:left;"><input type="button" value="保存" id="btnAddLog" /></td>
+                        </tr>
+                    </table>
+                    </form>
+                </div>
+            </div>
+
+                    <div id="grdLogs">
+                    </div>
+            
+        </div>
+    </div>
+</body>
+</html>

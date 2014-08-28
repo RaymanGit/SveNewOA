@@ -1,0 +1,280 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />  
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script> 
+	
+    <style type="text/css">
+        body{ font-size:12px;}
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-verify-tip{ left:230px; top:120px; z-index:9999;}
+    </style>
+    <script type="text/javascript">
+        var gUserGroupModulePermission;
+        var action = "add";
+        var $dialog;
+		var initData;
+		
+        $(function () {
+            gUserGroupModulePermission = $("#grdUserGroupModulePermission").ligerGrid({
+                columns: [
+                    { display: 'Id', name: 'Id', width: 100, align: 'left' },
+					{ display: 'UserGroupId', name: 'UserGroupId', width: 100, align: 'left' },
+					{ display: 'ModuleId', name: 'ModuleId', width: 100, align: 'left' }
+                  ],
+                pageSize: 20, toolbar: {},
+                url: '@Url.Action("GetData","UserGroupModulePermission")', 
+                sortName: 'Name',
+                width: '98%', height: '100%', checkbox: false,
+                usePager:true,
+                toolbar: { items: [
+                { text: '增加', icon: 'add', click: addUserGroupModulePermission },
+                { line: true },
+                { text: '修改', icon: 'modify', click: editUserGroupModulePermission },
+                { line: true },
+                { text: '删除', icon: 'delete', click: deleteUserGroupModulePermission }
+                ]
+                }
+            });
+            $("#btnSearch").click(function () {
+                gUserGroupModulePermission.set({ 
+                    parms : [
+                    { name: 'IdSrh', value: $('#IdSrh').val() },
+					{ name: 'IdFromSrh', value: $('#IdFromSrh').val() },
+					{ name: 'IdToSrh', value: $('#IdToSrh').val() },
+					{ name: 'UserGroupIdSrh', value: $('#UserGroupIdSrh').val() },
+					{ name: 'UserGroupIdFromSrh', value: $('#UserGroupIdFromSrh').val() },
+					{ name: 'UserGroupIdToSrh', value: $('#UserGroupIdToSrh').val() },
+					{ name: 'ModuleIdSrh', value: $('#ModuleIdSrh').val() },
+					{ name: 'ModuleIdFromSrh', value: $('#ModuleIdFromSrh').val() },
+					{ name: 'ModuleIdToSrh', value: $('#ModuleIdToSrh').val() }
+                    ]
+                });
+                gUserGroupModulePermission.loadData();
+            });
+			
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp)
+	            {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frmUserGroupModulePermission").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    saveUserGroupModulePermission();
+                    return false;
+                }
+            });
+
+			$.getJSON("@Url.Action("GetInitData","UserGroupModulePermission")", function(data){
+				initData = data;
+                /*
+				$("#f_City_ProvinceId").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceId',data:data.Provinces });
+                data.Provinces.unshift({ Id:'', Name:'所有' });
+                $("#f_City_ProvinceIdSrh").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceIdSrh',data:data.Provinces });
+				*/
+	            $("#formsearch").ligerForm();
+				$("#frmUserGroupModulePermission").ligerForm();
+            });
+
+
+        });
+		
+        function addUserGroupModulePermission(){
+            action = "add";
+			$("#f_UserGroupModulePermission_Id").val("");
+			$("#f_UserGroupModulePermission_UserGroupId").val("");
+			$("#f_UserGroupModulePermission_ModuleId").val("");
+			$dialog = $.ligerDialog.open({ target: $("#dUserGroupModulePermission"), width: 300, height: 150 });
+        }
+        function editUserGroupModulePermission() {
+            action = "edit";
+            var row = gUserGroupModulePermission.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+			$("#f_UserGroupModulePermission_Id").val(row.Id);
+			$("#f_UserGroupModulePermission_UserGroupId").val(row.UserGroupId);
+			$("#f_UserGroupModulePermission_ModuleId").val(row.ModuleId);
+            $dialog = $.ligerDialog.open({ target: $("#dUserGroupModulePermission"), width: 300, height: 150 });
+        }
+        function deleteUserGroupModulePermission() {
+            var row = gUserGroupModulePermission.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？",function (r) { 
+                if(r){
+                    $.post("@Url.Action("Delete","UserGroupModulePermission")", { id: row.Id }
+                        , function (result) {
+                            if (result.Successful) {
+                                gUserGroupModulePermission.deleteSelectedRow();
+                            } else {
+                                $.ligerMessageBox.error('错误', result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+        function saveUserGroupModulePermission(){
+            if(action=="add"){
+                $.post("@Url.Action("Add","UserGroupModulePermission")", $("#frmUserGroupModulePermission").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            gUserGroupModulePermission.addRow(result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }else{
+                $.post("@Url.Action("Update","UserGroupModulePermission")", $("#frmUserGroupModulePermission").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            var row = gUserGroupModulePermission.getSelected();
+                            if (!row) { alert('请选择行'); return; }
+                            gUserGroupModulePermission.updateRow(row,result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+<body style="padding:10px;height:100%; text-align:center;">
+  <div id="mainsearch" style=" width:98%">
+    <div class="searchtitle">
+        <span>搜索</span><img src="@Url.Content("~/Content/lib/icons/32X32/searchtool.gif")" alt="" />
+        <div class="togglebtn"></div> 
+    </div>
+    <div class="navline" style="margin-bottom:4px; margin-top:4px;"></div>
+    <div class="searchbox">
+        <form id="formsearch" class="l-form" action="">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+			<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Id</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdSrh' type='text' id='IdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdFromSrh' type='text' id='IdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdToSrh' type='text' id='IdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>UserGroupId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='UserGroupIdSrh' type='text' id='UserGroupIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>UserGroupIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='UserGroupIdFromSrh' type='text' id='UserGroupIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>UserGroupIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='UserGroupIdToSrh' type='text' id='UserGroupIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ModuleId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ModuleIdSrh' type='text' id='ModuleIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ModuleIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ModuleIdFromSrh' type='text' id='ModuleIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ModuleIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ModuleIdToSrh' type='text' id='ModuleIdToSrh' ltype='text' /></td>
+</tr>
+
+            <tr>
+                <td style="text-align:center;" class="l-table-edit-td" colspan="3"><input type="button" value="查询" id="btnSearch"  /></td>
+            </tr>
+        </table>
+        
+        </form>
+    </div>
+  </div>
+  <div id="grdUserGroupModulePermission"></div> 
+  
+   <div id="dUserGroupModulePermission" style="display: none;">
+        <form action="" method="post" id="frmUserGroupModulePermission">
+			<input type="hidden" id="f_UserGroupModulePermission_Id" name="Id" value="" />
+			<table cellpadding="0" cellspacing="0" class="l-table-edit" >
+	            
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>UserGroupId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='UserGroupId' type='text' id='f_UserGroupModulePermission_UserGroupId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ModuleId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ModuleId' type='text' id='f_UserGroupModulePermission_ModuleId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+            <tr>
+                <td colspan="3" style="text-align:center;">
+                    <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
+                </td>
+            </tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

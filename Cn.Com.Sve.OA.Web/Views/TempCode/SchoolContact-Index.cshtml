@@ -1,0 +1,453 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />  
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script> 
+	
+    <style type="text/css">
+        body{ font-size:12px;}
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-verify-tip{ left:230px; top:120px; z-index:9999;}
+    </style>
+    <script type="text/javascript">
+        var gSchoolContact;
+        var action = "add";
+        var $dialog;
+		var initData;
+		
+        $(function () {
+            gSchoolContact = $("#grdSchoolContact").ligerGrid({
+                columns: [
+                    { display: 'Id', name: 'Id', width: 100, align: 'left' },
+					{ display: 'SchoolId', name: 'SchoolId', width: 100, align: 'left' },
+					{ display: 'Year', name: 'Year', width: 100, align: 'left' },
+					{ display: 'Title', name: 'Title', width: 100, align: 'left' },
+					{ display: 'Name', name: 'Name', width: 100, align: 'left' },
+					{ display: 'Telephone', name: 'Telephone', width: 100, align: 'left' },
+					{ display: 'Mobile', name: 'Mobile', width: 100, align: 'left' },
+					{ display: 'QQ', name: 'QQ', width: 100, align: 'left' },
+					{ display: 'Address', name: 'Address', width: 100, align: 'left' },
+					{ display: 'Remark', name: 'Remark', width: 100, align: 'left' },
+					{ display: 'TopFlag', name: 'TopFlag', width: 100, align: 'left' },
+					{ display: 'OldOaId', name: 'OldOaId', width: 100, align: 'left' }
+                  ],
+                pageSize: 20, toolbar: {},
+                url: '@Url.Action("GetData","SchoolContact")', 
+                sortName: 'Name',
+                width: '98%', height: '100%', checkbox: false,
+                usePager:true,
+                toolbar: { items: [
+                { text: '增加', icon: 'add', click: addSchoolContact },
+                { line: true },
+                { text: '修改', icon: 'modify', click: editSchoolContact },
+                { line: true },
+                { text: '删除', icon: 'delete', click: deleteSchoolContact }
+                ]
+                }
+            });
+            $("#btnSearch").click(function () {
+                gSchoolContact.set({ 
+                    parms : [
+                    { name: 'IdSrh', value: $('#IdSrh').val() },
+					{ name: 'IdFromSrh', value: $('#IdFromSrh').val() },
+					{ name: 'IdToSrh', value: $('#IdToSrh').val() },
+					{ name: 'SchoolIdSrh', value: $('#SchoolIdSrh').val() },
+					{ name: 'SchoolIdFromSrh', value: $('#SchoolIdFromSrh').val() },
+					{ name: 'SchoolIdToSrh', value: $('#SchoolIdToSrh').val() },
+					{ name: 'YearSrh', value: $('#YearSrh').val() },
+					{ name: 'YearFromSrh', value: $('#YearFromSrh').val() },
+					{ name: 'YearToSrh', value: $('#YearToSrh').val() },
+					{ name: 'TitleSrh', value: $('#TitleSrh').val() },
+					{ name: 'NameSrh', value: $('#NameSrh').val() },
+					{ name: 'TelephoneSrh', value: $('#TelephoneSrh').val() },
+					{ name: 'MobileSrh', value: $('#MobileSrh').val() },
+					{ name: 'QQSrh', value: $('#QQSrh').val() },
+					{ name: 'AddressSrh', value: $('#AddressSrh').val() },
+					{ name: 'RemarkSrh', value: $('#RemarkSrh').val() },
+					{ name: 'TopFlagSrh', value: $('#TopFlagSrh').val() },
+					{ name: 'TopFlagFromSrh', value: $('#TopFlagFromSrh').val() },
+					{ name: 'TopFlagToSrh', value: $('#TopFlagToSrh').val() },
+					{ name: 'OldOaIdSrh', value: $('#OldOaIdSrh').val() },
+					{ name: 'OldOaIdFromSrh', value: $('#OldOaIdFromSrh').val() },
+					{ name: 'OldOaIdToSrh', value: $('#OldOaIdToSrh').val() }
+                    ]
+                });
+                gSchoolContact.loadData();
+            });
+			
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp)
+	            {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frmSchoolContact").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    saveSchoolContact();
+                    return false;
+                }
+            });
+
+			$.getJSON("@Url.Action("GetInitData","SchoolContact")", function(data){
+				initData = data;
+                /*
+				$("#f_City_ProvinceId").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceId',data:data.Provinces });
+                data.Provinces.unshift({ Id:'', Name:'所有' });
+                $("#f_City_ProvinceIdSrh").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceIdSrh',data:data.Provinces });
+				*/
+	            $("#formsearch").ligerForm();
+				$("#frmSchoolContact").ligerForm();
+            });
+
+
+        });
+		
+        function addSchoolContact(){
+            action = "add";
+			$("#f_SchoolContact_Id").val("");
+			$("#f_SchoolContact_SchoolId").val("");
+			$("#f_SchoolContact_Year").val("");
+			$("#f_SchoolContact_Title").val("");
+			$("#f_SchoolContact_Name").val("");
+			$("#f_SchoolContact_Telephone").val("");
+			$("#f_SchoolContact_Mobile").val("");
+			$("#f_SchoolContact_QQ").val("");
+			$("#f_SchoolContact_Address").val("");
+			$("#f_SchoolContact_Remark").val("");
+			$("#f_SchoolContact_TopFlag").val("");
+			$("#f_SchoolContact_OldOaId").val("");
+			$dialog = $.ligerDialog.open({ target: $("#dSchoolContact"), width: 300, height: 150 });
+        }
+        function editSchoolContact() {
+            action = "edit";
+            var row = gSchoolContact.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+			$("#f_SchoolContact_Id").val(row.Id);
+			$("#f_SchoolContact_SchoolId").val(row.SchoolId);
+			$("#f_SchoolContact_Year").val(row.Year);
+			$("#f_SchoolContact_Title").val(row.Title);
+			$("#f_SchoolContact_Name").val(row.Name);
+			$("#f_SchoolContact_Telephone").val(row.Telephone);
+			$("#f_SchoolContact_Mobile").val(row.Mobile);
+			$("#f_SchoolContact_QQ").val(row.QQ);
+			$("#f_SchoolContact_Address").val(row.Address);
+			$("#f_SchoolContact_Remark").val(row.Remark);
+			$("#f_SchoolContact_TopFlag").val(row.TopFlag);
+			$("#f_SchoolContact_OldOaId").val(row.OldOaId);
+            $dialog = $.ligerDialog.open({ target: $("#dSchoolContact"), width: 300, height: 150 });
+        }
+        function deleteSchoolContact() {
+            var row = gSchoolContact.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？",function (r) { 
+                if(r){
+                    $.post("@Url.Action("Delete","SchoolContact")", { id: row.Id }
+                        , function (result) {
+                            if (result.Successful) {
+                                gSchoolContact.deleteSelectedRow();
+                            } else {
+                                $.ligerMessageBox.error('错误', result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+        function saveSchoolContact(){
+            if(action=="add"){
+                $.post("@Url.Action("Add","SchoolContact")", $("#frmSchoolContact").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            gSchoolContact.addRow(result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }else{
+                $.post("@Url.Action("Update","SchoolContact")", $("#frmSchoolContact").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            var row = gSchoolContact.getSelected();
+                            if (!row) { alert('请选择行'); return; }
+                            gSchoolContact.updateRow(row,result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+<body style="padding:10px;height:100%; text-align:center;">
+  <div id="mainsearch" style=" width:98%">
+    <div class="searchtitle">
+        <span>搜索</span><img src="@Url.Content("~/Content/lib/icons/32X32/searchtool.gif")" alt="" />
+        <div class="togglebtn"></div> 
+    </div>
+    <div class="navline" style="margin-bottom:4px; margin-top:4px;"></div>
+    <div class="searchbox">
+        <form id="formsearch" class="l-form" action="">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+			<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Id</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdSrh' type='text' id='IdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdFromSrh' type='text' id='IdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdToSrh' type='text' id='IdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SchoolId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SchoolIdSrh' type='text' id='SchoolIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SchoolIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SchoolIdFromSrh' type='text' id='SchoolIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SchoolIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SchoolIdToSrh' type='text' id='SchoolIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Year</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='YearSrh' type='text' id='YearSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>YearFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='YearFromSrh' type='text' id='YearFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>YearTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='YearToSrh' type='text' id='YearToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Title</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TitleSrh' type='text' id='TitleSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Name</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NameSrh' type='text' id='NameSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Telephone</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TelephoneSrh' type='text' id='TelephoneSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Mobile</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MobileSrh' type='text' id='MobileSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>QQ</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='QQSrh' type='text' id='QQSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Address</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='AddressSrh' type='text' id='AddressSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Remark</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='RemarkSrh' type='text' id='RemarkSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TopFlag</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TopFlagSrh' type='text' id='TopFlagSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TopFlagFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TopFlagFromSrh' type='text' id='TopFlagFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TopFlagTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TopFlagToSrh' type='text' id='TopFlagToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>OldOaId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='OldOaIdSrh' type='text' id='OldOaIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>OldOaIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='OldOaIdFromSrh' type='text' id='OldOaIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>OldOaIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='OldOaIdToSrh' type='text' id='OldOaIdToSrh' ltype='text' /></td>
+</tr>
+
+            <tr>
+                <td style="text-align:center;" class="l-table-edit-td" colspan="3"><input type="button" value="查询" id="btnSearch"  /></td>
+            </tr>
+        </table>
+        
+        </form>
+    </div>
+  </div>
+  <div id="grdSchoolContact"></div> 
+  
+   <div id="dSchoolContact" style="display: none;">
+        <form action="" method="post" id="frmSchoolContact">
+			<input type="hidden" id="f_SchoolContact_Id" name="Id" value="" />
+			<table cellpadding="0" cellspacing="0" class="l-table-edit" >
+	            
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>SchoolId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='SchoolId' type='text' id='f_SchoolContact_SchoolId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Year</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Year' type='text' id='f_SchoolContact_Year' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Title</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Title' type='text' id='f_SchoolContact_Title' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Name</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Name' type='text' id='f_SchoolContact_Name' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Telephone</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Telephone' type='text' id='f_SchoolContact_Telephone' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Mobile</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Mobile' type='text' id='f_SchoolContact_Mobile' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>QQ</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='QQ' type='text' id='f_SchoolContact_QQ' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Address</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Address' type='text' id='f_SchoolContact_Address' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Remark</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Remark' type='text' id='f_SchoolContact_Remark' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TopFlag</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TopFlag' type='text' id='f_SchoolContact_TopFlag' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>OldOaId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='OldOaId' type='text' id='f_SchoolContact_OldOaId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+            <tr>
+                <td colspan="3" style="text-align:center;">
+                    <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
+                </td>
+            </tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

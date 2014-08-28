@@ -1,0 +1,535 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />  
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script> 
+	
+    <style type="text/css">
+        body{ font-size:12px;}
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-verify-tip{ left:230px; top:120px; z-index:9999;}
+    </style>
+    <script type="text/javascript">
+        var gClazz;
+        var action = "add";
+        var $dialog;
+		var initData;
+		
+        $(function () {
+            gClazz = $("#grdClazz").ligerGrid({
+                columns: [
+                    { display: 'Id', name: 'Id', width: 100, align: 'left' },
+					{ display: 'Name', name: 'Name', width: 100, align: 'left' },
+					{ display: 'Semester', name: 'Semester', width: 100, align: 'left' },
+					{ display: 'StudentQty', name: 'StudentQty', width: 100, align: 'left' },
+					{ display: 'LimitedQty', name: 'LimitedQty', width: 100, align: 'left' },
+					{ display: 'TeacherA', name: 'TeacherA', width: 100, align: 'left' },
+					{ display: 'TeacherB', name: 'TeacherB', width: 100, align: 'left' },
+					{ display: 'Master', name: 'Master', width: 100, align: 'left' },
+					{ display: 'Governor', name: 'Governor', width: 100, align: 'left' },
+					{ display: 'OpenDate', name: 'OpenDate', width: 100, align: 'left' },
+					{ display: 'ClosedDate', name: 'ClosedDate', width: 100, align: 'left' },
+					{ display: 'FinishedDate', name: 'FinishedDate', width: 100, align: 'left' },
+					{ display: 'IsOpen', name: 'IsOpen', width: 100, align: 'left' },
+					{ display: 'IsClosed', name: 'IsClosed', width: 100, align: 'left' },
+					{ display: 'IsFinished', name: 'IsFinished', width: 100, align: 'left' },
+					{ display: 'CreateTime', name: 'CreateTime', width: 100, align: 'left' },
+					{ display: 'UpdateTime', name: 'UpdateTime', width: 100, align: 'left' },
+					{ display: 'KickOffDate', name: 'KickOffDate', width: 100, align: 'left' }
+                  ],
+                pageSize: 20, toolbar: {},
+                url: '@Url.Action("GetData","Clazz")', 
+                sortName: 'Name',
+                width: '98%', height: '100%', checkbox: false,
+                usePager:true,
+                toolbar: { items: [
+                { text: '增加', icon: 'add', click: addClazz },
+                { line: true },
+                { text: '修改', icon: 'modify', click: editClazz },
+                { line: true },
+                { text: '删除', icon: 'delete', click: deleteClazz }
+                ]
+                }
+            });
+            $("#btnSearch").click(function () {
+                gClazz.set({ 
+                    parms : [
+                    { name: 'IdSrh', value: $('#IdSrh').val() },
+					{ name: 'IdFromSrh', value: $('#IdFromSrh').val() },
+					{ name: 'IdToSrh', value: $('#IdToSrh').val() },
+					{ name: 'NameSrh', value: $('#NameSrh').val() },
+					{ name: 'SemesterSrh', value: $('#SemesterSrh').val() },
+					{ name: 'StudentQtySrh', value: $('#StudentQtySrh').val() },
+					{ name: 'StudentQtyFromSrh', value: $('#StudentQtyFromSrh').val() },
+					{ name: 'StudentQtyToSrh', value: $('#StudentQtyToSrh').val() },
+					{ name: 'LimitedQtySrh', value: $('#LimitedQtySrh').val() },
+					{ name: 'LimitedQtyFromSrh', value: $('#LimitedQtyFromSrh').val() },
+					{ name: 'LimitedQtyToSrh', value: $('#LimitedQtyToSrh').val() },
+					{ name: 'TeacherASrh', value: $('#TeacherASrh').val() },
+					{ name: 'TeacherBSrh', value: $('#TeacherBSrh').val() },
+					{ name: 'MasterSrh', value: $('#MasterSrh').val() },
+					{ name: 'GovernorSrh', value: $('#GovernorSrh').val() },
+					{ name: 'OpenDateSrh', value: $('#OpenDateSrh').val() },
+					{ name: 'ClosedDateSrh', value: $('#ClosedDateSrh').val() },
+					{ name: 'FinishedDateSrh', value: $('#FinishedDateSrh').val() },
+					{ name: 'IsOpenSrh', value: $('#IsOpenSrh').val() },
+					{ name: 'IsClosedSrh', value: $('#IsClosedSrh').val() },
+					{ name: 'IsFinishedSrh', value: $('#IsFinishedSrh').val() },
+					{ name: 'CreateTimeSrh', value: $('#CreateTimeSrh').val() },
+					{ name: 'UpdateTimeSrh', value: $('#UpdateTimeSrh').val() },
+					{ name: 'KickOffDateSrh', value: $('#KickOffDateSrh').val() }
+                    ]
+                });
+                gClazz.loadData();
+            });
+			
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp)
+	            {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frmClazz").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    saveClazz();
+                    return false;
+                }
+            });
+
+			$.getJSON("@Url.Action("GetInitData","Clazz")", function(data){
+				initData = data;
+                /*
+				$("#f_City_ProvinceId").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceId',data:data.Provinces });
+                data.Provinces.unshift({ Id:'', Name:'所有' });
+                $("#f_City_ProvinceIdSrh").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceIdSrh',data:data.Provinces });
+				*/
+	            $("#formsearch").ligerForm();
+				$("#frmClazz").ligerForm();
+            });
+
+
+        });
+		
+        function addClazz(){
+            action = "add";
+			$("#f_Clazz_Id").val("");
+			$("#f_Clazz_Name").val("");
+			$("#f_Clazz_Semester").val("");
+			$("#f_Clazz_StudentQty").val("");
+			$("#f_Clazz_LimitedQty").val("");
+			$("#f_Clazz_TeacherA").val("");
+			$("#f_Clazz_TeacherB").val("");
+			$("#f_Clazz_Master").val("");
+			$("#f_Clazz_Governor").val("");
+			$("#f_Clazz_OpenDate").val("");
+			$("#f_Clazz_ClosedDate").val("");
+			$("#f_Clazz_FinishedDate").val("");
+			$("#f_Clazz_IsOpen").val("");
+			$("#f_Clazz_IsClosed").val("");
+			$("#f_Clazz_IsFinished").val("");
+			$("#f_Clazz_CreateTime").val("");
+			$("#f_Clazz_UpdateTime").val("");
+			$("#f_Clazz_KickOffDate").val("");
+			$dialog = $.ligerDialog.open({ target: $("#dClazz"), width: 300, height: 150 });
+        }
+        function editClazz() {
+            action = "edit";
+            var row = gClazz.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+			$("#f_Clazz_Id").val(row.Id);
+			$("#f_Clazz_Name").val(row.Name);
+			$("#f_Clazz_Semester").val(row.Semester);
+			$("#f_Clazz_StudentQty").val(row.StudentQty);
+			$("#f_Clazz_LimitedQty").val(row.LimitedQty);
+			$("#f_Clazz_TeacherA").val(row.TeacherA);
+			$("#f_Clazz_TeacherB").val(row.TeacherB);
+			$("#f_Clazz_Master").val(row.Master);
+			$("#f_Clazz_Governor").val(row.Governor);
+			$("#f_Clazz_OpenDate").val(row.OpenDate);
+			$("#f_Clazz_ClosedDate").val(row.ClosedDate);
+			$("#f_Clazz_FinishedDate").val(row.FinishedDate);
+			$("#f_Clazz_IsOpen").val(row.IsOpen);
+			$("#f_Clazz_IsClosed").val(row.IsClosed);
+			$("#f_Clazz_IsFinished").val(row.IsFinished);
+			$("#f_Clazz_CreateTime").val(row.CreateTime);
+			$("#f_Clazz_UpdateTime").val(row.UpdateTime);
+			$("#f_Clazz_KickOffDate").val(row.KickOffDate);
+            $dialog = $.ligerDialog.open({ target: $("#dClazz"), width: 300, height: 150 });
+        }
+        function deleteClazz() {
+            var row = gClazz.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？",function (r) { 
+                if(r){
+                    $.post("@Url.Action("Delete","Clazz")", { id: row.Id }
+                        , function (result) {
+                            if (result.Successful) {
+                                gClazz.deleteSelectedRow();
+                            } else {
+                                $.ligerMessageBox.error('错误', result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+        function saveClazz(){
+            if(action=="add"){
+                $.post("@Url.Action("Add","Clazz")", $("#frmClazz").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            gClazz.addRow(result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }else{
+                $.post("@Url.Action("Update","Clazz")", $("#frmClazz").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            var row = gClazz.getSelected();
+                            if (!row) { alert('请选择行'); return; }
+                            gClazz.updateRow(row,result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+<body style="padding:10px;height:100%; text-align:center;">
+  <div id="mainsearch" style=" width:98%">
+    <div class="searchtitle">
+        <span>搜索</span><img src="@Url.Content("~/Content/lib/icons/32X32/searchtool.gif")" alt="" />
+        <div class="togglebtn"></div> 
+    </div>
+    <div class="navline" style="margin-bottom:4px; margin-top:4px;"></div>
+    <div class="searchbox">
+        <form id="formsearch" class="l-form" action="">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+			<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Id</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdSrh' type='text' id='IdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdFromSrh' type='text' id='IdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdToSrh' type='text' id='IdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Name</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NameSrh' type='text' id='NameSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Semester</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SemesterSrh' type='text' id='SemesterSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudentQty</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudentQtySrh' type='text' id='StudentQtySrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudentQtyFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudentQtyFromSrh' type='text' id='StudentQtyFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudentQtyTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudentQtyToSrh' type='text' id='StudentQtyToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>LimitedQty</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LimitedQtySrh' type='text' id='LimitedQtySrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>LimitedQtyFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LimitedQtyFromSrh' type='text' id='LimitedQtyFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>LimitedQtyTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LimitedQtyToSrh' type='text' id='LimitedQtyToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeacherA</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherASrh' type='text' id='TeacherASrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>TeacherB</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TeacherBSrh' type='text' id='TeacherBSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Master</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MasterSrh' type='text' id='MasterSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Governor</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GovernorSrh' type='text' id='GovernorSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>OpenDate</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='OpenDateSrh' type='text' id='OpenDateSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ClosedDate</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ClosedDateSrh' type='text' id='ClosedDateSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>FinishedDate</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='FinishedDateSrh' type='text' id='FinishedDateSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsOpen</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsOpenSrh' type='text' id='IsOpenSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsClosed</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsClosedSrh' type='text' id='IsClosedSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsFinished</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsFinishedSrh' type='text' id='IsFinishedSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>CreateTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='CreateTimeSrh' type='text' id='CreateTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>UpdateTime</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='UpdateTimeSrh' type='text' id='UpdateTimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>KickOffDate</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='KickOffDateSrh' type='text' id='KickOffDateSrh' ltype='text' /></td>
+</tr>
+
+            <tr>
+                <td style="text-align:center;" class="l-table-edit-td" colspan="3"><input type="button" value="查询" id="btnSearch"  /></td>
+            </tr>
+        </table>
+        
+        </form>
+    </div>
+  </div>
+  <div id="grdClazz"></div> 
+  
+   <div id="dClazz" style="display: none;">
+        <form action="" method="post" id="frmClazz">
+			<input type="hidden" id="f_Clazz_Id" name="Id" value="" />
+			<table cellpadding="0" cellspacing="0" class="l-table-edit" >
+	            
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Name</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Name' type='text' id='f_Clazz_Name' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Semester</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Semester' type='text' id='f_Clazz_Semester' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudentQty</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudentQty' type='text' id='f_Clazz_StudentQty' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>LimitedQty</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='LimitedQty' type='text' id='f_Clazz_LimitedQty' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TeacherA</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TeacherA' type='text' id='f_Clazz_TeacherA' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>TeacherB</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='TeacherB' type='text' id='f_Clazz_TeacherB' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Master</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Master' type='text' id='f_Clazz_Master' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Governor</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Governor' type='text' id='f_Clazz_Governor' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>OpenDate</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='OpenDate' type='text' id='f_Clazz_OpenDate' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ClosedDate</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ClosedDate' type='text' id='f_Clazz_ClosedDate' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>FinishedDate</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='FinishedDate' type='text' id='f_Clazz_FinishedDate' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsOpen</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsOpen' type='text' id='f_Clazz_IsOpen' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsClosed</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsClosed' type='text' id='f_Clazz_IsClosed' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsFinished</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsFinished' type='text' id='f_Clazz_IsFinished' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>CreateTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='CreateTime' type='text' id='f_Clazz_CreateTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>UpdateTime</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='UpdateTime' type='text' id='f_Clazz_UpdateTime' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>KickOffDate</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='KickOffDate' type='text' id='f_Clazz_KickOffDate' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+            <tr>
+                <td colspan="3" style="text-align:center;">
+                    <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
+                </td>
+            </tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

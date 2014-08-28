@@ -1,0 +1,145 @@
+﻿<#@ template language="C#" debug="false" hostspecific="true"#>
+<#@ include file="EF.Utility.CS.ttinclude"#>
+<#@ output extension=".cs"  encoding="utf-8"#>
+<#
+
+CodeGenerationTools code = new CodeGenerationTools(this);
+MetadataLoader loader = new MetadataLoader(this);
+CodeRegion region = new CodeRegion(this, 1);
+MetadataTools ef = new MetadataTools(this);
+
+string inputFile = @"..\..\..\Cn.Com.Sve.OA.DataServices\OaModel.edmx";
+EdmItemCollection ItemCollection = loader.CreateEdmItemCollection(inputFile);
+string namespaceName = code.VsNamespaceSuggestion();
+
+EntityFrameworkTemplateFileManager fileManager = EntityFrameworkTemplateFileManager.Create(this);
+
+// Write out support code to primary template output file
+WriteHeader(fileManager);
+BeginNamespace(namespaceName, code);
+//WriteCustomObservableCollection();
+EndNamespace(namespaceName);
+EntityContainer container = ItemCollection.GetItems<EntityContainer>().FirstOrDefault();
+
+// Emit Entity Types
+// 循环处理实体模型中的所有实体
+foreach (EntityType entity in ItemCollection.GetItems<EntityType>().OrderBy(e => e.Name))
+{
+	string className = entity.Name + "ControllerTemp";
+
+    fileManager.StartNewFile(className + ".cs");
+    BeginNamespace(namespaceName, code);
+	var pkTypeName = code.Escape(entity.KeyMembers[0].TypeUsage);
+    bool entityHasNullableFKs = entity.NavigationProperties.Any(np => np.GetDependentProperties().Any(p=>ef.IsNullable(p)));
+	string entitySetName = GetEntitySetName(entity.Name, container, code);
+	StringBuilder sb = new StringBuilder();
+	foreach (EdmProperty edmProperty in entity.Properties.Where(p => p.TypeUsage.EdmType is PrimitiveType && p.DeclaringType == entity)) {
+		string propertyName = code.Escape(edmProperty);
+		bool isForeignKey = entity.NavigationProperties.Any(np=>np.GetDependentProperties().Contains(edmProperty));
+		if(sb.Length>0){
+			sb.AppendLine().Append("\t\t\t");
+		}
+		sb.AppendFormat("{0}=e.{0}",propertyName).Append(",");
+	}
+	if(sb.Length>0){
+		sb.Remove(sb.Length-1,1);
+	}
+#>
+public partial class <#=className#> : BaseController {
+		private object ToJson(<#=entity.Name#> e) {
+			return new {
+				<#=sb.ToString()#>
+			};
+		}
+
+	partial void AddRowToGridModel(LigerGridModel m, <#=entity.Name#> e);
+	partial void AfterAddData(<#=entity.Name#> e, ref ActionResult ar);
+	partial void AfterUpdateData(<#=entity.Name#> e, ref ActionResult ar);
+	partial void AddRowToGridModel(LigerGridModel m, <#=entity.Name#> e) {
+		m.Rows.Add(this.ToJson(e));
+	}
+	partial void AfterAddData(<#=entity.Name#> e, ref ActionResult ar) {
+		ar = this.Json(new AjaxOperationResult {
+			Data = this.ToJson(e),
+			Successful = true
+		});
+	}
+	partial void AfterUpdateData(<#=entity.Name#> e, ref ActionResult ar) {
+		ar = this.Json(new AjaxOperationResult {
+			Data = this.ToJson(e),
+			Successful = true
+		});
+	}
+
+	public ActionResult GetInitData() {
+		return this.Json(new {}, JsonRequestBehavior.AllowGet);
+	}
+}
+<#
+	EndNamespace(namespaceName);
+}
+	fileManager.Process();
+#>
+
+<#+
+void WriteHeader(EntityFrameworkTemplateFileManager fileManager, params string[] extraUsings)
+{
+    fileManager.StartHeader();
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Cn.Com.Sve.OA.BusinessService;
+using Cn.Com.Sve.OA.Entities;
+using Cn.Com.Sve.OA.Entities.Criteria;
+using Cn.Com.Sve.OA.Web.Models;
+using Cn.RaymanLee.Web.UI.ViewModels.LigerUI;
+using Cn.RaymanLee.Data;
+
+<#=String.Join(String.Empty, extraUsings.Select(u => "using " + u + ";" + Environment.NewLine).ToArray())#>
+<#+
+    fileManager.EndBlock();
+}
+#>
+
+<#+
+// 写命名空间的开头 - 开始
+void BeginNamespace(string namespaceName, CodeGenerationTools code)
+{
+    CodeRegion region = new CodeRegion(this);
+    if (!String.IsNullOrEmpty(namespaceName))
+    {
+#>
+namespace <#=code.EscapeNamespace(namespaceName)#> {
+<#+
+        PushIndent(CodeRegion.GetIndent(1));
+    }
+}
+// 写命名空间的开头 - 结束
+#>
+<#+
+void EndNamespace(string namespaceName)
+{
+    if (!String.IsNullOrEmpty(namespaceName))
+    {
+        PopIndent();
+#>
+}
+<#+
+    }
+}
+#>
+
+<#+
+string GetEntitySetName(string entityName, EntityContainer container, CodeGenerationTools code){
+	foreach (EntitySet entitySet in container.BaseEntitySets.OfType<EntitySet>()) {
+		if(entitySet.ElementType.Name.Equals(entityName)){
+			return code.Escape(entitySet.Name);
+		}
+	}
+	return null;
+}
+
+#>

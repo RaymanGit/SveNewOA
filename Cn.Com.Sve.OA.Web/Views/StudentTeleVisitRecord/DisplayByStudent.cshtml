@@ -1,0 +1,180 @@
+﻿@model Cn.Com.Sve.OA.Web.Models.ViewModels.Student_TeleVisit_ViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.autocomplete.css")" rel="stylesheet" type="text/css" />
+
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.core.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.widget.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.position.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.autocomplete.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.form.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script>
+    <style type="text/css">
+        body
+        {
+            font-size: 12px;
+        }
+        .l-table-edit
+        {
+        }
+        .l-table-edit-td
+        {
+            padding: 4px;
+        }
+        .l-button-submit, .l-button-reset
+        {
+            width: 80px;
+            float: left;
+            margin-left: 10px;
+            padding-bottom: 2px;
+        }
+        .l-verify-tip
+        {
+            left: 230px;
+            top: 120px;
+            z-index: 9999;
+        }
+    </style>
+	<style type="text/css">
+	.ui-autocomplete-loading { background: white url('@Url.Content("~/Content/themes/base/images/ui-anim_basic_16x16.gif")') right center no-repeat; }
+	#f_UserName { width: 25em; }
+	</style>
+    <script type="text/javascript">
+        $(function () {
+            $("#Time").ligerDateEditor({ initValue: '@String.Format("{0:d}",DateTime.Today)' });
+            $("#f_VisitorId").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("Suggest","User")',
+                        dataType: "json",
+                        data: {
+                            qty: 12,
+                            prefix: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.Name,
+                                    value: item.Id
+                                }
+                            }));
+                        }
+                    });
+                },
+                minLength: 1,
+                select: function (event, ui) {
+                    $("#VisitorId").val(ui.item.value);
+                    $("#f_VisitorId").val(ui.item.label);
+                    return false;
+                },
+                open: function () {
+                    $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                },
+                close: function () {
+                    $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                }
+            });
+            $("#frmCondition").ligerForm();
+
+            $("#VisitorId").val("@this.Model.CurrentUser.Id");
+            $("#f_VisitorId").val("@this.Model.CurrentUser.Name");
+
+        });
+    </script>
+</head>
+<body style="padding: 10px; height: 100%; text-align: center;">
+    <div id="pnlStudentInfo" style="width: 98%">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" style="width:800px; border: 1 solid black;" border="1">
+            <tr><td class='l-table-edit-td'>班级：@this.Model.Student.Clazz.Name</td><td class='l-table-edit-td'>学员姓名：@this.Model.Student.Name</td>
+            <td class='l-table-edit-td'>性别：@this.Model.Student.Gender</td>
+            
+            <td class='l-table-edit-td'>学员手机：@this.Model.Student.Mobile</td>
+            <td class='l-table-edit-td'>电访次数：@this.Model.Records.Count</td></tr>
+        </table>
+    </div>
+    @if (this.Model.ShowInput) { 
+     <div id="pnlByForm" style="width: 98%">
+             <form id="frmCondition" class="l-form" action='@Url.Action("Input","StudentTeleVisitRecord")' method="post" enctype="multipart/form-data">
+                <input type="hidden" name="StudentId" value="@this.Model.Student.Id" />
+                <input type="hidden" name="ClazzId" value="@this.Model.Student.ClazzId" />
+                <table cellpadding="0" cellspacing="0" class="l-table-edit" style="width:800px">
+                    <tr>
+                        <td class='l-table-edit-td'>电访日期</td><td class='l-table-edit-td'><input type='text' id='Time' name="Time" ltype='text' /></td>
+                        <td class='l-table-edit-td'>电访人员</td><td class='l-table-edit-td'>
+                            <input name='f_VisitorId' type='text' id='f_VisitorId' ltype='text' />
+                            <input name='VisitorId' type='hidden' id='VisitorId' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='l-table-edit-td'>电访对象</td><td class='l-table-edit-td'><input type='text' id='Interviewee' name="Interviewee" ltype='text' /></td>
+                        <td class='l-table-edit-td'>电访号码</td><td class='l-table-edit-td'><input type='text' id='PhoneNo' name="PhoneNo" ltype='text' /></td>
+                    </tr>
+                    <tr><td colspan="8" class='l-table-edit-td'>意见和建议：<br /><textarea name='Advice' id='Advice' ltype='text' class="l-textarea" style="width:100%;height:200;"></textarea></td></tr>
+                    <tr><td colspan="8" class='l-table-edit-td'>电访总结：<br /><textarea name='Summary' id='Summary' ltype='text' class="l-textarea" style="width:100%;height:200;"></textarea></td></tr>
+                    <tr><td colspan="8" class='l-table-edit-td'><input type="submit" id="btnAdd" value="录入" /></td></tr>
+                </table>
+             </form>
+    </div>
+    }
+    <div id="pnlByRecords" style="width: 98%">
+    @foreach (var t in this.Model.Records) {
+        <div style="margin-bottom:5px;">
+            <table cellpadding="0" cellspacing="0" class="l-table-edit" style="width:800px; border: 1 solid black;" border="1">
+                <tr>
+                    <td class='l-table-edit-td'>电访日期：@String.Format("{0:d}", t.Time)</td>
+                    <td class='l-table-edit-td'>电访人员：@t.Visitor.Name</td>
+                    <td class='l-table-edit-td'>电访对象：@t.Interviewee</td>
+                    <td class='l-table-edit-td'>电访号码：@t.PhoneNo</td>
+                </tr>
+                <tr><td class='l-table-edit-td' colspan="4">意见和建议：<br />@t.Advice</td></tr>
+                <tr><td class='l-table-edit-td' colspan="4">电访总结：<br />@t.Summary</td></tr>
+                @if (t.ReviewerId != null) {
+                <tr>
+                    <td class='l-table-edit-td' colspan="2">抽查人员：@t.Reviewer.Name</td>
+                    <td class='l-table-edit-td' colspan="2">抽查日期：@String.Format("{0:d}", t.ReviewTime)</td>
+                </tr>
+                <tr><td class='l-table-edit-td' colspan="4">抽查情况：<br /><span style="color:red;">@t.ReviewComment</span></td></tr>
+                }
+                <tr>
+                    <td class='l-table-edit-td' colspan="4" align="center">
+                        @if (t.VisitorId.Equals(this.Model.CurrentUser.Id)) {
+                            <a href="#" onclick="top.f_addTab('tab-edit-student-tele-visit-@t.Id', '编辑电访家长记录', '@Url.Action("EditInfo", "StudentTeleVisitRecord")' + '?id=@t.Id');return false;">编辑</a>
+                            <a href='@Url.Action("DeleteInfo", "StudentTeleVisitRecord", new { id=t.Id })' onclick="if(!window.confirm('确定要删除吗？'))return false;">删除</a>
+                        } else {
+                            if (this.Model.ShowDelete) {
+                                <a href='@Url.Action("DeleteInfo", "StudentTeleVisitRecord", new { id = t.Id })' onclick="if(!window.confirm('确定要删除吗？'))return false;">删除</a>
+                            }
+                            if ((t.ReviewerId.HasValue && t.ReviewerId.Equals(this.Model.CurrentUser.Id)) || this.Model.ShowConfirmEdit) {
+                            <a href="#" onclick="top.f_addTab('tab-edit-student-tele-visit-c-@t.Id', '编辑电访家长记录', '@Url.Action("EditConfirm", "StudentTeleVisitRecord")' + '?id=@t.Id');return false;">编辑抽查情况</a>
+                            }
+                        }
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+    </div>
+
+
+</body>
+</html>

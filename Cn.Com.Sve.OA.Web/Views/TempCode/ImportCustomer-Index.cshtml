@@ -1,0 +1,721 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />  
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script> 
+	
+    <style type="text/css">
+        body{ font-size:12px;}
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-verify-tip{ left:230px; top:120px; z-index:9999;}
+    </style>
+    <script type="text/javascript">
+        var gImportCustomer;
+        var action = "add";
+        var $dialog;
+		var initData;
+		
+        $(function () {
+            gImportCustomer = $("#grdImportCustomer").ligerGrid({
+                columns: [
+                    { display: 'Id', name: 'Id', width: 100, align: 'left' },
+					{ display: 'ImportKey', name: 'ImportKey', width: 100, align: 'left' },
+					{ display: 'SchoolId', name: 'SchoolId', width: 100, align: 'left' },
+					{ display: 'SchoolName', name: 'SchoolName', width: 100, align: 'left' },
+					{ display: 'Level', name: 'Level', width: 100, align: 'left' },
+					{ display: 'MarketYear', name: 'MarketYear', width: 100, align: 'left' },
+					{ display: 'InfoSource', name: 'InfoSource', width: 100, align: 'left' },
+					{ display: 'Name', name: 'Name', width: 100, align: 'left' },
+					{ display: 'Gender', name: 'Gender', width: 100, align: 'left' },
+					{ display: 'Tel', name: 'Tel', width: 100, align: 'left' },
+					{ display: 'ProvinceId', name: 'ProvinceId', width: 100, align: 'left' },
+					{ display: 'ProvinceName', name: 'ProvinceName', width: 100, align: 'left' },
+					{ display: 'CityId', name: 'CityId', width: 100, align: 'left' },
+					{ display: 'CityName', name: 'CityName', width: 100, align: 'left' },
+					{ display: 'DistrictId', name: 'DistrictId', width: 100, align: 'left' },
+					{ display: 'DistrictName', name: 'DistrictName', width: 100, align: 'left' },
+					{ display: 'Address', name: 'Address', width: 100, align: 'left' },
+					{ display: 'Mobile', name: 'Mobile', width: 100, align: 'left' },
+					{ display: 'QQ', name: 'QQ', width: 100, align: 'left' },
+					{ display: 'Clazz', name: 'Clazz', width: 100, align: 'left' },
+					{ display: 'Score', name: 'Score', width: 100, align: 'left' },
+					{ display: 'Postcode', name: 'Postcode', width: 100, align: 'left' },
+					{ display: 'Contact', name: 'Contact', width: 100, align: 'left' },
+					{ display: 'ImportType', name: 'ImportType', width: 100, align: 'left' },
+					{ display: 'IsProcessed', name: 'IsProcessed', width: 100, align: 'left' },
+					{ display: 'ErrorMsg', name: 'ErrorMsg', width: 100, align: 'left' }
+                  ],
+                pageSize: 20, toolbar: {},
+                url: '@Url.Action("GetData","ImportCustomer")', 
+                sortName: 'Name',
+                width: '98%', height: '100%', checkbox: false,
+                usePager:true,
+                toolbar: { items: [
+                { text: '增加', icon: 'add', click: addImportCustomer },
+                { line: true },
+                { text: '修改', icon: 'modify', click: editImportCustomer },
+                { line: true },
+                { text: '删除', icon: 'delete', click: deleteImportCustomer }
+                ]
+                }
+            });
+            $("#btnSearch").click(function () {
+                gImportCustomer.set({ 
+                    parms : [
+                    { name: 'IdSrh', value: $('#IdSrh').val() },
+					{ name: 'IdFromSrh', value: $('#IdFromSrh').val() },
+					{ name: 'IdToSrh', value: $('#IdToSrh').val() },
+					{ name: 'ImportKeySrh', value: $('#ImportKeySrh').val() },
+					{ name: 'SchoolIdSrh', value: $('#SchoolIdSrh').val() },
+					{ name: 'SchoolIdFromSrh', value: $('#SchoolIdFromSrh').val() },
+					{ name: 'SchoolIdToSrh', value: $('#SchoolIdToSrh').val() },
+					{ name: 'SchoolNameSrh', value: $('#SchoolNameSrh').val() },
+					{ name: 'LevelSrh', value: $('#LevelSrh').val() },
+					{ name: 'MarketYearSrh', value: $('#MarketYearSrh').val() },
+					{ name: 'MarketYearFromSrh', value: $('#MarketYearFromSrh').val() },
+					{ name: 'MarketYearToSrh', value: $('#MarketYearToSrh').val() },
+					{ name: 'InfoSourceSrh', value: $('#InfoSourceSrh').val() },
+					{ name: 'InfoSourceFromSrh', value: $('#InfoSourceFromSrh').val() },
+					{ name: 'InfoSourceToSrh', value: $('#InfoSourceToSrh').val() },
+					{ name: 'NameSrh', value: $('#NameSrh').val() },
+					{ name: 'GenderSrh', value: $('#GenderSrh').val() },
+					{ name: 'TelSrh', value: $('#TelSrh').val() },
+					{ name: 'ProvinceIdSrh', value: $('#ProvinceIdSrh').val() },
+					{ name: 'ProvinceIdFromSrh', value: $('#ProvinceIdFromSrh').val() },
+					{ name: 'ProvinceIdToSrh', value: $('#ProvinceIdToSrh').val() },
+					{ name: 'ProvinceNameSrh', value: $('#ProvinceNameSrh').val() },
+					{ name: 'CityIdSrh', value: $('#CityIdSrh').val() },
+					{ name: 'CityIdFromSrh', value: $('#CityIdFromSrh').val() },
+					{ name: 'CityIdToSrh', value: $('#CityIdToSrh').val() },
+					{ name: 'CityNameSrh', value: $('#CityNameSrh').val() },
+					{ name: 'DistrictIdSrh', value: $('#DistrictIdSrh').val() },
+					{ name: 'DistrictIdFromSrh', value: $('#DistrictIdFromSrh').val() },
+					{ name: 'DistrictIdToSrh', value: $('#DistrictIdToSrh').val() },
+					{ name: 'DistrictNameSrh', value: $('#DistrictNameSrh').val() },
+					{ name: 'AddressSrh', value: $('#AddressSrh').val() },
+					{ name: 'MobileSrh', value: $('#MobileSrh').val() },
+					{ name: 'QQSrh', value: $('#QQSrh').val() },
+					{ name: 'ClazzSrh', value: $('#ClazzSrh').val() },
+					{ name: 'ScoreSrh', value: $('#ScoreSrh').val() },
+					{ name: 'ScoreFromSrh', value: $('#ScoreFromSrh').val() },
+					{ name: 'ScoreToSrh', value: $('#ScoreToSrh').val() },
+					{ name: 'PostcodeSrh', value: $('#PostcodeSrh').val() },
+					{ name: 'ContactSrh', value: $('#ContactSrh').val() },
+					{ name: 'ImportTypeSrh', value: $('#ImportTypeSrh').val() },
+					{ name: 'IsProcessedSrh', value: $('#IsProcessedSrh').val() },
+					{ name: 'ErrorMsgSrh', value: $('#ErrorMsgSrh').val() }
+                    ]
+                });
+                gImportCustomer.loadData();
+            });
+			
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp)
+	            {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frmImportCustomer").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    saveImportCustomer();
+                    return false;
+                }
+            });
+
+			$.getJSON("@Url.Action("GetInitData","ImportCustomer")", function(data){
+				initData = data;
+                /*
+				$("#f_City_ProvinceId").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceId',data:data.Provinces });
+                data.Provinces.unshift({ Id:'', Name:'所有' });
+                $("#f_City_ProvinceIdSrh").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceIdSrh',data:data.Provinces });
+				*/
+	            $("#formsearch").ligerForm();
+				$("#frmImportCustomer").ligerForm();
+            });
+
+
+        });
+		
+        function addImportCustomer(){
+            action = "add";
+			$("#f_ImportCustomer_Id").val("");
+			$("#f_ImportCustomer_ImportKey").val("");
+			$("#f_ImportCustomer_SchoolId").val("");
+			$("#f_ImportCustomer_SchoolName").val("");
+			$("#f_ImportCustomer_Level").val("");
+			$("#f_ImportCustomer_MarketYear").val("");
+			$("#f_ImportCustomer_InfoSource").val("");
+			$("#f_ImportCustomer_Name").val("");
+			$("#f_ImportCustomer_Gender").val("");
+			$("#f_ImportCustomer_Tel").val("");
+			$("#f_ImportCustomer_ProvinceId").val("");
+			$("#f_ImportCustomer_ProvinceName").val("");
+			$("#f_ImportCustomer_CityId").val("");
+			$("#f_ImportCustomer_CityName").val("");
+			$("#f_ImportCustomer_DistrictId").val("");
+			$("#f_ImportCustomer_DistrictName").val("");
+			$("#f_ImportCustomer_Address").val("");
+			$("#f_ImportCustomer_Mobile").val("");
+			$("#f_ImportCustomer_QQ").val("");
+			$("#f_ImportCustomer_Clazz").val("");
+			$("#f_ImportCustomer_Score").val("");
+			$("#f_ImportCustomer_Postcode").val("");
+			$("#f_ImportCustomer_Contact").val("");
+			$("#f_ImportCustomer_ImportType").val("");
+			$("#f_ImportCustomer_IsProcessed").val("");
+			$("#f_ImportCustomer_ErrorMsg").val("");
+			$dialog = $.ligerDialog.open({ target: $("#dImportCustomer"), width: 300, height: 150 });
+        }
+        function editImportCustomer() {
+            action = "edit";
+            var row = gImportCustomer.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+			$("#f_ImportCustomer_Id").val(row.Id);
+			$("#f_ImportCustomer_ImportKey").val(row.ImportKey);
+			$("#f_ImportCustomer_SchoolId").val(row.SchoolId);
+			$("#f_ImportCustomer_SchoolName").val(row.SchoolName);
+			$("#f_ImportCustomer_Level").val(row.Level);
+			$("#f_ImportCustomer_MarketYear").val(row.MarketYear);
+			$("#f_ImportCustomer_InfoSource").val(row.InfoSource);
+			$("#f_ImportCustomer_Name").val(row.Name);
+			$("#f_ImportCustomer_Gender").val(row.Gender);
+			$("#f_ImportCustomer_Tel").val(row.Tel);
+			$("#f_ImportCustomer_ProvinceId").val(row.ProvinceId);
+			$("#f_ImportCustomer_ProvinceName").val(row.ProvinceName);
+			$("#f_ImportCustomer_CityId").val(row.CityId);
+			$("#f_ImportCustomer_CityName").val(row.CityName);
+			$("#f_ImportCustomer_DistrictId").val(row.DistrictId);
+			$("#f_ImportCustomer_DistrictName").val(row.DistrictName);
+			$("#f_ImportCustomer_Address").val(row.Address);
+			$("#f_ImportCustomer_Mobile").val(row.Mobile);
+			$("#f_ImportCustomer_QQ").val(row.QQ);
+			$("#f_ImportCustomer_Clazz").val(row.Clazz);
+			$("#f_ImportCustomer_Score").val(row.Score);
+			$("#f_ImportCustomer_Postcode").val(row.Postcode);
+			$("#f_ImportCustomer_Contact").val(row.Contact);
+			$("#f_ImportCustomer_ImportType").val(row.ImportType);
+			$("#f_ImportCustomer_IsProcessed").val(row.IsProcessed);
+			$("#f_ImportCustomer_ErrorMsg").val(row.ErrorMsg);
+            $dialog = $.ligerDialog.open({ target: $("#dImportCustomer"), width: 300, height: 150 });
+        }
+        function deleteImportCustomer() {
+            var row = gImportCustomer.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？",function (r) { 
+                if(r){
+                    $.post("@Url.Action("Delete","ImportCustomer")", { id: row.Id }
+                        , function (result) {
+                            if (result.Successful) {
+                                gImportCustomer.deleteSelectedRow();
+                            } else {
+                                $.ligerMessageBox.error('错误', result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+        function saveImportCustomer(){
+            if(action=="add"){
+                $.post("@Url.Action("Add","ImportCustomer")", $("#frmImportCustomer").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            gImportCustomer.addRow(result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }else{
+                $.post("@Url.Action("Update","ImportCustomer")", $("#frmImportCustomer").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            var row = gImportCustomer.getSelected();
+                            if (!row) { alert('请选择行'); return; }
+                            gImportCustomer.updateRow(row,result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+<body style="padding:10px;height:100%; text-align:center;">
+  <div id="mainsearch" style=" width:98%">
+    <div class="searchtitle">
+        <span>搜索</span><img src="@Url.Content("~/Content/lib/icons/32X32/searchtool.gif")" alt="" />
+        <div class="togglebtn"></div> 
+    </div>
+    <div class="navline" style="margin-bottom:4px; margin-top:4px;"></div>
+    <div class="searchbox">
+        <form id="formsearch" class="l-form" action="">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+			<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Id</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdSrh' type='text' id='IdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdFromSrh' type='text' id='IdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdToSrh' type='text' id='IdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ImportKey</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ImportKeySrh' type='text' id='ImportKeySrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SchoolId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SchoolIdSrh' type='text' id='SchoolIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SchoolIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SchoolIdFromSrh' type='text' id='SchoolIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SchoolIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SchoolIdToSrh' type='text' id='SchoolIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>SchoolName</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='SchoolNameSrh' type='text' id='SchoolNameSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Level</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='LevelSrh' type='text' id='LevelSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MarketYear</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MarketYearSrh' type='text' id='MarketYearSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MarketYearFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MarketYearFromSrh' type='text' id='MarketYearFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>MarketYearTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MarketYearToSrh' type='text' id='MarketYearToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>InfoSource</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='InfoSourceSrh' type='text' id='InfoSourceSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>InfoSourceFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='InfoSourceFromSrh' type='text' id='InfoSourceFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>InfoSourceTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='InfoSourceToSrh' type='text' id='InfoSourceToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Name</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='NameSrh' type='text' id='NameSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Gender</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='GenderSrh' type='text' id='GenderSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Tel</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TelSrh' type='text' id='TelSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ProvinceId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ProvinceIdSrh' type='text' id='ProvinceIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ProvinceIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ProvinceIdFromSrh' type='text' id='ProvinceIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ProvinceIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ProvinceIdToSrh' type='text' id='ProvinceIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ProvinceName</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ProvinceNameSrh' type='text' id='ProvinceNameSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>CityId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='CityIdSrh' type='text' id='CityIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>CityIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='CityIdFromSrh' type='text' id='CityIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>CityIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='CityIdToSrh' type='text' id='CityIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>CityName</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='CityNameSrh' type='text' id='CityNameSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DistrictId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DistrictIdSrh' type='text' id='DistrictIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DistrictIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DistrictIdFromSrh' type='text' id='DistrictIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DistrictIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DistrictIdToSrh' type='text' id='DistrictIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>DistrictName</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='DistrictNameSrh' type='text' id='DistrictNameSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Address</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='AddressSrh' type='text' id='AddressSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Mobile</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='MobileSrh' type='text' id='MobileSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>QQ</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='QQSrh' type='text' id='QQSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Clazz</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ClazzSrh' type='text' id='ClazzSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Score</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ScoreSrh' type='text' id='ScoreSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ScoreFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ScoreFromSrh' type='text' id='ScoreFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ScoreTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ScoreToSrh' type='text' id='ScoreToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Postcode</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='PostcodeSrh' type='text' id='PostcodeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Contact</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ContactSrh' type='text' id='ContactSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ImportType</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ImportTypeSrh' type='text' id='ImportTypeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IsProcessed</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IsProcessedSrh' type='text' id='IsProcessedSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>ErrorMsg</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ErrorMsgSrh' type='text' id='ErrorMsgSrh' ltype='text' /></td>
+</tr>
+
+            <tr>
+                <td style="text-align:center;" class="l-table-edit-td" colspan="3"><input type="button" value="查询" id="btnSearch"  /></td>
+            </tr>
+        </table>
+        
+        </form>
+    </div>
+  </div>
+  <div id="grdImportCustomer"></div> 
+  
+   <div id="dImportCustomer" style="display: none;">
+        <form action="" method="post" id="frmImportCustomer">
+			<input type="hidden" id="f_ImportCustomer_Id" name="Id" value="" />
+			<table cellpadding="0" cellspacing="0" class="l-table-edit" >
+	            
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ImportKey</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ImportKey' type='text' id='f_ImportCustomer_ImportKey' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>SchoolId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='SchoolId' type='text' id='f_ImportCustomer_SchoolId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>SchoolName</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='SchoolName' type='text' id='f_ImportCustomer_SchoolName' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Level</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Level' type='text' id='f_ImportCustomer_Level' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>MarketYear</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='MarketYear' type='text' id='f_ImportCustomer_MarketYear' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>InfoSource</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='InfoSource' type='text' id='f_ImportCustomer_InfoSource' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Name</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Name' type='text' id='f_ImportCustomer_Name' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Gender</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Gender' type='text' id='f_ImportCustomer_Gender' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Tel</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Tel' type='text' id='f_ImportCustomer_Tel' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ProvinceId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ProvinceId' type='text' id='f_ImportCustomer_ProvinceId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ProvinceName</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ProvinceName' type='text' id='f_ImportCustomer_ProvinceName' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>CityId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='CityId' type='text' id='f_ImportCustomer_CityId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>CityName</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='CityName' type='text' id='f_ImportCustomer_CityName' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>DistrictId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='DistrictId' type='text' id='f_ImportCustomer_DistrictId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>DistrictName</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='DistrictName' type='text' id='f_ImportCustomer_DistrictName' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Address</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Address' type='text' id='f_ImportCustomer_Address' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Mobile</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Mobile' type='text' id='f_ImportCustomer_Mobile' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>QQ</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='QQ' type='text' id='f_ImportCustomer_QQ' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Clazz</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Clazz' type='text' id='f_ImportCustomer_Clazz' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Score</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Score' type='text' id='f_ImportCustomer_Score' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Postcode</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Postcode' type='text' id='f_ImportCustomer_Postcode' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Contact</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Contact' type='text' id='f_ImportCustomer_Contact' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ImportType</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ImportType' type='text' id='f_ImportCustomer_ImportType' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>IsProcessed</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='IsProcessed' type='text' id='f_ImportCustomer_IsProcessed' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>ErrorMsg</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='ErrorMsg' type='text' id='f_ImportCustomer_ErrorMsg' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+            <tr>
+                <td colspan="3" style="text-align:center;">
+                    <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
+                </td>
+            </tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

@@ -1,0 +1,407 @@
+﻿@model Cn.Com.Sve.OA.Web.Models.ViewModels.School_Contact_ViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title></title>
+	<meta name="viewport" content="width=device-width" />
+	<link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.autocomplete.css")" rel="stylesheet" type="text/css" />
+	<script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.core.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.widget.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.position.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.autocomplete.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script>
+	<style type="text/css">
+		body
+		{
+			font-size: 12px;
+		}
+		.l-table-edit
+		{
+		}
+		.l-table-edit-td
+		{
+			padding: 4px;
+		}
+		.l-button-submit, .l-button-reset
+		{
+			width: 80px;
+			float: left;
+			margin-left: 10px;
+			padding-bottom: 2px;
+		}
+		.l-verify-tip
+		{
+			left: 230px;
+			top: 120px;
+			z-index: 9999;
+		}
+	</style>
+	<script type="text/javascript">
+		function addItem() {
+			action = "add";
+			$("#f_SchoolContact_Id").val("");
+			$("#f_SchoolContact_SchoolId").val("@this.Model.School.Id");
+			$("#f_SchoolContact_Year").val("@DateTime.Now.Year");
+			$("#f_SchoolContact_Title").val("");
+			$("#f_SchoolContact_Name").val("");
+			$("#f_SchoolContact_Telephone").val("");
+			$("#f_SchoolContact_Mobile").val("");
+			$("#f_SchoolContact_QQ").val("");
+			$("#f_SchoolContact_Address").val("");
+			$("#f_SchoolContact_Remark").val("");
+			$("#f_SchoolContact_TopFlag").val("0");
+			$("#f_SchoolContact_OldOaId").val("");
+
+			$dialog = $.ligerDialog.open({ target: $("#dEditor"), width: 580, height: 320 });
+		}
+		function editItem() {
+			action = "edit";
+			var row = grd.getSelectedRow();
+			if (!row) { LG.tip('请选择行!'); return }
+			$("#f_SchoolContact_Id").val(row.Id);
+			$("#f_SchoolContact_SchoolId").val(row.SchoolId);
+			$("#f_SchoolContact_Year").val(row.Year);
+			$("#f_SchoolContact_Title").val(row.Title);
+			$("#f_SchoolContact_Name").val(row.Name);
+			$("#f_SchoolContact_Telephone").val(row.Telephone);
+			$("#f_SchoolContact_Mobile").val(row.Mobile);
+			$("#f_SchoolContact_QQ").val(row.QQ);
+			$("#f_SchoolContact_Address").val(row.Address);
+			$("#f_SchoolContact_Remark").val(row.Remark);
+			$("#f_SchoolContact_TopFlag").val(row.TopFlag);
+			$("#f_SchoolContact_OldOaId").val(row.OldOaId);
+			$dialog = $.ligerDialog.open({ target: $("#dEditor"), width: 580, height: 320 });
+		}
+        function deleteItem() {
+            var row = grd.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？",function (r) { 
+                if(r){
+                    $.post("@Url.Action("Delete","SchoolContact")", { id: row.Id }
+                        , function (result) {
+                            if (result.Successful) {
+                                grd.deleteSelectedRow();
+                            } else {
+                                $.ligerMessageBox.error('错误', result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+        function saveItem(){
+            if(action=="add"){
+                $.post("@Url.Action("Add","SchoolContact")", $("#frmEditor").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            grd.addRow(result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }else{
+				var nsid = $("#NewSchoolId").val();
+				var nsname = $("#NewSchoolName").val();
+				var nt = $("#NewTitle").val();
+				if(nsid != null && nsid != undefined && nsid.length>0 && nsname != null && nsname != undefined && nsname.length>0){
+					$("#f_SchoolContact_SchoolId").val(nsid);
+					if(nt != null && nt != undefined && nt.length>0 ){
+						$("#f_SchoolContact_Title").val(nt);
+					}
+				}
+
+                $.post("@Url.Action("Update","SchoolContact")", $("#frmEditor").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            var row = grd.getSelected();
+                            if (!row) { alert('请选择行'); return; }
+							if($("#f_SchoolContact_SchoolId").val() == @this.Model.School.Id){
+								grd.updateRow(row,result.Data);
+							}else{
+                                grd.deleteSelectedRow();
+							}
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }
+        }
+
+	</script>
+	<script type="text/javascript">
+		var grd;
+		var action = "add";
+		var $dialog;
+
+		$(function () {
+			$("#frmEditor").ligerForm();
+			grd = $("#grd").ligerGrid({
+				columns: [
+					{ display: '年份', name: 'Year', width: 100, align: 'left' },
+					{ display: '姓名', name: 'Name', width: 100, align: 'left' },
+					{ display: '职位', name: 'Title', width: 100, align: 'left' },
+					{ display: '电话', name: 'Telephone', width: 100, align: 'left' },
+					{ display: '手机', name: 'Mobile', width: 100, align: 'left' },
+					{ display: 'QQ', name: 'QQ', width: 100, align: 'left' },
+					{ display: '地址', name: 'Address', width: 100, align: 'left' },
+					{ display: '备注', name: 'Remark', width: 100, align: 'left' }
+                  ],
+				pageSize: 20,
+				url: '@Url.Action("GetData", "SchoolContact", new {SchoolIdSrh=this.Model.School.Id})',
+				sortName: 'Name',
+				width: '98%', height: '100%', checkbox: false,
+				usePager: false,
+				toolbar: { items: [
+                { text: '增加', icon: 'add', click: addItem },
+                { line: true },
+                { text: '修改', icon: 'modify', click: editItem }
+                ]
+				}
+			});
+			//{ text: '删除', icon: 'delete', click: deleteItem }
+			$.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp) {
+	            	if (!value) return true;
+	            	return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+			$.metadata.setType("attr", "validate");
+			var v2 = $("#frmEditor").validate({
+				errorPlacement: function (lable, element) {
+					if (element.hasClass("l-textarea")) {
+						element.addClass("l-textarea-invalid");
+					} else if (element.hasClass("l-text-field")) {
+						element.parent().addClass("l-text-invalid");
+					}
+					$(element).removeAttr("title").ligerHideTip();
+					$(element).attr("title", lable.html()).ligerTip();
+				},
+				success: function (lable) {
+					var element = $("#" + lable.attr("for"));
+					if (element.hasClass("l-textarea")) {
+						element.removeClass("l-textarea-invalid");
+					} else if (element.hasClass("l-text-field")) {
+						element.parent().removeClass("l-text-invalid");
+					}
+					$(element).removeAttr("title").ligerHideTip();
+				},
+				submitHandler: function () {
+					saveItem();
+					return false;
+				}
+			});
+
+			$("#NewSchoolName").autocomplete({
+				source: function (request, response) {
+					$.ajax({
+						url: '@Url.Action("Suggest", "School")',
+						dataType: "json",
+						data: {
+							qty: 12,
+							prefix: request.term
+						},
+						success: function (data) {
+							response($.map(data, function (item) {
+								return {
+									label: item.Name,
+									value: item.Id
+								}
+							}));
+						}
+					});
+				},
+				minLength: 1,
+				select: function (event, ui) {
+					$("#NewSchoolId").val(ui.item.value);
+					$("#NewSchoolName").val(ui.item.label);
+					return false;
+				},
+				open: function () {
+					$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+				},
+				close: function () {
+					$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+				}
+			});
+		});
+	</script>
+</head>
+<body style="padding: 10px; height: 100%; text-align: center;">
+	<div style="width: 98%">
+		<table cellpadding="0" cellspacing="0" class="l-table-edit" border="1">
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>学校名称</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">@this.Model.School.Name</td>
+				<td class='l-table-edit-td' style='text-align: right;'>性质</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">@this.Model.School.Type</td>
+				<td class='l-table-edit-td' style='text-align: right;'>层次</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">@this.Model.School.Levels</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>地址</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="9">@this.Model.School.District.FullName@this.Model.School.Address</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>负责老师</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="3">@this.Model.School.DevBy</td>
+				<td class='l-table-edit-td' style='text-align: right;'>开拓时间</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">@((this.Model.School.DevDate.HasValue) ? this.Model.School.DevDate.Value.ToString("yyyy-MM-dd") : "")</td>
+				<td class='l-table-edit-td' style='text-align: right;'>重点跟进</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="2">@((this.Model.School.Important.GetValueOrDefault()) ? "是" : "否")</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>现有倒计时牌</td>
+				<td class='l-table-edit-td' style='text-align: left; width:50px;'>@this.Model.School.DaoJiShiPai.GetValueOrDefault()</td>
+				<td class='l-table-edit-td' style='text-align: right;'>现有教室标语</td>
+				<td class='l-table-edit-td' style='text-align: left; width:50px;'>@this.Model.School.JiaoShiBiaoYu.GetValueOrDefault()</td>
+				<td class='l-table-edit-td' style='text-align: right;'>现有宿舍标语</td>
+				<td class='l-table-edit-td' style='text-align: left; width:50px;'>@this.Model.School.ShuShiBiaoYu.GetValueOrDefault()</td>
+				<td class='l-table-edit-td' style='text-align: right;'>现有通道标语</td>
+				<td class='l-table-edit-td' style='text-align: left; width:50px;'>@this.Model.School.BuTiao.GetValueOrDefault()</td>
+				<td class='l-table-edit-td' style='text-align: right;'>现有楼梯标语</td>
+				<td class='l-table-edit-td' style='text-align: left; width:50px;'>@this.Model.School.LouTiBiaoYu.GetValueOrDefault()</td>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>现有食堂标语</td>
+				<td class='l-table-edit-td' style='text-align: left;'>@this.Model.School.ShiTangBiaoYu.GetValueOrDefault()</td>
+				<td class='l-table-edit-td' style='text-align: right;'>应届高三班数</td>
+				<td class='l-table-edit-td' style='text-align: left;'>@this.Model.School.HighClassQty.GetValueOrDefault()</td>
+				<td class='l-table-edit-td' style='text-align: right;'>应届高三人数</td>
+				<td class='l-table-edit-td' style='text-align: left;'>@this.Model.School.HighStudentQty.GetValueOrDefault()</td>
+				<td class='l-table-edit-td' style='text-align: right;'>应届初三班数</td>
+				<td class='l-table-edit-td' style='text-align: left;'>@this.Model.School.LowClassQty.GetValueOrDefault()</td>
+				<td class='l-table-edit-td' style='text-align: right;'>应届初三人数</td>
+				<td class='l-table-edit-td' style='text-align: left;'>@this.Model.School.LowStudentQty.GetValueOrDefault()</td>
+			</tr>
+			<tr>
+			</tr>
+			<tr>
+				<td class='l-table-edit-td' style='text-align: right;'>备注</td>
+				<td class='l-table-edit-td' style='text-align: left;' colspan="9">@this.Model.School.Remark</td>
+			</tr>
+			<tr>
+				<td colspan="10" style="text-align: center;">
+					@Html.ActionLink("学校基本信息", "HuWaiDisplay", "School", new { id = this.Model.School.Id }, null) &nbsp;&nbsp;
+					<!--@Html.ActionLink("学校联系人", "Index", "SchoolContact", new { schoolId = this.Model.School.Id }, null)&nbsp;&nbsp;-->
+					@Html.ActionLink("讲座信息", "Index", "SchoolTrainning", new { schoolId = this.Model.School.Id }, null)&nbsp;&nbsp;
+					@Html.ActionLink("回访记录", "Index", "SchoolVisit", new { schoolId = this.Model.School.Id }, null)&nbsp;&nbsp;
+					@Html.ActionLink("同校校友录", "SearchBySchool", "Student", new { schoolId = this.Model.School.Id }, null)&nbsp;&nbsp;
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<div id="grd">
+	</div>
+	<div id="dEditor" style="display: none;">
+		<form action="" method="post" id="frmEditor">
+			<input type="hidden" id="f_SchoolContact_Id" name="Id" value="" />
+			<input name='SchoolId' type='hidden' id='f_SchoolContact_SchoolId' value="@this.Model.School.Id" />
+			<input name='TopFlag' type='hidden' id='f_SchoolContact_TopFlag' ltype='text' />
+			<input name='OldOaId' type='hidden' id='f_SchoolContact_OldOaId' ltype='text' />
+
+			<table cellpadding="0" cellspacing="0" class="l-table-edit" >
+				<tr>
+					<td class='l-table-edit-td' style='text-align:right;'>年份</td>
+					<td class='l-table-edit-td' style='text-align:left;width:160px'>
+					<input name='Year' type='text' id='f_SchoolContact_Year' ltype='text' />
+					</td>
+					<td style='text-align:left;'></td>
+					<td class='l-table-edit-td' style='text-align:right;'>姓名</td>
+					<td class='l-table-edit-td' style='text-align:left;width:160px'>
+					<input name='Name' type='text' id='f_SchoolContact_Name' ltype='text' validate="{required:true}" />
+					</td>
+					<td style='text-align:left;'></td>
+				</tr>
+
+				<tr>
+					<td class='l-table-edit-td' style='text-align:right;'>职务</td>
+					<td class='l-table-edit-td' style='text-align:left;width:160px'>
+					<input name='Title' type='text' id='f_SchoolContact_Title' ltype='text' />
+					</td>
+					<td style='text-align:left;'></td>
+					<td class='l-table-edit-td' style='text-align:right;'>电话</td>
+					<td class='l-table-edit-td' style='text-align:left;width:160px'>
+					<input name='Telephone' type='text' id='f_SchoolContact_Telephone' ltype='text' />
+					</td>
+					<td style='text-align:left;'></td>
+				</tr>
+
+				<tr>
+					<td class='l-table-edit-td' style='text-align:right;'>手机</td>
+					<td class='l-table-edit-td' style='text-align:left;width:160px'>
+					<input name='Mobile' type='text' id='f_SchoolContact_Mobile' ltype='text' />
+					</td>
+					<td style='text-align:left;'></td>
+					<td class='l-table-edit-td' style='text-align:right;'>QQ</td>
+					<td class='l-table-edit-td' style='text-align:left;width:160px'>
+					<input name='QQ' type='text' id='f_SchoolContact_QQ' ltype='text' />
+					</td>
+					<td style='text-align:left;'></td>
+				</tr>
+
+				<tr>
+					<td class='l-table-edit-td' style='text-align:right;'>地址</td>
+					<td class='l-table-edit-td' style='text-align:left;' colspan="4">
+					<input name='Address' type='text' id='f_SchoolContact_Address' ltype='text' />
+					</td>
+					<td style='text-align:left;'></td>
+				</tr>
+				<tr>
+					<td class='l-table-edit-td' style='text-align:right;'>备注</td>
+					<td class='l-table-edit-td' style='text-align:left;' colspan="4">
+					<input name='Remark' type='text' id='f_SchoolContact_Remark' ltype='text' />
+					</td>
+					<td style='text-align:left;'></td>
+				</tr>
+				<tr>
+					<td class='l-table-edit-td' style='text-align:right;'>调动学校</td>
+					<td class='l-table-edit-td' style='text-align:left;width:160px'>
+					<input type='text' id='NewSchoolName' ltype='text' />
+					<input type='hidden' id='NewSchoolId' />
+					</td>
+					<td style='text-align:left;'></td>
+					<td class='l-table-edit-td' style='text-align:right;'>职位</td>
+					<td class='l-table-edit-td' style='text-align:left;width:160px'>
+					<input type='text' id='NewTitle' ltype='text' />
+					</td>
+					<td style='text-align:left;'></td>
+				</tr>
+
+            <tr>
+                <td colspan="6" style="text-align:center;">
+                    <input type="submit" id="btnEditorSave" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnEditorCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
+                </td>
+            </tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

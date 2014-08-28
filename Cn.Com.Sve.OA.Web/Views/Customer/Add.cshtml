@@ -1,0 +1,671 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.autocomplete.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.core.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.widget.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.position.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.autocomplete.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.form.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script>
+    <style type="text/css">
+        body
+        {
+            font-size: 12px;
+        }
+        .l-table-edit
+        {
+        }
+        .l-table-edit-td
+        {
+            padding: 4px;
+        }
+        .l-button-submit, .l-button-reset
+        {
+            width: 80px;
+            float: left;
+            margin-left: 10px;
+            padding-bottom: 2px;
+        }
+        .l-verify-tip
+        {
+            left: 230px;
+            top: 120px;
+            z-index: 9999;
+        }
+    </style>
+    <script type="text/javascript">
+        var infoSourceData, teamData;
+        var $cboBig, $cboSmall;
+        var $cboSalesTeam, $cboSalesman;
+
+        $(function () {
+
+
+            $("#SchoolName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("Suggest", "School")',
+                        dataType: "json",
+                        data: {
+                            qty: 12,
+                            prefix: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.Name,
+                                    value: item.Id
+                                }
+                            }));
+                        }
+                    });
+                },
+                minLength: 1,
+                select: function (event, ui) {
+                    $("#SchoolId").val(ui.item.value);
+                    $("#SchoolName").val(ui.item.label);
+                    return false;
+                },
+                open: function () {
+                    $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                },
+                close: function () {
+                    $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                }
+            });
+
+            $("#DistrictName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("Suggest", "District")',
+                        dataType: "json",
+                        data: {
+                            qty: 12,
+                            prefix: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.Name,
+                                    value: item.Id
+                                }
+                            }));
+                        }
+                    });
+                },
+                minLength: 1,
+                select: function (event, ui) {
+                    $("#DistrictId").val(ui.item.value);
+                    $("#DistrictName").val(ui.item.label);
+                    return false;
+                },
+                open: function () {
+                    $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                },
+                close: function () {
+                    $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                }
+            });
+
+            $("#ConsultantName1").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("Suggest", "User")',
+                        dataType: "json",
+                        data: {
+                            qty: 12,
+                            prefix: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.Name,
+                                    value: item.Id
+                                }
+                            }));
+                        }
+                    });
+                },
+                minLength: 1,
+                select: function (event, ui) {
+                    $("#ConsultantId1").val(ui.item.value);
+                    $("#ConsultantName1").val(ui.item.label);
+                    return false;
+                },
+                open: function () {
+                    $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                },
+                close: function () {
+                    $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                }
+            });
+            $("#ConsultantName2").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("Suggest", "User")',
+                        dataType: "json",
+                        data: {
+                            qty: 12,
+                            prefix: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.Name,
+                                    value: item.Id
+                                }
+                            }));
+                        }
+                    });
+                },
+                minLength: 1,
+                select: function (event, ui) {
+                    $("#ConsultantId2").val(ui.item.value);
+                    $("#ConsultantName2").val(ui.item.label);
+                    return false;
+                },
+                open: function () {
+                    $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                },
+                close: function () {
+                    $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                }
+            });
+            $("#NetConsultantName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("Suggest", "User")',
+                        dataType: "json",
+                        data: {
+                            qty: 12,
+                            prefix: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.Name,
+                                    value: item.Id
+                                }
+                            }));
+                        }
+                    });
+                },
+                minLength: 1,
+                select: function (event, ui) {
+                    $("#NetConsultantId").val(ui.item.value);
+                    $("#NetConsultantName").val(ui.item.label);
+                    return false;
+                },
+                open: function () {
+                    $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                },
+                close: function () {
+                    $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                }
+            });
+            $("#ConsultTime").ligerDateEditor({ showTime: true, initValue: '@(DateTime.Now.ToString("yyyy-MM-dd HH:mm"))' });
+
+            $cboSmall = $("#SmallSourceName").ligerComboBox(
+                { textField: 'Name', valueField: 'Id', valueFieldID: 'SmallInfoSourceId' });
+            $cboBig = $("#BigSourceName").ligerComboBox({
+                textField: 'Name', valueField: 'Id', valueFieldID: 'BigSourceId',
+                onSelected: function (v, t) {
+                    for (i = 0; i < infoSourceData.BigSource.length; i++) {
+                        if (infoSourceData.BigSource[i].Id != v) continue;
+                        $cboSmall.setData(infoSourceData.BigSource[i].SmallSource);
+                        if (infoSourceData.BigSource[i].SmallSource.length > 0) {
+                            $cboSmall.selectValue(infoSourceData.BigSource[i].SmallSource[0].Id);
+                        }
+                    }
+                }
+            });
+
+                        //GetCascadeComboData2
+            $.getJSON('@Url.Action("GetCascadeComboData2", "BigInfoSource")', function (data) {
+                infoSourceData = data;
+                $cboBig.setData(data.BigSource);
+                $cboBig.selectValue(data.BigSource[0].Id);
+            });
+
+            $cboSalesman = $("#SalesmanName").ligerComboBox(
+                { textField: 'Name', valueField: 'Id', valueFieldID: 'SalesmanId' });
+            $cboSalesTeam = $("#SalesTeamName").ligerComboBox(
+                { textField: 'Name', valueField: 'Id', valueFieldID: 'SalesTeamId',
+                    onSelected: function (v, t) {
+                        for (i = 0; i < teamData.Teams.length; i++) {
+                            var p = teamData.Teams[i];
+                            if (p.Id == v) {
+                                $cboSalesman.setData(p.Members);
+                                if (p.Members.length > 0) {
+                                    $cboSalesman.selectValue(p.Members[0].Id);
+                                } else {
+                                    $cboSalesman.selectValue('');
+                                }
+                                return;
+                            }
+                        }
+                    }
+                });
+
+            $.getJSON('@Url.Action("GetCascadeComboData", "SalesTeamMember")', function (data) {
+                teamData = data;
+                $cboSalesTeam.setData(data.Teams);
+                $cboSalesTeam.selectValue(data.Teams[0].Id);
+            });
+
+            $("#btnCheck").click(function () {
+                var gCustomer = $("#grdCustomer").ligerGrid({
+                    url: '@Url.Action("FindDuplicate", "Customer")',
+                    parms: [
+                    { name: 'NameSrh', value: $("#Name").val() },
+                    { name: 'TelephoneSrh', value: $("#Telephone").val() },
+                    { name: 'MobileSrh', value: $("#Mobile").val() }
+                    ],
+                    columns: [
+					{ display: '学校', name: 'SchoolName', width: 100, align: 'left' },
+					{ display: '姓名', name: 'Name', width: 100, align: 'left' },
+					{ display: '家庭电话', name: 'Telephone', width: 100, align: 'left', type: 'int' },
+					{ display: '手机号码', name: 'Mobile', width: 100, align: 'left' }
+                    ],
+                    pageSize: 20,
+                    sortName: 'Name',
+                    width: '98%', height: '100%', checkbox: false,
+                    toolbar: { items: [
+                        { text: '选择', icon: 'edit', click: function () {
+                            //alert("AA");
+                            var row = gCustomer.getSelectedRow();
+                            if (!row) { LG.tip('请选择行!'); return; }
+                            $("#Id").val(row.Id);
+                            $("#Name").val(row.Name);
+                            $("#SchoolId").val(row.SchoolId);
+                            $("#SchoolName").val(row.SchoolName);
+                            $("#MarketYear").val(row.MarketYear);
+                            $("#Telephone").val(row.Telephone);
+                            $("#Mobile").val(row.Mobile);
+                            $("#Clazz").val(row.Clazz);
+                            $("#QQ").val(row.QQ);
+                            $("#Email").val(row.Email);
+                            $("#EduLevel").val(row.EduLevel);
+                            $("#GaoKaoScore").val(row.GaoKaoScore);
+                            $("#GaoKaoBatch").val(row.GaoKaoBatch);
+                            $("#DistrictName").val(row.DistrictName);
+                            $("#DistrictId").val(row.DistrictId);
+                            $("#Address").val(row.Address);
+                            $("#Postcode").val(row.Postcode);
+                            //$("#BigSourceName").val(row.BigSourceName);
+                            //$("#BigSourceId").val(row.BigSourceId);
+                            //$("#SmallSourceName").val(row.SmallSourceName);
+                            //$("#SmallInfoSourceId").val(row.SmallInfoSourceId);
+                            $("#Remark").val(row.Remark);
+                            $("#ConsultantName1").val(row.ConsultantName1);
+                            $("#ConsultantId1").val(row.ConsultantId1);
+                            $("#ConsultantName2").val(row.ConsultantName2);
+                            $("#ConsultantId2").val(row.ConsultantId2);
+                            $("#NetConsultantName").val(row.NetConsultantName);
+                            $("#NetConsultantId").val(row.NetConsultantId);
+                            $("#SalesTeamName").val(row.SalesTeamName);
+                            $("#SalesTeamId").val(row.SalesTeamId);
+                            $("#SalesmanName").val(row.SalesmanName);
+                            $("#SalesmanId").val(row.SalesmanId);
+                            if (row.Gender == '女') {
+                                $("#Male").attr("checked", "false");
+                                $("#Female").attr("checked", "true");
+                            } else {
+                                $("#Female").attr("checked", "false");
+                                $("#Male").attr("checked", "true");
+                            }
+                            if (row.IsGaoKao) {
+                                $("IsGaoKao").attr("checked", "true");
+                            }
+                        }
+                        }
+                    ]
+                    }
+                });
+            }
+            );
+
+
+            $("#frmCustomer").ligerForm();
+            $("#Remark").ligerTextBox({ width: '695' });
+
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp) {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frmCustomer").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    $.post('@Url.Action("InputSave", "Customer")', $("#frmCustomer").serialize(),
+                        function (result) {
+                            if (result.Successful) {
+                                LG.tip("操作成功！");
+                            } else {
+                                LG.showError(result.Message);
+                            }
+                        }
+                    );
+                    return false;
+                }
+            });
+
+        });
+    </script>
+</head>
+<body style="padding: 10px; height: 100%; text-align: center;">
+    <form action="" method="post" id="frmCustomer">
+    <input type="hidden" id="Id" name="Id" value="" />
+    <table cellpadding="0" cellspacing="0" class="l-table-edit">
+        <tr>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                姓名
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <input name='Name' type='text' id='Name' ltype='text' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                毕业学校
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <input name='SchoolName' type='text' id='SchoolName' ltype='text' validate="{required:true}" />
+                <input name='SchoolId' type='hidden' id='SchoolId' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                招生年份
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <select id="MarketYear" name="MarketYear">
+                    <option value="@DateTime.Today.Year">@DateTime.Today.Year</option>
+                    <option value="@(DateTime.Today.Year + 1)">@(DateTime.Today.Year + 1)</option>
+                </select>
+            </td>
+            <td style='text-align: left;'>
+            </td>
+        </tr>
+        <tr>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                家庭电话
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <input name='Telephone' type='text' id='Telephone' ltype='text' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                手机
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <input name='Mobile' type='text' id='Mobile' ltype='text' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td class='l-table-edit-td' style='text-align: left;' colspan="2">
+                <input type="button" id="btnCheck" value="检查是否有相同数据" class="l-button l-button-submit"
+                    style="width: 130px;" />
+            </td>
+        </tr>
+        <tr>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                班级
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <input name='Clazz' type='text' id='Clazz' ltype='text' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                性别
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <input name='Gender' type='radio' id='Male' ltype='text' value="男" checked="checked" />男
+                <input name='Gender' type='radio' id='Female' ltype='text' value="女" />女
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                QQ号
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <input name='QQ' type='text' id='QQ' ltype='text' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+        </tr>
+        <tr>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                电子邮箱
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <input name='Email' type='text' id='Email' ltype='text' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                学历
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <select id="EduLevel" name="EduLevel">
+                    <option value="高中">高中</option>
+                    <option value="初中">初中</option>
+                </select>
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                参加高考
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <input type='checkbox' id='IsGaoKao' name="IsGaoKao" ltype='text' value="true" checked="checked" />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+        </tr>
+        <tr>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                高考成绩
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <input name='GaoKaoScore' type='text' id='GaoKaoScore' ltype='text' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                高考批次
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <select id="GaoKaoBatch" name="GaoKaoBatch">
+                    <option value="">未指定</option>
+                    <option value="1批">1批</option>
+                    <option value="2A">2A</option>
+                    <option value="2B">2B</option>
+                    <option value="3A">3A</option>
+                    <option value="3B">3B</option>
+                    <option value="落榜">落榜</option>
+                </select>
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                咨询类型
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <select id="ConsultWay" name="ConsultWay">
+                    <option value="">未指定</option>
+                    <option value="电话咨询">电话咨询</option>
+                    <option value="网络咨询">网络咨询</option>
+                    <option value="当面咨询">当面咨询</option>
+                </select>
+            </td>
+            <td style='text-align: left;'>
+            </td>
+        </tr>
+        <tr>
+            <td style='text-align: right;' class='l-table-edit-td'>
+                区/县
+            </td>
+            <td style='text-align: left;' class='l-table-edit-td'>
+                <input name='DistrictName' type='text' id='DistrictName' />
+                <input name='DistrictId' type='hidden' id='DistrictId' ltype='text' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td style='text-align: right;' class='l-table-edit-td'>
+                地址
+            </td>
+            <td style='text-align: left;' class='l-table-edit-td'>
+                <input name='Address' type='text' id="Address" />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td style='text-align: right;' class='l-table-edit-td'>
+                邮编
+            </td>
+            <td style='text-align: left;' class='l-table-edit-td'>
+                <input name='Postcode' type='text' id='Postcode' ltype='text' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+        </tr>
+        <tr>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                信息来源大类
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <input name='BigSourceName' type='text' id='BigSourceName' ltype='text' validate="{required:true}" />
+                <input name='BigSourceId' type='hidden' id='BigSourceId' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                信息来源小类
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <input name='SmallSourceName' type='text' id='SmallSourceName' ltype='text' />
+                <input name='SmallInfoSourceId' type='hidden' id='SmallInfoSourceId' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td style='text-align: right;' class='l-table-edit-td'>
+                咨询时间
+            </td>
+            <td style='text-align: left;' class='l-table-edit-td'>
+                <input name='ConsultTime' type='text' id='ConsultTime' ltype='text' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+        </tr>
+        <tr>
+            <td style='text-align: right;' class='l-table-edit-td'>
+                备注
+            </td>
+            <td style='text-align: left;' class='l-table-edit-td' colspan="7">
+                <input name='Remark' type='text' id='Remark' ltype='text' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+        </tr>
+        <tr>
+            <td style='text-align: right;' class='l-table-edit-td'>
+                咨询师1
+            </td>
+            <td style='text-align: left;' class='l-table-edit-td'>
+                <input name='ConsultantName1' type='text' id='ConsultantName1' ltype='text' />
+                <input name='ConsultantId1' type='hidden' id='ConsultantId1' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td style='text-align: right;' class='l-table-edit-td'>
+                咨询师2
+            </td>
+            <td style='text-align: left;' class='l-table-edit-td'>
+                <input name='ConsultantName2' type='text' id='ConsultantName2' ltype='text' />
+                <input name='ConsultantId2' type='hidden' id='ConsultantId2' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td style='text-align: right;' class='l-table-edit-td'>
+                网络咨询
+            </td>
+            <td style='text-align: left;' class='l-table-edit-td'>
+                <input name='NetConsultantName' type='text' id='NetConsultantName' ltype='text' />
+                <input name='NetConsultantId' type='hidden' id='NetConsultantId' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+        </tr>
+        <tr>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                招生小组
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <input name='SalesTeamName' type='text' id='SalesTeamName' ltype='text' />
+                <input name='SalesTeamId' type='hidden' id='SalesTeamId' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td class='l-table-edit-td' style='text-align: right;'>
+                电访员
+            </td>
+            <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                <input name='SalesmanName' type='text' id='SalesmanName' ltype='text' />
+                <input name='SalesmanId' type='hidden' id='SalesmanId' />
+            </td>
+            <td style='text-align: left;'>
+            </td>
+            <td class='l-table-edit-td' style='text-align: left;' colspan="2">
+                <input type="submit" id="btnSave" value="资料分配" class="l-button l-button-submit" style="width: 130px;" />
+            </td>
+        </tr>
+    </table>
+    </form>
+    <div id="dupPanel">
+        <div id="grdCustomer">
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TransformationPropertyValues xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Values>
+    <TransformationPropertyValue>
+      <FileName>Controllers\TempCode\Controllers.tt</FileName>
+      <PropertyName>Host</PropertyName>
+      <Value>VisualStudio</Value>
+    </TransformationPropertyValue>
+    <TransformationPropertyValue>
+      <FileName>Controllers\Controllers.partial.tt</FileName>
+      <PropertyName>Host</PropertyName>
+      <Value>VisualStudio</Value>
+    </TransformationPropertyValue>
+    <TransformationPropertyValue>
+      <FileName>Views\TempCode\IndexViews.tt</FileName>
+      <PropertyName>Host</PropertyName>
+      <Value>VisualStudio</Value>
+    </TransformationPropertyValue>
+  </Values>
+</TransformationPropertyValues>

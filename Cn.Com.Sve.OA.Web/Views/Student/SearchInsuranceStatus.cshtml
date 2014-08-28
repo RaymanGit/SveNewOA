@@ -1,0 +1,178 @@
+﻿@model Cn.Com.Sve.OA.Web.Models.ViewModels.InsuranceSearchViewModel
+
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.autocomplete.css")" rel="stylesheet" type="text/css" />
+
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.core.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.widget.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.position.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.autocomplete.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.form.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script>
+    <style type="text/css">
+        body
+        {
+            font-size: 12px;
+        }
+        .l-table-edit
+        {
+        }
+        .l-table-edit-td
+        {
+            padding: 4px;
+        }
+        .l-button-submit, .l-button-reset
+        {
+            width: 80px;
+            float: left;
+            margin-left: 10px;
+            padding-bottom: 2px;
+        }
+        .l-verify-tip
+        {
+            left: 230px;
+            top: 120px;
+            z-index: 9999;
+        }
+    </style>
+	<style type="text/css">
+	.ui-autocomplete-loading { background: white url('@Url.Content("~/Content/themes/base/images/ui-anim_basic_16x16.gif")') right center no-repeat; }
+	#f_UserName { width: 25em; }
+	</style>
+    <script type="text/javascript">
+    	$(function () {
+	@if (this.Model.Criteria.InsuranceEndDateToSrh.HasValue) {
+	 @Html.Raw("$(\"#InsuranceEndDateToSrh\").ligerDateEditor({ initValue: '" + this.Model.Criteria.InsuranceEndDateToSrh.Value.ToString("d")+ "' })");
+	 } else {
+    		@Html.Raw("$(\"#InsuranceEndDateToSrh\").ligerDateEditor()");
+	 }
+
+    		$("#frmCondition").ligerForm();
+    		$("#chkAll").click(function () {
+    			if ($(this).attr("checked")) {
+    				$(".chkSelect").attr("checked", $(this).attr("checked"));
+    			} else {
+    				$(".chkSelect").removeAttr("checked");
+    			}
+    		});
+    	});
+    </script>
+    @if(this.ViewBag.Msg!=null) { 
+    <script type="text/javascript">
+    	$(function () {
+    		LG.showSuccess('@this.ViewBag.Msg ！');
+    	});
+    </script>
+    }
+</head>
+<body style="padding: 10px; height: 100%; text-align: center;">
+    <div id="pnlByCondition" style="width: 98%">
+             <form id="frmCondition" class="l-form" action='' method="post" enctype="multipart/form-data">
+                <table cellpadding="0" cellspacing="0" class="l-table-edit">
+                <tr>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        班级
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <input type='text' id='ClazzNameSrh' name="ClazzNameSrh" ltype='text' value="@this.Model.Criteria.ClazzNameSrh" />
+                    </td>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        学员
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <input type='text' id='NameSrh' name="NameSrh" ltype='text' value="@this.Model.Criteria.NameSrh" />
+                    </td>
+				</tr>
+                <tr>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        保险状态
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <select id="InsuranceStatusSrh" name="InsuranceStatusSrh"  style="width:98%;">
+                            @if (String.IsNullOrEmpty(this.Model.Criteria.InsuranceStatusSrh) || this.Model.Criteria.InsuranceStatusSrh.Equals("全部")) {
+	                        <option value="全部" selected="selected" >全部</option>
+                            } else {
+	                        <option value="全部" >全部</option>
+                            }
+                            @if (this.Model.Criteria.InsuranceStatusSrh != null && this.Model.Criteria.InsuranceStatusSrh.Equals("未买保险")) {
+	                        <option value="未买保险" selected="selected" >未买保险</option>
+                            } else {
+	                        <option value="未买保险">未买保险</option>
+                            }
+                            @if (this.Model.Criteria.InsuranceStatusSrh != null && this.Model.Criteria.InsuranceStatusSrh.Equals("已买保险")) {
+	                        <option value="已买保险" selected="selected" >已买保险</option>
+                            } else {
+	                        <option value="已买保险">已买保险</option>
+                            }
+                            @if (this.Model.Criteria.InsuranceStatusSrh != null && this.Model.Criteria.InsuranceStatusSrh.Equals("一个月内到期")) {
+	                        <option value="一个月内到期" selected="selected" >一个月内到期</option>
+                            } else {
+	                        <option value="一个月内到期">一个月内到期</option>
+                            }
+                        </select>
+                    </td>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        保险到期日期
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <input type='text' id='InsuranceEndDateToSrh' name="InsuranceEndDateToSrh" ltype='text'  />
+                    </td>
+				</tr>
+
+				<tr>
+                    <td style="text-align:center">
+                        <input type="submit" id="btnSearch" value="查询" />
+                    </td>
+                </tr>
+                </table>
+            </form>
+    </div>
+	
+	<table cellpadding="0" cellspacing="0" class="l-table-edit" style="width:100%; border:1px black solid;"  border="1">
+		<tr>
+			<td style='text-align: left; width:12.5%;' class='l-table-edit-td'>班级</td>
+			<td style='text-align: left; width:12.5%;' class='l-table-edit-td'>学员</td>
+			<td style='text-align: left; width:12.5%;' class='l-table-edit-td'>买保险日期</td>
+			<td style='text-align: left; width:12.5%;' class='l-table-edit-td'>保险到期日期</td>
+			<td style='text-align: left; width:12.5%;' class='l-table-edit-td'>班级</td>
+			<td style='text-align: left; width:12.5%;' class='l-table-edit-td'>学员</td>
+			<td style='text-align: left; width:12.5%;' class='l-table-edit-td'>买保险日期</td>
+			<td style='text-align: left; width:12.5%;' class='l-table-edit-td'>保险到期日期</td>
+		</tr>
+        <tr>
+		@if (this.Model.Data.Data != null) {
+	  for (int i = 0; i < this.Model.Data.Data.Count; i++) {
+		  var t = this.Model.Data.Data[i];
+            <td style='text-align: left; width:12.5%;' class='l-table-edit-td'>@(t.ClazzId.HasValue ? t.Clazz.Name : "")</td>
+            <td style='text-align: left; width:12.5%;' class='l-table-edit-td'>@t.Name</td>
+            <td style='text-align: left; width:12.5%;' class='l-table-edit-td'>@(t.InsuranceStartDate.HasValue ? t.InsuranceStartDate.Value.ToString("yyyy年MM月dd日") : "")</td>
+            <td style='text-align: left; width:12.5%;' class='l-table-edit-td'>@(t.InsuranceEndDate.HasValue ? t.InsuranceEndDate.Value.ToString("yyyy年MM月dd日") : "")</td>
+		  if (i % 2 != 0) {
+			  @Html.Raw("</tr><tr>");
+		  }
+	  }
+		}
+        </tr>
+    </table>
+	
+</body>
+</html>
