@@ -1,0 +1,63 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Cn.RaymanLee.Patterns;
+using Cn.Com.Sve.OA.Entities;
+using Cn.Com.Sve.OA.Entities.Criteria;
+
+namespace Cn.Com.Sve.OA.DataServices {
+    public partial interface ICustomerRepository  : IRepository<Customer,int> {
+    	IEnumerable<Customer> FindByName(string name);
+    	IEnumerable<Customer> FindBySchoolId(Nullable<int> schoolId);
+    	IEnumerable<Customer> FindByMarketYear(int marketYear);
+    	IEnumerable<Customer> FindByTelephone(string telephone);
+    	IEnumerable<Customer> FindByMobile(string mobile);
+    	IEnumerable<Customer> FindByGender(string gender);
+    	IEnumerable<Customer> FindByQQ(string qQ);
+    	IEnumerable<Customer> FindByEmail(string email);
+    	IEnumerable<Customer> FindByEduLevel(string eduLevel);
+    	IEnumerable<Customer> FindByIsGaoKao(bool isGaoKao);
+    	IEnumerable<Customer> FindByGaoKaoScore(Nullable<int> gaoKaoScore);
+    	IEnumerable<Customer> FindByGaoKaoBatch(string gaoKaoBatch);
+    	IEnumerable<Customer> FindByDistrictId(Nullable<int> districtId);
+    	IEnumerable<Customer> FindByAddress(string address);
+    	IEnumerable<Customer> FindByPostcode(string postcode);
+    	IEnumerable<Customer> FindBySmallInfoSourceId(int smallInfoSourceId);
+    	IEnumerable<Customer> FindByConsultType(string consultType);
+    	IEnumerable<Customer> FindByRemark(string remark);
+    	IEnumerable<Customer> FindByConsultantId1(Nullable<int> consultantId1);
+    	IEnumerable<Customer> FindByConsultantId2(Nullable<int> consultantId2);
+    	IEnumerable<Customer> FindByNetConsultantId(Nullable<int> netConsultantId);
+    	IEnumerable<Customer> FindByCreateTeacherId(Nullable<int> createTeacherId);
+    	IEnumerable<Customer> FindByConsultTime(Nullable<System.DateTime> consultTime);
+    	IEnumerable<Customer> FindBySalesTeamId(Nullable<int> salesTeamId);
+    	IEnumerable<Customer> FindBySalesmanId(Nullable<int> salesmanId);
+    	IEnumerable<Customer> FindByIsImport(bool isImport);
+    	IEnumerable<Customer> FindByTeleSalesTimes(int teleSalesTimes);
+    	IEnumerable<Customer> FindByNextTeleSalesTime(Nullable<System.DateTime> nextTeleSalesTime);
+    	IEnumerable<Customer> FindByAppointmentTime(Nullable<System.DateTime> appointmentTime);
+    	IEnumerable<Customer> FindByDropInTime(Nullable<System.DateTime> dropInTime);
+    	IEnumerable<Customer> FindByDinWeiTime(Nullable<System.DateTime> dinWeiTime);
+    	IEnumerable<Customer> FindBySignUpTime(Nullable<System.DateTime> signUpTime);
+    	IEnumerable<Customer> FindByIsDinWei(bool isDinWei);
+    	IEnumerable<Customer> FindByIsClosed(bool isClosed);
+    	IEnumerable<Customer> FindByLastSalesTime(Nullable<System.DateTime> lastSalesTime);
+    	IEnumerable<Customer> FindByImportant(bool important);
+    	IEnumerable<Customer> FindByConsultantRemark(string consultantRemark);
+    	IEnumerable<Customer> FindByKeywords(string keywords);
+    	IEnumerable<Customer> FindByClazz(string clazz);
+    	IEnumerable<Customer> FindByIsLeaderFollow(bool isLeaderFollow);
+    	IEnumerable<Customer> FindByStatus(string status);
+    	IEnumerable<Customer> FindByLastSaleLog(string lastSaleLog);
+    	IEnumerable<Customer> FindByIsDorm(Nullable<bool> isDorm);
+    	IEnumerable<Customer> FindByInClazzId(Nullable<int> inClazzId);
+    	IEnumerable<Customer> FindByIsPay(bool isPay);
+    	IEnumerable<Customer> FindByPayTime(Nullable<System.DateTime> payTime);
+    	IEnumerable<Customer> FindByIsRefund(bool isRefund);
+    	IEnumerable<Customer> FindByRefundTime(Nullable<System.DateTime> refundTime);
+    	IEnumerable<Customer> FindByIsDropIn(bool isDropIn);
+    	IEnumerable<Customer> FindByIsSignUp(bool isSignUp);
+    	IEnumerable<Customer> FindByCriteria(CustomerCriteria c);
+    }
+}

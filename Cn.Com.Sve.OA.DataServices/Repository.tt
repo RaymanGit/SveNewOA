@@ -1,0 +1,283 @@
+﻿<#@ template language="C#" debug="false" hostspecific="true" #>
+<#@ include file="EF.Utility.CS.ttinclude"#>
+<#@ output extension=".cs" encoding="utf-8" #>
+<#
+
+CodeGenerationTools code = new CodeGenerationTools(this);
+MetadataLoader loader = new MetadataLoader(this);
+CodeRegion region = new CodeRegion(this, 1);
+MetadataTools ef = new MetadataTools(this); 
+
+string inputFile = @"OaModel.edmx";
+EdmItemCollection ItemCollection = loader.CreateEdmItemCollection(inputFile);
+string namespaceName = code.VsNamespaceSuggestion();
+
+EntityFrameworkTemplateFileManager fileManager = EntityFrameworkTemplateFileManager.Create(this);
+
+// Write out support code to primary template output file
+WriteHeader(fileManager);
+BeginNamespace(namespaceName, code);
+//WriteCustomObservableCollection();
+EndNamespace(namespaceName);
+EntityContainer container = ItemCollection.GetItems<EntityContainer>().FirstOrDefault();
+
+// Emit Entity Types
+// 循环处理实体模型中的所有实体
+foreach (EntityType entity in ItemCollection.GetItems<EntityType>().OrderBy(e => e.Name))
+{
+	string className = entity.Name + "Repository";
+	string interfaceName = "I" + entity.Name + "Repository";
+
+	fileManager.StartNewFile(className + ".partial.cs");
+    BeginNamespace(namespaceName, code);
+	var pkTypeName = code.Escape(entity.KeyMembers[0].TypeUsage);
+    bool entityHasNullableFKs = entity.NavigationProperties.Any(np => np.GetDependentProperties().Any(p=>ef.IsNullable(p)));
+	string entitySetName = GetEntitySetName(entity.Name, container, code);
+	
+	StringBuilder sbIncludes = new StringBuilder();
+    foreach (NavigationProperty navProperty in entity.NavigationProperties.Where(np => np.DeclaringType == entity))
+    {
+        NavigationProperty inverse = ef.Inverse(navProperty);
+        if (inverse != null &&  !IsReadWriteAccessibleProperty(inverse)) {
+            inverse = null;
+        }
+        if (inverse != null || ((AssociationType)navProperty.RelationshipType).IsForeignKey) {
+			if (navProperty.ToEndMember.RelationshipMultiplicity != RelationshipMultiplicity.Many){
+        		sbIncludes.AppendFormat(".Include(\"{0}\")", code.Escape(navProperty));
+			}
+        }
+	}
+#>
+public partial class <#=className#> : <#=interfaceName#> {
+<#
+	//region.Begin("RepositoryBase's Members");
+#>
+	protected OaDbContext DbContext { get; private set; }
+	public <#=className#>(IUnitOfWork unitOfWork){
+		if (unitOfWork == null) {
+			throw new ArgumentNullException("unitOfWork");
+		}
+		if (!(unitOfWork is OaDbContext)) {
+			throw new ArgumentException("unitOfWork 不是 OaDbContext 的实例！");
+		}
+		this.DbContext = unitOfWork as OaDbContext;
+	}
+
+	public void Add(<#=entity.Name#> entity) {
+		this.DbContext.<#=entitySetName#>.AddObject(entity);
+	}
+
+	public void Update(<#=entity.Name#> entity) {
+		var e = this.FindById(entity.Id);
+		if (e != null) {
+<#	
+	foreach (EdmProperty edmProperty in entity.Properties.Where(p => p.TypeUsage.EdmType is PrimitiveType && p.DeclaringType == entity)) {
+		string propertyName = code.Escape(edmProperty);
+		string paraName = code.CamelCase(edmProperty.Name);
+		bool isForeignKey = entity.NavigationProperties.Any(np=>np.GetDependentProperties().Contains(edmProperty));
+		if(!code.Escape(edmProperty).Equals("Id")){
+#>
+			e.<#=propertyName#> = entity.<#=propertyName#>;
+<#
+		}
+	}
+#>
+		}
+		//if (this.FindById(entity.Id) != null) {
+		//	this.DbContext.<#=entitySetName#>.Attach(entity);
+		//	this.DbContext.ObjectStateManager.ChangeObjectState(entity, System.Data.EntityState.Modified);
+		//}
+	}
+
+	public void Delete(<#=entity.Name#> entity) {
+		this.DbContext.<#=entitySetName#>.DeleteObject(entity);
+	}
+
+	public void DeleteById(int id) {
+		var obj = this.FindById(id);
+		if (obj != null) {
+			this.DbContext.<#=entitySetName#>.DeleteObject(obj);
+		}
+	}
+
+	public IEnumerable<<#=entity.Name#>> FindAll() {
+		return this.DbContext.<#=entitySetName#><#=sbIncludes.ToString()#>;
+	}
+	public IEnumerable<<#=entity.Name#>> FindAll2() {
+		return this.DbContext.<#=entitySetName#>;
+	}
+
+	public <#=entity.Name#> FindById(int id) {
+		return this.DbContext.<#=entitySetName#><#=sbIncludes.ToString()#>.FirstOrDefault(o => o.Id.Equals(id));
+	}
+<#	
+	//region.End();
+	
+	foreach (EdmProperty edmProperty in entity.Properties.Where(p => p.TypeUsage.EdmType is PrimitiveType && p.DeclaringType == entity))
+    {
+		string propertyName = code.Escape(edmProperty);
+		string paraName = code.CamelCase(edmProperty.Name);
+		bool isForeignKey = entity.NavigationProperties.Any(np=>np.GetDependentProperties().Contains(edmProperty));
+		if(!code.Escape(edmProperty).Equals("Id")){
+			
+#>
+	public IEnumerable<<#=entity.Name#>> FindBy<#=propertyName#>(<#=code.Escape(edmProperty.TypeUsage)#> <#=paraName#>){
+		<#if(!edmProperty.Nullable || code.Escape(edmProperty.TypeUsage).ToString().ToLower().Equals("string")) {#>
+		return this.DbContext.<#=entitySetName#><#=sbIncludes.ToString()#>.Where(o => o.<#=propertyName#>.Equals(<#=paraName#>));
+		<#}else{#>
+		return this.DbContext.<#=entitySetName#><#=sbIncludes.ToString()#>.Where(o => o.<#=propertyName#>.Value.Equals(<#=paraName#>.Value));
+		<#}#>
+	}
+<#
+		}
+	}
+#>
+	public IEnumerable<<#=entity.Name#>> FindByCriteria(<#=entity.Name#>Criteria c) {
+<#
+	StringBuilder condition = new StringBuilder();
+	foreach (EdmProperty edmProperty in entity.Properties.Where(p => p.TypeUsage.EdmType is PrimitiveType && p.DeclaringType == entity)) {
+		string propertyName = code.Escape(edmProperty);
+		if(code.Escape(edmProperty.TypeUsage).ToLower().Equals("string")){
+			condition.Append("&& ").AppendFormat("(String.IsNullOrEmpty(c.{0}Srh) || o.{0}.Contains(c.{0}Srh))", propertyName).AppendLine();
+		} else {
+			if(edmProperty.Nullable){
+				condition.Append("&& ").AppendFormat("(!c.{0}Srh.HasValue || (o.{0}.HasValue && o.{0}.Value.Equals(c.{0}Srh.Value)))", propertyName).AppendLine();
+			}else{
+				condition.Append("&& ").AppendFormat("(!c.{0}Srh.HasValue || o.{0}.Equals(c.{0}Srh.Value))", propertyName).AppendLine();
+			}
+			if(this.BuildRange(code.Escape(edmProperty.TypeUsage))){
+			if(edmProperty.Nullable){
+				condition.Append("&& ").AppendFormat("(!c.{0}FromSrh.HasValue || (o.{0}.HasValue && o.{0}.Value >= c.{0}FromSrh.Value))", propertyName).AppendLine();
+				condition.Append("&& ").AppendFormat("(!c.{0}ToSrh.HasValue || (o.{0}.HasValue && o.{0}.Value <= c.{0}ToSrh.Value))", propertyName).AppendLine();
+			}else{
+				condition.Append("&& ").AppendFormat("(!c.{0}FromSrh.HasValue || o.{0} >= c.{0}FromSrh.Value)", propertyName).AppendLine();
+				condition.Append("&& ").AppendFormat("(!c.{0}ToSrh.HasValue || o.{0} <= c.{0}ToSrh.Value)", propertyName).AppendLine();
+			}
+
+				
+				
+			}
+		}
+	}
+	if(condition.Length>3) condition.Remove( 0, 3 );
+	condition.Replace("&&","\t\t\t&&");
+#>
+		return this.DbContext.<#=entitySetName#><#=sbIncludes.ToString()#>.Where(o => 
+			<#=condition.ToString()#>
+		);
+	}
+
+}
+<#
+	EndNamespace(namespaceName);
+}
+	fileManager.Process();
+#>
+
+<#+
+void WriteHeader(EntityFrameworkTemplateFileManager fileManager, params string[] extraUsings)
+{
+    fileManager.StartHeader();
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Cn.RaymanLee.Patterns;
+using Cn.Com.Sve.OA.Entities;
+using Cn.Com.Sve.OA.Entities.Criteria;
+
+<#=String.Join(String.Empty, extraUsings.Select(u => "using " + u + ";" + Environment.NewLine).ToArray())#>
+<#+
+    fileManager.EndBlock();
+}
+#>
+
+<#+
+// 写命名空间的开头 - 开始
+void BeginNamespace(string namespaceName, CodeGenerationTools code)
+{
+    CodeRegion region = new CodeRegion(this);
+    if (!String.IsNullOrEmpty(namespaceName))
+    {
+#>
+namespace <#=code.EscapeNamespace(namespaceName)#> {
+<#+
+        PushIndent(CodeRegion.GetIndent(1));
+    }
+}
+// 写命名空间的开头 - 结束
+#>
+<#+
+void EndNamespace(string namespaceName)
+{
+    if (!String.IsNullOrEmpty(namespaceName))
+    {
+        PopIndent();
+#>
+}
+<#+
+    }
+}
+#>
+
+<#+
+string GetEntitySetName(string entityName, EntityContainer container, CodeGenerationTools code){
+	foreach (EntitySet entitySet in container.BaseEntitySets.OfType<EntitySet>()) {
+		if(entitySet.ElementType.Name.Equals(entityName)){
+			return code.Escape(entitySet.Name);
+		}
+	}
+	return null;
+}
+
+bool BuildRange(string type){
+	bool result = false;
+	switch(type.ToLower()){
+		case "int":
+		case "decimal":
+		case "double":
+		case "long":
+		case "datetime":
+		case "nullable<int>":
+		case "nullable<decimal>":
+		case "nullable<double>":
+		case "nullable<long>":
+		case "nullable<datetime>":
+		case "nullable<system.datetime>":
+			result = true;
+			break;
+		default:
+			break;
+	}
+	return result;
+}
+
+string ConvertToNullabse(string type){
+	string result = type;
+	switch(type.ToLower()){
+		case "int":
+		case "decimal":
+		case "double":
+		case "long":
+		case "datetime":
+		case "system.datetime":
+		case "bool":
+		case "boolean":
+			result = type + "?";
+			break;
+		default:
+			break;
+	}
+	return result;
+}
+
+bool IsReadWriteAccessibleProperty(EdmMember member)
+{
+    string setter = Accessibility.ForWriteOnlyProperty(member);
+    string getter = Accessibility.ForReadOnlyProperty(member);
+
+    return getter != "private" && getter != "protected" && setter != "private" && setter != "protected";
+}
+
+#>

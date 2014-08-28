@@ -1,0 +1,391 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7C20395A-4DBA-486F-B7BF-D205C9AF6A9A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cn.Com.Sve.OA.BusinessService</RootNamespace>
+    <AssemblyName>Cn.Com.Sve.OA.BusinessService</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="FileHelpers">
+      <HintPath>..\Libs\FileHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="FileHelpers.ExcelStorage">
+      <HintPath>..\Libs\FileHelpers.ExcelStorage.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.Excel">
+      <HintPath>..\Libs\Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.Office">
+      <HintPath>..\Libs\Interop.Office.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Enterprise Library 5.0\Bin\Microsoft.Practices.EnterpriseLibrary.Caching.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching.Cryptography, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Enterprise Library 5.0\Bin\Microsoft.Practices.EnterpriseLibrary.Caching.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching.Database, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Enterprise Library 5.0\Bin\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Enterprise Library 5.0\Bin\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Enterprise Library 5.0\Bin\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Enterprise Library 5.0\Bin\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Enterprise Library 5.0\Bin\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Enterprise Library 5.0\Bin\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging.Database, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Enterprise Library 5.0\Bin\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Enterprise Library 5.0\Bin\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Enterprise Library 5.0\Bin\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Enterprise Library 5.0\Bin\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Enterprise Library 5.0\Bin\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Enterprise Library 5.0\Bin\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Vbe.Interop, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\Libs\Microsoft.Vbe.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\Libs\office.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BigInfoSourceService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BusinessService.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CityService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ClazzService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerService.cs" />
+    <Compile Include="CustomerService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DistrictService.cs" />
+    <Compile Include="DistrictService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FunctionService.cs" />
+    <Compile Include="FunctionService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IBigInfoSourceService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ICityService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IClazzService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ICustomerService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IDistrictService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IFunctionService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IImportCustomerService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IImportDupliateService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IKnowledgeService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IModuleService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ImportCustomerService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ImportDupliateService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IProvinceService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IQualificationSchoolService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IQualificationStudentService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IQualificationUnrestrictedUserService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ISalesTeamMemberService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ISalesTeamService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ISchoolAdService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ISchoolContactService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ISchoolService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ISmallInfoSourceService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IStudentChangeClazzLogService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IStudentHomeVisitRecordService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IStudentService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IStudentTeleVisitRecordService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IStudentVisitRecordService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ISupervisorService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ITelSaleLogService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IUserGroupFunctionPermissionService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IUserGroupModulePermissionService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IUserGroupService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IUserInGroupService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IUserService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="KnowledgeService.cs" />
+    <Compile Include="KnowledgeService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModuleService.cs" />
+    <Compile Include="ModuleService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProvinceService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QualificationSchoolService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QualificationStudentService.cs" />
+    <Compile Include="QualificationStudentService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QualificationUnrestrictedUserService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReportService.cs" />
+    <Compile Include="SalesTeamMemberService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalesTeamService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SchoolAdService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SchoolContactService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SchoolService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceInterface.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SmallInfoSourceService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentChangeClazzLogService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentHomeVisitRecordService.cs" />
+    <Compile Include="StudentHomeVisitRecordService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentService.cs" />
+    <Compile Include="StudentService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentTeleVisitRecordService.cs" />
+    <Compile Include="StudentTeleVisitRecordService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudentVisitRecordService.cs" />
+    <Compile Include="StudentVisitRecordService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SupervisorService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SysContext.cs" />
+    <Compile Include="TelSaleLogService.cs" />
+    <Compile Include="TelSaleLogService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserGroupFunctionPermissionService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserGroupModulePermissionService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserGroupService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserInGroupService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="BusinessService.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BusinessService.cs</LastGenOutput>
+    </None>
+    <None Include="Cn.Com.Sve.OA.BusinessService.t4properties" />
+    <None Include="packages.config" />
+    <None Include="ServiceInterface.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ServiceInterface.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cn.Com.Sve.OA.DataServices\Cn.Com.Sve.OA.DataServices.csproj">
+      <Project>{7f0669cc-1189-4fbd-b32e-eb5e07e13704}</Project>
+      <Name>Cn.Com.Sve.OA.DataServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cn.Com.Sve.OA.Entities\Cn.Com.Sve.OA.Entities.csproj">
+      <Project>{18d2f5c3-7c53-4951-98e1-1abb48c14435}</Project>
+      <Name>Cn.Com.Sve.OA.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cn.RaymanLee.Data\Cn.RaymanLee.Data.csproj">
+      <Project>{b5bfe952-a625-4a2e-a251-f77a2b54ed4b}</Project>
+      <Name>Cn.RaymanLee.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cn.RaymanLee.Patterns\Cn.RaymanLee.Patterns.csproj">
+      <Project>{b157d953-050c-468d-a6bd-efddcf5128c3}</Project>
+      <Name>Cn.RaymanLee.Patterns</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cn.RaymanLee.Utils\Cn.RaymanLee.Utils.csproj">
+      <Project>{d7df557b-0836-4b6f-a59f-1785ddf25397}</Project>
+      <Name>Cn.RaymanLee.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

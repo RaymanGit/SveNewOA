@@ -1,0 +1,116 @@
+﻿<#@ template language="C#" debug="false" hostspecific="true"#>
+<#@ include file="EF.Utility.CS.ttinclude"#>
+<#@ output extension=".cs"  encoding="utf-8"#>
+<#
+
+CodeGenerationTools code = new CodeGenerationTools(this);
+MetadataLoader loader = new MetadataLoader(this);
+CodeRegion region = new CodeRegion(this, 1);
+MetadataTools ef = new MetadataTools(this);
+
+string inputFile = @"OaModel.edmx";
+EdmItemCollection ItemCollection = loader.CreateEdmItemCollection(inputFile);
+string namespaceName = code.VsNamespaceSuggestion();
+
+EntityFrameworkTemplateFileManager fileManager = EntityFrameworkTemplateFileManager.Create(this);
+
+// Write out support code to primary template output file
+WriteHeader(fileManager);
+BeginNamespace(namespaceName, code);
+//WriteCustomObservableCollection();
+EndNamespace(namespaceName);
+EntityContainer container = ItemCollection.GetItems<EntityContainer>().FirstOrDefault();
+
+// Emit Entity Types
+// 循环处理实体模型中的所有实体
+foreach (EntityType entity in ItemCollection.GetItems<EntityType>().OrderBy(e => e.Name))
+{
+	string interfaceName = "I" + entity.Name + "Repository";
+
+    fileManager.StartNewFile(interfaceName + ".partial.cs");
+    BeginNamespace(namespaceName, code);
+	var pkTypeName = code.Escape(entity.KeyMembers[0].TypeUsage);
+    bool entityHasNullableFKs = entity.NavigationProperties.Any(np => np.GetDependentProperties().Any(p=>ef.IsNullable(p)));
+	string entitySetName = GetEntitySetName(entity.Name, container, code);
+#>
+public partial interface <#=interfaceName#>  : IRepository<<#=entity.Name#>,<#=pkTypeName#>> {
+<#	
+	//region.End();
+	
+	foreach (EdmProperty edmProperty in entity.Properties.Where(p => p.TypeUsage.EdmType is PrimitiveType && p.DeclaringType == entity))
+    {
+		string propertyName = code.Escape(edmProperty);
+		string paraName = code.CamelCase(edmProperty.Name);
+		bool isForeignKey = entity.NavigationProperties.Any(np=>np.GetDependentProperties().Contains(edmProperty));
+		if(!code.Escape(edmProperty).Equals("Id")){
+#>
+	IEnumerable<<#=entity.Name#>> FindBy<#=propertyName#>(<#=code.Escape(edmProperty.TypeUsage)#> <#=paraName#>);
+<#
+		}
+	}
+#>
+	IEnumerable<<#=entity.Name#>> FindByCriteria(<#=entity.Name#>Criteria c);
+}
+<#
+	EndNamespace(namespaceName);
+}
+	fileManager.Process();
+#>
+
+<#+
+void WriteHeader(EntityFrameworkTemplateFileManager fileManager, params string[] extraUsings)
+{
+    fileManager.StartHeader();
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Cn.RaymanLee.Patterns;
+using Cn.Com.Sve.OA.Entities;
+using Cn.Com.Sve.OA.Entities.Criteria;
+<#=String.Join(String.Empty, extraUsings.Select(u => "using " + u + ";" + Environment.NewLine).ToArray())#>
+<#+
+    fileManager.EndBlock();
+}
+#>
+
+<#+
+// 写命名空间的开头 - 开始
+void BeginNamespace(string namespaceName, CodeGenerationTools code)
+{
+    CodeRegion region = new CodeRegion(this);
+    if (!String.IsNullOrEmpty(namespaceName))
+    {
+#>
+namespace <#=code.EscapeNamespace(namespaceName)#> {
+<#+
+        PushIndent(CodeRegion.GetIndent(1));
+    }
+}
+// 写命名空间的开头 - 结束
+#>
+<#+
+void EndNamespace(string namespaceName)
+{
+    if (!String.IsNullOrEmpty(namespaceName))
+    {
+        PopIndent();
+#>
+}
+<#+
+    }
+}
+#>
+
+<#+
+string GetEntitySetName(string entityName, EntityContainer container, CodeGenerationTools code){
+	foreach (EntitySet entitySet in container.BaseEntitySets.OfType<EntitySet>()) {
+		if(entitySet.ElementType.Name.Equals(entityName)){
+			return code.Escape(entitySet.Name);
+		}
+	}
+	return null;
+}
+
+#>
