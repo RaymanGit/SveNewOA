@@ -231,6 +231,7 @@
     <Compile Include="Controllers\ProvinceController.partial.cs">
       <DependentUpon>Controllers.partial.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\QualificationSchoolController.cs" />
     <Compile Include="Controllers\QualificationSchoolController.partial.cs">
       <DependentUpon>Controllers.partial.tt</DependentUpon>
     </Compile>
@@ -2233,6 +2234,7 @@
     <Content Include="Views\TempCode\StudentChangeClazzLog-Index.cshtml">
       <DependentUpon>IndexViews.tt</DependentUpon>
     </Content>
+    <Content Include="Views\QualificationSchool\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
