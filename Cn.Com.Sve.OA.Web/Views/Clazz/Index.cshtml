@@ -71,7 +71,8 @@ function FormatDate(d,fmt) {
 					{ display: '班主任', name: 'Master', width: 100, align: 'left' },
 					{ display: '责任领导', name: 'Governor', width: 100, align: 'left' },
 					{ display: '开班日期', name: 'OpenDate', width: 100, align: 'left', type:'date' },
-					{ display: '开学典礼', name: 'KickOffDate', width: 100, align: 'left', type:'date' },
+                    { display: '开学人数', name: 'StudentQty', width: 100, align: 'right' },
+                    { display: '开学典礼', name: 'KickOffDate', width: 100, align: 'left', type: 'date' },
 					{ display: '结课日期', name: 'ClosedDate', width: 100, align: 'left', type:'date' }
                   ],
                 pageSize: 20, toolbar: {},
@@ -166,6 +167,7 @@ function FormatDate(d,fmt) {
 			$("#f_Clazz_OpenDate").val("");
 			$("#f_Clazz_ClosedDate").val("");
 			$("#f_Clazz_KickOffDate").val("");
+			$("#f_Clazz_StudentQty").val("0");
 
 			$dialog = $.ligerDialog.open({ target: $("#dClazz"), width: 550, height: 260 });
         }
@@ -180,6 +182,7 @@ function FormatDate(d,fmt) {
 			$("#f_Clazz_TeacherB").val(row.TeacherB);
 			$("#f_Clazz_Master").val(row.Master);
 			$("#f_Clazz_Governor").val(row.Governor);
+			$("#f_Clazz_StudentQty").val(row.StudentQty);
 
 			//$("#f_Clazz_OpenDate").ligerDateEditor({ initValue:row.OpenDate});
 			//alert(row.OpenDate);
@@ -288,7 +291,7 @@ function FormatDate(d,fmt) {
    <div id="dClazz" style="display: none;">
         <form action="" method="post" id="frmClazz">
 			<input type="hidden" id="f_Clazz_Id" name="Id" value="" />
-<input name='StudentQty' type='hidden' id='f_Clazz_StudentQty' value="50" />
+
 <input name='LimitedQty' type='hidden' id='f_Clazz_LimitedQty' value="50" />
 <input name='FinishedDate' type='hidden' id='f_Clazz_FinishedDate' value="2014-1-1" />
 <input name='IsOpen' type='hidden' id='f_Clazz_IsOpen' value="true" />
@@ -352,22 +355,22 @@ function FormatDate(d,fmt) {
 <input name='OpenDate' type='text' id='f_Clazz_OpenDate' ltype='text' />
 </td>
 <td style='text-align:left;'></td>
-<td class='l-table-edit-td' style='text-align:right;'>开学典礼</td>
+<td class='l-table-edit-td' style='text-align:right;'>开学人数</td>
 <td class='l-table-edit-td' style='text-align:left;width:160px'>
-<input name='KickOffDate' type='text' id='f_Clazz_KickOffDate' ltype='text' />
+<input name='StudentQty' type='text' id='f_Clazz_StudentQty' ltype='text' />
 </td>
 <td style='text-align:left;'></td>
 </tr>
 
 				<tr>
-<td class='l-table-edit-td' style='text-align:right;'>结课日期</td>
+<td class='l-table-edit-td' style='text-align:right;'>开学典礼</td>
 <td class='l-table-edit-td' style='text-align:left;width:160px'>
-<input name='ClosedDate' type='text' id='f_Clazz_ClosedDate' ltype='text' />
+    <input name='KickOffDate' type='text' id='f_Clazz_KickOffDate' ltype='text' />
 </td>
 <td style='text-align:left;'></td>
-<td class='l-table-edit-td' style='text-align:right;'>&nbsp;</td>
+<td class='l-table-edit-td' style='text-align:right;'>结课日期</td>
 <td class='l-table-edit-td' style='text-align:left;width:160px'>
-&nbsp;
+    <input name='ClosedDate' type='text' id='f_Clazz_ClosedDate' ltype='text' />
 </td>
 <td style='text-align:left;'></td>
 </tr>
