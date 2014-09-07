@@ -4,255 +4,21 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Cn.Com.Sve.OA.Entities.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
-        <EntityContainer Name="CnComSveOAEntitiesStoreContainer">
-          <EntitySet Name="BaseInfo_City" EntityType="Cn.Com.Sve.OA.Entities.Store.BaseInfo_City" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="BaseInfo_District" EntityType="Cn.Com.Sve.OA.Entities.Store.BaseInfo_District" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="BaseInfo_InfoSourceBig" EntityType="Cn.Com.Sve.OA.Entities.Store.BaseInfo_InfoSourceBig" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="BaseInfo_InfoSourceSmall" EntityType="Cn.Com.Sve.OA.Entities.Store.BaseInfo_InfoSourceSmall" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="BaseInfo_Province" EntityType="Cn.Com.Sve.OA.Entities.Store.BaseInfo_Province" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="BaseInfo_School" EntityType="Cn.Com.Sve.OA.Entities.Store.BaseInfo_School" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Common_Knowledge" EntityType="Cn.Com.Sve.OA.Entities.Store.Common_Knowledge" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="HuWai_SchoolAd" EntityType="Cn.Com.Sve.OA.Entities.Store.HuWai_SchoolAd" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="HuWai_SchoolContact" EntityType="Cn.Com.Sve.OA.Entities.Store.HuWai_SchoolContact" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Marketing_Customer" EntityType="Cn.Com.Sve.OA.Entities.Store.Marketing_Customer" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Marketing_ImportCustomer" EntityType="Cn.Com.Sve.OA.Entities.Store.Marketing_ImportCustomer" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Marketing_ImportDupliate" EntityType="Cn.Com.Sve.OA.Entities.Store.Marketing_ImportDupliate" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Marketing_SalesTeam" EntityType="Cn.Com.Sve.OA.Entities.Store.Marketing_SalesTeam" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Marketing_SalesTeamMember" EntityType="Cn.Com.Sve.OA.Entities.Store.Marketing_SalesTeamMember" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Marketing_TelSaleLog" EntityType="Cn.Com.Sve.OA.Entities.Store.Marketing_TelSaleLog" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Qualification_School" EntityType="Cn.Com.Sve.OA.Entities.Store.Qualification_School" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Qualification_Student" EntityType="Cn.Com.Sve.OA.Entities.Store.Qualification_Student" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Qualification_UnrestrictedUser" EntityType="Cn.Com.Sve.OA.Entities.Store.Qualification_UnrestrictedUser" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Student_ChangeClazzLog" EntityType="Cn.Com.Sve.OA.Entities.Store.Student_ChangeClazzLog" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Student_Clazz" EntityType="Cn.Com.Sve.OA.Entities.Store.Student_Clazz" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Student_File" EntityType="Cn.Com.Sve.OA.Entities.Store.Student_File" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Student_HomeVisitRecord" EntityType="Cn.Com.Sve.OA.Entities.Store.Student_HomeVisitRecord" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Student_TeleVisitRecord" EntityType="Cn.Com.Sve.OA.Entities.Store.Student_TeleVisitRecord" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Student_VisitRecord" EntityType="Cn.Com.Sve.OA.Entities.Store.Student_VisitRecord" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Sys_Function" EntityType="Cn.Com.Sve.OA.Entities.Store.Sys_Function" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Sys_Module" EntityType="Cn.Com.Sve.OA.Entities.Store.Sys_Module" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Sys_Supervisor" EntityType="Cn.Com.Sve.OA.Entities.Store.Sys_Supervisor" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Sys_User" EntityType="Cn.Com.Sve.OA.Entities.Store.Sys_User" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Sys_UserGroup" EntityType="Cn.Com.Sve.OA.Entities.Store.Sys_UserGroup" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Sys_UserGroupFunctionPermission" EntityType="Cn.Com.Sve.OA.Entities.Store.Sys_UserGroupFunctionPermission" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Sys_UserGroupModulePermission" EntityType="Cn.Com.Sve.OA.Entities.Store.Sys_UserGroupModulePermission" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Sys_UserInGroup" EntityType="Cn.Com.Sve.OA.Entities.Store.Sys_UserInGroup" store:Type="Tables" Schema="dbo" />
-          <AssociationSet Name="FK_BaseInfo_City_BaseInfo_Province" Association="Cn.Com.Sve.OA.Entities.Store.FK_BaseInfo_City_BaseInfo_Province">
-            <End Role="BaseInfo_Province" EntitySet="BaseInfo_Province" />
-            <End Role="BaseInfo_City" EntitySet="BaseInfo_City" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BaseInfo_District_BaseInfo_City" Association="Cn.Com.Sve.OA.Entities.Store.FK_BaseInfo_District_BaseInfo_City">
-            <End Role="BaseInfo_City" EntitySet="BaseInfo_City" />
-            <End Role="BaseInfo_District" EntitySet="BaseInfo_District" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BaseInfo_InfoSourceSmall_BaseInfo_InfoSourceBig" Association="Cn.Com.Sve.OA.Entities.Store.FK_BaseInfo_InfoSourceSmall_BaseInfo_InfoSourceBig">
-            <End Role="BaseInfo_InfoSourceBig" EntitySet="BaseInfo_InfoSourceBig" />
-            <End Role="BaseInfo_InfoSourceSmall" EntitySet="BaseInfo_InfoSourceSmall" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BaseInfo_School_BaseInfo_District" Association="Cn.Com.Sve.OA.Entities.Store.FK_BaseInfo_School_BaseInfo_District">
-            <End Role="BaseInfo_District" EntitySet="BaseInfo_District" />
-            <End Role="BaseInfo_School" EntitySet="BaseInfo_School" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Customer_Consultant1" Association="Cn.Com.Sve.OA.Entities.Store.FK_Customer_Consultant1">
-            <End Role="Sys_User" EntitySet="Sys_User" />
-            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Customer_Consultant2" Association="Cn.Com.Sve.OA.Entities.Store.FK_Customer_Consultant2">
-            <End Role="Sys_User" EntitySet="Sys_User" />
-            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Customer_CreateTeacher" Association="Cn.Com.Sve.OA.Entities.Store.FK_Customer_CreateTeacher">
-            <End Role="Sys_User" EntitySet="Sys_User" />
-            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Customer_District" Association="Cn.Com.Sve.OA.Entities.Store.FK_Customer_District">
-            <End Role="BaseInfo_District" EntitySet="BaseInfo_District" />
-            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Customer_InfoSource" Association="Cn.Com.Sve.OA.Entities.Store.FK_Customer_InfoSource">
-            <End Role="BaseInfo_InfoSourceSmall" EntitySet="BaseInfo_InfoSourceSmall" />
-            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Customer_NetConsultant" Association="Cn.Com.Sve.OA.Entities.Store.FK_Customer_NetConsultant">
-            <End Role="Sys_User" EntitySet="Sys_User" />
-            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Customer_Salesman" Association="Cn.Com.Sve.OA.Entities.Store.FK_Customer_Salesman">
-            <End Role="Sys_User" EntitySet="Sys_User" />
-            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Customer_SalesTeam" Association="Cn.Com.Sve.OA.Entities.Store.FK_Customer_SalesTeam">
-            <End Role="Marketing_SalesTeam" EntitySet="Marketing_SalesTeam" />
-            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Customer_School" Association="Cn.Com.Sve.OA.Entities.Store.FK_Customer_School">
-            <End Role="BaseInfo_School" EntitySet="BaseInfo_School" />
-            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
-          </AssociationSet>
-          <AssociationSet Name="FK_HuWai_SchoolAd_BaseInfo_School" Association="Cn.Com.Sve.OA.Entities.Store.FK_HuWai_SchoolAd_BaseInfo_School">
-            <End Role="BaseInfo_School" EntitySet="BaseInfo_School" />
-            <End Role="HuWai_SchoolAd" EntitySet="HuWai_SchoolAd" />
-          </AssociationSet>
-          <AssociationSet Name="FK_HuWai_SchoolContact_BaseInfo_School" Association="Cn.Com.Sve.OA.Entities.Store.FK_HuWai_SchoolContact_BaseInfo_School">
-            <End Role="BaseInfo_School" EntitySet="BaseInfo_School" />
-            <End Role="HuWai_SchoolContact" EntitySet="HuWai_SchoolContact" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Marketing_Customer_Student_Clazz" Association="Cn.Com.Sve.OA.Entities.Store.FK_Marketing_Customer_Student_Clazz">
-            <End Role="Student_Clazz" EntitySet="Student_Clazz" />
-            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Marketing_ImportDupliate_Marketing_Customer" Association="Cn.Com.Sve.OA.Entities.Store.FK_Marketing_ImportDupliate_Marketing_Customer">
-            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
-            <End Role="Marketing_ImportDupliate" EntitySet="Marketing_ImportDupliate" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Marketing_ImportDupliate_Marketing_ImportCustomer" Association="Cn.Com.Sve.OA.Entities.Store.FK_Marketing_ImportDupliate_Marketing_ImportCustomer">
-            <End Role="Marketing_ImportCustomer" EntitySet="Marketing_ImportCustomer" />
-            <End Role="Marketing_ImportDupliate" EntitySet="Marketing_ImportDupliate" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Marketing_SalesTeamMember_Marketing_SalesTeam" Association="Cn.Com.Sve.OA.Entities.Store.FK_Marketing_SalesTeamMember_Marketing_SalesTeam">
-            <End Role="Marketing_SalesTeam" EntitySet="Marketing_SalesTeam" />
-            <End Role="Marketing_SalesTeamMember" EntitySet="Marketing_SalesTeamMember" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Marketing_SalesTeamMember_Sys_User" Association="Cn.Com.Sve.OA.Entities.Store.FK_Marketing_SalesTeamMember_Sys_User">
-            <End Role="Sys_User" EntitySet="Sys_User" />
-            <End Role="Marketing_SalesTeamMember" EntitySet="Marketing_SalesTeamMember" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Marketing_TelSaleLog_Marketing_Customer" Association="Cn.Com.Sve.OA.Entities.Store.FK_Marketing_TelSaleLog_Marketing_Customer">
-            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
-            <End Role="Marketing_TelSaleLog" EntitySet="Marketing_TelSaleLog" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Marketing_TelSaleLog_Sys_User" Association="Cn.Com.Sve.OA.Entities.Store.FK_Marketing_TelSaleLog_Sys_User">
-            <End Role="Sys_User" EntitySet="Sys_User" />
-            <End Role="Marketing_TelSaleLog" EntitySet="Marketing_TelSaleLog" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_ChangeClazzLog_Student_Clazz" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_ChangeClazzLog_Student_Clazz">
-            <End Role="Student_Clazz" EntitySet="Student_Clazz" />
-            <End Role="Student_ChangeClazzLog" EntitySet="Student_ChangeClazzLog" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_ChangeClazzLog_Student_Clazz1" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_ChangeClazzLog_Student_Clazz1">
-            <End Role="Student_Clazz" EntitySet="Student_Clazz" />
-            <End Role="Student_ChangeClazzLog" EntitySet="Student_ChangeClazzLog" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_ChangeClazzLog_Student_File" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_ChangeClazzLog_Student_File">
-            <End Role="Student_File" EntitySet="Student_File" />
-            <End Role="Student_ChangeClazzLog" EntitySet="Student_ChangeClazzLog" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_File_BaseInfo_District" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_File_BaseInfo_District">
-            <End Role="BaseInfo_District" EntitySet="BaseInfo_District" />
-            <End Role="Student_File" EntitySet="Student_File" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_File_BaseInfo_InfoSourceSmall" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_File_BaseInfo_InfoSourceSmall">
-            <End Role="BaseInfo_InfoSourceSmall" EntitySet="BaseInfo_InfoSourceSmall" />
-            <End Role="Student_File" EntitySet="Student_File" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_File_BaseInfo_School" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_File_BaseInfo_School">
-            <End Role="BaseInfo_School" EntitySet="BaseInfo_School" />
-            <End Role="Student_File" EntitySet="Student_File" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_File_Student_Clazz" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_File_Student_Clazz">
-            <End Role="Student_Clazz" EntitySet="Student_Clazz" />
-            <End Role="Student_File" EntitySet="Student_File" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_HomeVisitRecord_Input" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_HomeVisitRecord_Input">
-            <End Role="Sys_User" EntitySet="Sys_User" />
-            <End Role="Student_HomeVisitRecord" EntitySet="Student_HomeVisitRecord" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_HomeVisitRecord_Student_Clazz" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_HomeVisitRecord_Student_Clazz">
-            <End Role="Student_Clazz" EntitySet="Student_Clazz" />
-            <End Role="Student_HomeVisitRecord" EntitySet="Student_HomeVisitRecord" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_HomeVisitRecord_Student_File" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_HomeVisitRecord_Student_File">
-            <End Role="Student_File" EntitySet="Student_File" />
-            <End Role="Student_HomeVisitRecord" EntitySet="Student_HomeVisitRecord" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_HomeVisitRecord_Sys_User" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_HomeVisitRecord_Sys_User">
-            <End Role="Sys_User" EntitySet="Sys_User" />
-            <End Role="Student_HomeVisitRecord" EntitySet="Student_HomeVisitRecord" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_TeleVisitRecord_Reviewer" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_TeleVisitRecord_Reviewer">
-            <End Role="Sys_User" EntitySet="Sys_User" />
-            <End Role="Student_TeleVisitRecord" EntitySet="Student_TeleVisitRecord" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_TeleVisitRecord_Student_Clazz" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_TeleVisitRecord_Student_Clazz">
-            <End Role="Student_Clazz" EntitySet="Student_Clazz" />
-            <End Role="Student_TeleVisitRecord" EntitySet="Student_TeleVisitRecord" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_TeleVisitRecord_Student_File" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_TeleVisitRecord_Student_File">
-            <End Role="Student_File" EntitySet="Student_File" />
-            <End Role="Student_TeleVisitRecord" EntitySet="Student_TeleVisitRecord" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_TeleVisitRecord_Visitor" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_TeleVisitRecord_Visitor">
-            <End Role="Sys_User" EntitySet="Sys_User" />
-            <End Role="Student_TeleVisitRecord" EntitySet="Student_TeleVisitRecord" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_VisitRecord_Reviewer" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_VisitRecord_Reviewer">
-            <End Role="Sys_User" EntitySet="Sys_User" />
-            <End Role="Student_VisitRecord" EntitySet="Student_VisitRecord" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_VisitRecord_Student_Clazz" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_VisitRecord_Student_Clazz">
-            <End Role="Student_Clazz" EntitySet="Student_Clazz" />
-            <End Role="Student_VisitRecord" EntitySet="Student_VisitRecord" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_VisitRecord_Student_File" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_VisitRecord_Student_File">
-            <End Role="Student_File" EntitySet="Student_File" />
-            <End Role="Student_VisitRecord" EntitySet="Student_VisitRecord" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Student_VisitRecord_Visitor" Association="Cn.Com.Sve.OA.Entities.Store.FK_Student_VisitRecord_Visitor">
-            <End Role="Sys_User" EntitySet="Sys_User" />
-            <End Role="Student_VisitRecord" EntitySet="Student_VisitRecord" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sys_Function_Sys_Function" Association="Cn.Com.Sve.OA.Entities.Store.FK_Sys_Function_Sys_Function">
-            <End Role="Sys_Function" EntitySet="Sys_Function" />
-            <End Role="Sys_Function1" EntitySet="Sys_Function" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sys_Function_Sys_Module" Association="Cn.Com.Sve.OA.Entities.Store.FK_Sys_Function_Sys_Module">
-            <End Role="Sys_Module" EntitySet="Sys_Module" />
-            <End Role="Sys_Function" EntitySet="Sys_Function" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sys_Supervisor_Sys_User" Association="Cn.Com.Sve.OA.Entities.Store.FK_Sys_Supervisor_Sys_User">
-            <End Role="Sys_User" EntitySet="Sys_User" />
-            <End Role="Sys_Supervisor" EntitySet="Sys_Supervisor" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sys_UserGroupFunctionPermission_Sys_Function" Association="Cn.Com.Sve.OA.Entities.Store.FK_Sys_UserGroupFunctionPermission_Sys_Function">
-            <End Role="Sys_Function" EntitySet="Sys_Function" />
-            <End Role="Sys_UserGroupFunctionPermission" EntitySet="Sys_UserGroupFunctionPermission" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sys_UserGroupFunctionPermission_Sys_UserGroup" Association="Cn.Com.Sve.OA.Entities.Store.FK_Sys_UserGroupFunctionPermission_Sys_UserGroup">
-            <End Role="Sys_UserGroup" EntitySet="Sys_UserGroup" />
-            <End Role="Sys_UserGroupFunctionPermission" EntitySet="Sys_UserGroupFunctionPermission" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sys_UserGroupModulePermission_Sys_Module" Association="Cn.Com.Sve.OA.Entities.Store.FK_Sys_UserGroupModulePermission_Sys_Module">
-            <End Role="Sys_Module" EntitySet="Sys_Module" />
-            <End Role="Sys_UserGroupModulePermission" EntitySet="Sys_UserGroupModulePermission" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sys_UserGroupModulePermission_Sys_UserGroup" Association="Cn.Com.Sve.OA.Entities.Store.FK_Sys_UserGroupModulePermission_Sys_UserGroup">
-            <End Role="Sys_UserGroup" EntitySet="Sys_UserGroup" />
-            <End Role="Sys_UserGroupModulePermission" EntitySet="Sys_UserGroupModulePermission" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sys_UserInGroup_Sys_User" Association="Cn.Com.Sve.OA.Entities.Store.FK_Sys_UserInGroup_Sys_User">
-            <End Role="Sys_User" EntitySet="Sys_User" />
-            <End Role="Sys_UserInGroup" EntitySet="Sys_UserInGroup" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sys_UserInGroup_Sys_UserGroup" Association="Cn.Com.Sve.OA.Entities.Store.FK_Sys_UserInGroup_Sys_UserGroup">
-            <End Role="Sys_UserGroup" EntitySet="Sys_UserGroup" />
-            <End Role="Sys_UserInGroup" EntitySet="Sys_UserInGroup" />
-          </AssociationSet>
-        </EntityContainer>
+    <Schema Namespace="Cn.Com.Sve.OA.Entities.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityType Name="BaseInfo_City">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ProvinceId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="BaseInfo_District">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CityId" Type="int" Nullable="false" />
           <Property Name="PhonePrefix" Type="nvarchar" MaxLength="50" />
           <Property Name="Postcode" Type="nvarchar" MaxLength="50" />
@@ -261,30 +27,30 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="BaseInfo_InfoSourceSmall">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="InfoSourceBigId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="BaseInfo_Province">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="BaseInfo_School">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="DistrictId" Type="int" />
           <Property Name="IsSold" Type="bit" Nullable="false" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" />
@@ -311,16 +77,56 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Subject" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Content" Type="nvarchar" Nullable="false" />
-          <Property Name="KnowledgeType" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Subject" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Content" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="KnowledgeType" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employment_Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Important" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Website" Type="nvarchar" MaxLength="255" />
+          <Property Name="Telephone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Fax" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="CityId" Type="int" />
+          <Property Name="Introduction" Type="nvarchar" MaxLength="500" />
+          <Property Name="SourceType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Referer" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="EmployedQty" Type="int" Nullable="false" />
+          <Property Name="OldOaId" Type="nvarchar" MaxLength="50" />
+          <Property Name="TempProvId" Type="nvarchar" MaxLength="50" />
+          <Property Name="TempProvName" Type="nvarchar" MaxLength="50" />
+          <Property Name="TempCityId" Type="nvarchar" MaxLength="50" />
+          <Property Name="TempCityName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Employment_CompanyContact">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+          <Property Name="Position" Type="nvarchar" MaxLength="50" />
+          <Property Name="Telephone" Type="nvarchar" MaxLength="50" />
+          <Property Name="QQ" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" />
+          <Property Name="Introduction" Type="nvarchar" MaxLength="200" />
+          <Property Name="OldOaId" Type="nvarchar" MaxLength="50" />
+          <Property Name="OldOaCompanyId" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="HuWai_SchoolAd">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SchoolId" Type="int" Nullable="false" />
           <Property Name="Year" Type="int" Nullable="false" />
           <Property Name="HighClassQty" Type="int" />
@@ -340,11 +146,11 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SchoolId" Type="int" Nullable="false" />
           <Property Name="Year" Type="int" />
-          <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Telephone" Type="nvarchar" MaxLength="50" />
           <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
           <Property Name="QQ" Type="nvarchar" MaxLength="50" />
@@ -357,14 +163,14 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="SchoolId" Type="int" />
           <Property Name="MarketYear" Type="int" Nullable="false" />
           <Property Name="Telephone" Type="nvarchar" MaxLength="50" />
           <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
           <Property Name="Clazz" Type="nvarchar" MaxLength="50" />
-          <Property Name="Gender" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="QQ" Type="nvarchar" MaxLength="50" />
           <Property Name="Email" Type="nvarchar" MaxLength="255" />
           <Property Name="EduLevel" Type="nvarchar" MaxLength="50" />
@@ -398,7 +204,7 @@
           <Property Name="ConsultantRemark" Type="nvarchar" MaxLength="2000" />
           <Property Name="Keywords" Type="nvarchar" MaxLength="255" />
           <Property Name="IsLeaderFollow" Type="bit" Nullable="false" />
-          <Property Name="Status" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LastSaleLog" Type="nvarchar" MaxLength="2000" />
           <Property Name="InClazzId" Type="int" />
           <Property Name="IsDorm" Type="bit" />
@@ -413,11 +219,11 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="ImportKey" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ImportKey" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="SchoolId" Type="int" />
           <Property Name="SchoolName" Type="nvarchar" MaxLength="50" />
-          <Property Name="Level" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Level" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="MarketYear" Type="int" Nullable="false" />
           <Property Name="InfoSource" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
@@ -436,7 +242,7 @@
           <Property Name="Score" Type="int" />
           <Property Name="Postcode" Type="nvarchar" MaxLength="50" />
           <Property Name="Contact" Type="nvarchar" MaxLength="50" />
-          <Property Name="ImportType" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="ImportType" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsProcessed" Type="bit" Nullable="false" />
           <Property Name="ErrorMsg" Type="nvarchar" MaxLength="2000" />
         </EntityType>
@@ -444,8 +250,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="ImportKey" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ImportKey" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CustomerId" Type="int" />
           <Property Name="ImportId" Type="int" />
           <Property Name="SchoolName" Type="nvarchar" MaxLength="50" />
@@ -459,14 +265,14 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Marketing_SalesTeamMember">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SalesTeamId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="IsLeader" Type="bit" Nullable="false" />
@@ -475,7 +281,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerId" Type="int" Nullable="false" />
           <Property Name="Content" Type="nvarchar" MaxLength="2000" />
           <Property Name="NextTelTime" Type="datetime" />
@@ -489,14 +295,14 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Qualification_Student">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Clazz" Type="varchar" MaxLength="50" />
           <Property Name="TargetSchoolName" Type="nvarchar" MaxLength="50" />
           <Property Name="SignUpTime" Type="datetime" />
@@ -559,7 +365,7 @@
           <Property Name="MatriculateTime" Type="datetime" />
           <Property Name="NetUserName" Type="nvarchar" MaxLength="50" />
           <Property Name="NetPassword" Type="nvarchar" MaxLength="50" />
-          <Property Name="StudyType" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="StudyType" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="SubmitStatus" Type="nvarchar" MaxLength="50" />
           <Property Name="OfferStatus" Type="nvarchar" MaxLength="50" />
           <Property Name="PayStatus" Type="nvarchar" MaxLength="50" />
@@ -573,27 +379,27 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Student_ChangeClazzLog">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StudentId" Type="int" Nullable="false" />
           <Property Name="OldClazzId" Type="int" />
           <Property Name="NewClazzId" Type="int" Nullable="false" />
           <Property Name="ChangeTime" Type="datetime" Nullable="false" />
-          <Property Name="Operator" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Operator" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Student_Clazz">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Semester" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Semester" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="StudentQty" Type="int" Nullable="false" />
           <Property Name="LimitedQty" Type="int" Nullable="false" />
           <Property Name="TeacherA" Type="nvarchar" MaxLength="50" />
@@ -614,10 +420,10 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="PinYin" Type="nvarchar" MaxLength="50" />
-          <Property Name="Gender" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Birthday" Type="datetime" />
           <Property Name="EduLevel" Type="nvarchar" MaxLength="50" />
           <Property Name="GraduateDate" Type="datetime" />
@@ -683,19 +489,19 @@
           <Property Name="LastUpdateTime" Type="datetime" Nullable="false" />
           <Property Name="IsGetQualification" Type="nvarchar" MaxLength="50" />
           <Property Name="QualificationSchool" Type="nvarchar" MaxLength="50" />
-          <Property Name="Status" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="TechnicalWay" Type="nvarchar" MaxLength="50" />
-          <Property Name="NeedObtainWork" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="NeedObtainWork" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IntentPosition" Type="nvarchar" MaxLength="50" />
-          <Property Name="TargetSalary" Type="decimal" Scale="2" />
+          <Property Name="TargetSalary" Type="decimal" Precision="18" Scale="2" />
           <Property Name="InsuranceStatus" Type="nvarchar" MaxLength="50" />
           <Property Name="InsuranceStartDate" Type="datetime" />
           <Property Name="InsuranceEndDate" Type="datetime" />
           <Property Name="GaoKaoBatch" Type="nvarchar" MaxLength="50" />
           <Property Name="GiveNotebook" Type="nvarchar" MaxLength="50" />
-          <Property Name="MaxSalary" Type="decimal" Scale="2" />
-          <Property Name="CurrentSalary" Type="decimal" Scale="2" />
-          <Property Name="FirstSalary" Type="decimal" Scale="2" />
+          <Property Name="MaxSalary" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CurrentSalary" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="FirstSalary" Type="decimal" Precision="18" Scale="2" />
           <Property Name="BeginSchoolTime" Type="datetime" />
           <Property Name="MasterName1" Type="nvarchar" MaxLength="50" />
           <Property Name="MasterName2" Type="nvarchar" MaxLength="50" />
@@ -735,11 +541,11 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClazzId" Type="int" Nullable="false" />
           <Property Name="StudentId" Type="int" Nullable="false" />
           <Property Name="Time" Type="datetime" Nullable="false" />
-          <Property Name="VisitType" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="VisitType" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="BeginTime" Type="nvarchar" MaxLength="50" />
           <Property Name="EndTime" Type="nvarchar" MaxLength="50" />
           <Property Name="GiveContactCard" Type="nvarchar" MaxLength="50" />
@@ -757,13 +563,13 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClazzId" Type="int" Nullable="false" />
           <Property Name="StudentId" Type="int" Nullable="false" />
           <Property Name="Time" Type="datetime" Nullable="false" />
           <Property Name="VisitorId" Type="int" Nullable="false" />
-          <Property Name="Interviewee" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="PhoneNo" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Interviewee" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PhoneNo" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Advice" Type="nvarchar" MaxLength="500" />
           <Property Name="Summary" Type="nvarchar" MaxLength="500" />
           <Property Name="ReviewerId" Type="int" />
@@ -774,7 +580,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClazzId" Type="int" Nullable="false" />
           <Property Name="StudentId" Type="int" Nullable="false" />
           <Property Name="Time" Type="datetime" Nullable="false" />
@@ -790,11 +596,11 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ModuleId" Type="int" Nullable="false" />
-          <Property Name="Code" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Icon" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Icon" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Url" Type="nvarchar" MaxLength="255" />
           <Property Name="ParentFunctionId" Type="int" />
           <Property Name="Seq" Type="int" />
@@ -803,27 +609,27 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Code" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Icon" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Sys_Supervisor">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="User" Type="int" Nullable="false" />
-          <Property Name="Type" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Sys_User">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Status" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LastLoginTime" Type="datetime" />
           <Property Name="LastLoginIP" Type="nvarchar" MaxLength="50" />
           <Property Name="DefaultUrl" Type="nvarchar" MaxLength="255" />
@@ -832,14 +638,14 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Sys_UserGroupFunctionPermission">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserGroupId" Type="int" Nullable="false" />
           <Property Name="FunctionId" Type="int" Nullable="false" />
         </EntityType>
@@ -847,7 +653,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserGroupId" Type="int" Nullable="false" />
           <Property Name="ModuleId" Type="int" Nullable="false" />
         </EntityType>
@@ -855,13 +661,13 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserGroupId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_BaseInfo_City_BaseInfo_Province">
-          <End Role="BaseInfo_Province" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_Province" Multiplicity="1" />
-          <End Role="BaseInfo_City" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_City" Multiplicity="*" />
+          <End Role="BaseInfo_Province" Type="Self.BaseInfo_Province" Multiplicity="1" />
+          <End Role="BaseInfo_City" Type="Self.BaseInfo_City" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BaseInfo_Province">
               <PropertyRef Name="Id" />
@@ -872,8 +678,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BaseInfo_District_BaseInfo_City">
-          <End Role="BaseInfo_City" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_City" Multiplicity="1" />
-          <End Role="BaseInfo_District" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_District" Multiplicity="*" />
+          <End Role="BaseInfo_City" Type="Self.BaseInfo_City" Multiplicity="1" />
+          <End Role="BaseInfo_District" Type="Self.BaseInfo_District" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BaseInfo_City">
               <PropertyRef Name="Id" />
@@ -884,8 +690,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BaseInfo_InfoSourceSmall_BaseInfo_InfoSourceBig">
-          <End Role="BaseInfo_InfoSourceBig" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_InfoSourceBig" Multiplicity="1" />
-          <End Role="BaseInfo_InfoSourceSmall" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_InfoSourceSmall" Multiplicity="*" />
+          <End Role="BaseInfo_InfoSourceBig" Type="Self.BaseInfo_InfoSourceBig" Multiplicity="1" />
+          <End Role="BaseInfo_InfoSourceSmall" Type="Self.BaseInfo_InfoSourceSmall" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BaseInfo_InfoSourceBig">
               <PropertyRef Name="Id" />
@@ -896,8 +702,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BaseInfo_School_BaseInfo_District">
-          <End Role="BaseInfo_District" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_District" Multiplicity="0..1" />
-          <End Role="BaseInfo_School" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_School" Multiplicity="*" />
+          <End Role="BaseInfo_District" Type="Self.BaseInfo_District" Multiplicity="0..1" />
+          <End Role="BaseInfo_School" Type="Self.BaseInfo_School" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BaseInfo_District">
               <PropertyRef Name="Id" />
@@ -908,8 +714,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Customer_Consultant1">
-          <End Role="Sys_User" Type="Cn.Com.Sve.OA.Entities.Store.Sys_User" Multiplicity="0..1" />
-          <End Role="Marketing_Customer" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_Customer" Multiplicity="*" />
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="0..1" />
+          <End Role="Marketing_Customer" Type="Self.Marketing_Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_User">
               <PropertyRef Name="Id" />
@@ -920,8 +726,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Customer_Consultant2">
-          <End Role="Sys_User" Type="Cn.Com.Sve.OA.Entities.Store.Sys_User" Multiplicity="0..1" />
-          <End Role="Marketing_Customer" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_Customer" Multiplicity="*" />
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="0..1" />
+          <End Role="Marketing_Customer" Type="Self.Marketing_Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_User">
               <PropertyRef Name="Id" />
@@ -932,8 +738,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Customer_CreateTeacher">
-          <End Role="Sys_User" Type="Cn.Com.Sve.OA.Entities.Store.Sys_User" Multiplicity="0..1" />
-          <End Role="Marketing_Customer" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_Customer" Multiplicity="*" />
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="0..1" />
+          <End Role="Marketing_Customer" Type="Self.Marketing_Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_User">
               <PropertyRef Name="Id" />
@@ -944,8 +750,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Customer_District">
-          <End Role="BaseInfo_District" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_District" Multiplicity="0..1" />
-          <End Role="Marketing_Customer" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_Customer" Multiplicity="*" />
+          <End Role="BaseInfo_District" Type="Self.BaseInfo_District" Multiplicity="0..1" />
+          <End Role="Marketing_Customer" Type="Self.Marketing_Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BaseInfo_District">
               <PropertyRef Name="Id" />
@@ -956,8 +762,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Customer_InfoSource">
-          <End Role="BaseInfo_InfoSourceSmall" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_InfoSourceSmall" Multiplicity="1" />
-          <End Role="Marketing_Customer" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_Customer" Multiplicity="*" />
+          <End Role="BaseInfo_InfoSourceSmall" Type="Self.BaseInfo_InfoSourceSmall" Multiplicity="1" />
+          <End Role="Marketing_Customer" Type="Self.Marketing_Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BaseInfo_InfoSourceSmall">
               <PropertyRef Name="Id" />
@@ -968,8 +774,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Customer_NetConsultant">
-          <End Role="Sys_User" Type="Cn.Com.Sve.OA.Entities.Store.Sys_User" Multiplicity="0..1" />
-          <End Role="Marketing_Customer" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_Customer" Multiplicity="*" />
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="0..1" />
+          <End Role="Marketing_Customer" Type="Self.Marketing_Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_User">
               <PropertyRef Name="Id" />
@@ -980,8 +786,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Customer_Salesman">
-          <End Role="Sys_User" Type="Cn.Com.Sve.OA.Entities.Store.Sys_User" Multiplicity="0..1" />
-          <End Role="Marketing_Customer" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_Customer" Multiplicity="*" />
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="0..1" />
+          <End Role="Marketing_Customer" Type="Self.Marketing_Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_User">
               <PropertyRef Name="Id" />
@@ -992,8 +798,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Customer_SalesTeam">
-          <End Role="Marketing_SalesTeam" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_SalesTeam" Multiplicity="0..1" />
-          <End Role="Marketing_Customer" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_Customer" Multiplicity="*" />
+          <End Role="Marketing_SalesTeam" Type="Self.Marketing_SalesTeam" Multiplicity="0..1" />
+          <End Role="Marketing_Customer" Type="Self.Marketing_Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Marketing_SalesTeam">
               <PropertyRef Name="Id" />
@@ -1004,8 +810,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Customer_School">
-          <End Role="BaseInfo_School" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_School" Multiplicity="0..1" />
-          <End Role="Marketing_Customer" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_Customer" Multiplicity="*" />
+          <End Role="BaseInfo_School" Type="Self.BaseInfo_School" Multiplicity="0..1" />
+          <End Role="Marketing_Customer" Type="Self.Marketing_Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BaseInfo_School">
               <PropertyRef Name="Id" />
@@ -1015,9 +821,45 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Employment_Company_BaseInfo_City">
+          <End Role="BaseInfo_City" Type="Self.BaseInfo_City" Multiplicity="0..1" />
+          <End Role="Employment_Company" Type="Self.Employment_Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BaseInfo_City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employment_Company">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employment_Company_Sys_User">
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="0..1" />
+          <End Role="Employment_Company" Type="Self.Employment_Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sys_User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employment_Company">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employment_CompanyContact_Employment_Company">
+          <End Role="Employment_Company" Type="Self.Employment_Company" Multiplicity="1" />
+          <End Role="Employment_CompanyContact" Type="Self.Employment_CompanyContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employment_Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employment_CompanyContact">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_HuWai_SchoolAd_BaseInfo_School">
-          <End Role="BaseInfo_School" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_School" Multiplicity="1" />
-          <End Role="HuWai_SchoolAd" Type="Cn.Com.Sve.OA.Entities.Store.HuWai_SchoolAd" Multiplicity="*" />
+          <End Role="BaseInfo_School" Type="Self.BaseInfo_School" Multiplicity="1" />
+          <End Role="HuWai_SchoolAd" Type="Self.HuWai_SchoolAd" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BaseInfo_School">
               <PropertyRef Name="Id" />
@@ -1028,8 +870,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_HuWai_SchoolContact_BaseInfo_School">
-          <End Role="BaseInfo_School" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_School" Multiplicity="1" />
-          <End Role="HuWai_SchoolContact" Type="Cn.Com.Sve.OA.Entities.Store.HuWai_SchoolContact" Multiplicity="*" />
+          <End Role="BaseInfo_School" Type="Self.BaseInfo_School" Multiplicity="1" />
+          <End Role="HuWai_SchoolContact" Type="Self.HuWai_SchoolContact" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BaseInfo_School">
               <PropertyRef Name="Id" />
@@ -1040,8 +882,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Marketing_Customer_Student_Clazz">
-          <End Role="Student_Clazz" Type="Cn.Com.Sve.OA.Entities.Store.Student_Clazz" Multiplicity="0..1" />
-          <End Role="Marketing_Customer" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_Customer" Multiplicity="*" />
+          <End Role="Student_Clazz" Type="Self.Student_Clazz" Multiplicity="0..1" />
+          <End Role="Marketing_Customer" Type="Self.Marketing_Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student_Clazz">
               <PropertyRef Name="Id" />
@@ -1052,8 +894,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Marketing_ImportDupliate_Marketing_Customer">
-          <End Role="Marketing_Customer" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_Customer" Multiplicity="0..1" />
-          <End Role="Marketing_ImportDupliate" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_ImportDupliate" Multiplicity="*" />
+          <End Role="Marketing_Customer" Type="Self.Marketing_Customer" Multiplicity="0..1" />
+          <End Role="Marketing_ImportDupliate" Type="Self.Marketing_ImportDupliate" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Marketing_Customer">
               <PropertyRef Name="Id" />
@@ -1064,8 +906,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Marketing_ImportDupliate_Marketing_ImportCustomer">
-          <End Role="Marketing_ImportCustomer" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_ImportCustomer" Multiplicity="0..1" />
-          <End Role="Marketing_ImportDupliate" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_ImportDupliate" Multiplicity="*" />
+          <End Role="Marketing_ImportCustomer" Type="Self.Marketing_ImportCustomer" Multiplicity="0..1" />
+          <End Role="Marketing_ImportDupliate" Type="Self.Marketing_ImportDupliate" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Marketing_ImportCustomer">
               <PropertyRef Name="Id" />
@@ -1076,8 +918,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Marketing_SalesTeamMember_Marketing_SalesTeam">
-          <End Role="Marketing_SalesTeam" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_SalesTeam" Multiplicity="1" />
-          <End Role="Marketing_SalesTeamMember" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_SalesTeamMember" Multiplicity="*" />
+          <End Role="Marketing_SalesTeam" Type="Self.Marketing_SalesTeam" Multiplicity="1" />
+          <End Role="Marketing_SalesTeamMember" Type="Self.Marketing_SalesTeamMember" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Marketing_SalesTeam">
               <PropertyRef Name="Id" />
@@ -1088,8 +930,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Marketing_SalesTeamMember_Sys_User">
-          <End Role="Sys_User" Type="Cn.Com.Sve.OA.Entities.Store.Sys_User" Multiplicity="1" />
-          <End Role="Marketing_SalesTeamMember" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_SalesTeamMember" Multiplicity="*" />
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="1" />
+          <End Role="Marketing_SalesTeamMember" Type="Self.Marketing_SalesTeamMember" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_User">
               <PropertyRef Name="Id" />
@@ -1100,8 +942,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Marketing_TelSaleLog_Marketing_Customer">
-          <End Role="Marketing_Customer" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_Customer" Multiplicity="1" />
-          <End Role="Marketing_TelSaleLog" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_TelSaleLog" Multiplicity="*" />
+          <End Role="Marketing_Customer" Type="Self.Marketing_Customer" Multiplicity="1" />
+          <End Role="Marketing_TelSaleLog" Type="Self.Marketing_TelSaleLog" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Marketing_Customer">
               <PropertyRef Name="Id" />
@@ -1112,8 +954,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Marketing_TelSaleLog_Sys_User">
-          <End Role="Sys_User" Type="Cn.Com.Sve.OA.Entities.Store.Sys_User" Multiplicity="1" />
-          <End Role="Marketing_TelSaleLog" Type="Cn.Com.Sve.OA.Entities.Store.Marketing_TelSaleLog" Multiplicity="*" />
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="1" />
+          <End Role="Marketing_TelSaleLog" Type="Self.Marketing_TelSaleLog" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_User">
               <PropertyRef Name="Id" />
@@ -1124,8 +966,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_ChangeClazzLog_Student_Clazz">
-          <End Role="Student_Clazz" Type="Cn.Com.Sve.OA.Entities.Store.Student_Clazz" Multiplicity="0..1" />
-          <End Role="Student_ChangeClazzLog" Type="Cn.Com.Sve.OA.Entities.Store.Student_ChangeClazzLog" Multiplicity="*" />
+          <End Role="Student_Clazz" Type="Self.Student_Clazz" Multiplicity="0..1" />
+          <End Role="Student_ChangeClazzLog" Type="Self.Student_ChangeClazzLog" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student_Clazz">
               <PropertyRef Name="Id" />
@@ -1136,8 +978,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_ChangeClazzLog_Student_Clazz1">
-          <End Role="Student_Clazz" Type="Cn.Com.Sve.OA.Entities.Store.Student_Clazz" Multiplicity="1" />
-          <End Role="Student_ChangeClazzLog" Type="Cn.Com.Sve.OA.Entities.Store.Student_ChangeClazzLog" Multiplicity="*" />
+          <End Role="Student_Clazz" Type="Self.Student_Clazz" Multiplicity="1" />
+          <End Role="Student_ChangeClazzLog" Type="Self.Student_ChangeClazzLog" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student_Clazz">
               <PropertyRef Name="Id" />
@@ -1148,8 +990,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_ChangeClazzLog_Student_File">
-          <End Role="Student_File" Type="Cn.Com.Sve.OA.Entities.Store.Student_File" Multiplicity="1" />
-          <End Role="Student_ChangeClazzLog" Type="Cn.Com.Sve.OA.Entities.Store.Student_ChangeClazzLog" Multiplicity="*" />
+          <End Role="Student_File" Type="Self.Student_File" Multiplicity="1" />
+          <End Role="Student_ChangeClazzLog" Type="Self.Student_ChangeClazzLog" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student_File">
               <PropertyRef Name="Id" />
@@ -1160,8 +1002,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_File_BaseInfo_District">
-          <End Role="BaseInfo_District" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_District" Multiplicity="0..1" />
-          <End Role="Student_File" Type="Cn.Com.Sve.OA.Entities.Store.Student_File" Multiplicity="*" />
+          <End Role="BaseInfo_District" Type="Self.BaseInfo_District" Multiplicity="0..1" />
+          <End Role="Student_File" Type="Self.Student_File" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BaseInfo_District">
               <PropertyRef Name="Id" />
@@ -1172,8 +1014,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_File_BaseInfo_InfoSourceSmall">
-          <End Role="BaseInfo_InfoSourceSmall" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_InfoSourceSmall" Multiplicity="0..1" />
-          <End Role="Student_File" Type="Cn.Com.Sve.OA.Entities.Store.Student_File" Multiplicity="*" />
+          <End Role="BaseInfo_InfoSourceSmall" Type="Self.BaseInfo_InfoSourceSmall" Multiplicity="0..1" />
+          <End Role="Student_File" Type="Self.Student_File" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BaseInfo_InfoSourceSmall">
               <PropertyRef Name="Id" />
@@ -1184,8 +1026,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_File_BaseInfo_School">
-          <End Role="BaseInfo_School" Type="Cn.Com.Sve.OA.Entities.Store.BaseInfo_School" Multiplicity="0..1" />
-          <End Role="Student_File" Type="Cn.Com.Sve.OA.Entities.Store.Student_File" Multiplicity="*" />
+          <End Role="BaseInfo_School" Type="Self.BaseInfo_School" Multiplicity="0..1" />
+          <End Role="Student_File" Type="Self.Student_File" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BaseInfo_School">
               <PropertyRef Name="Id" />
@@ -1196,8 +1038,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_File_Student_Clazz">
-          <End Role="Student_Clazz" Type="Cn.Com.Sve.OA.Entities.Store.Student_Clazz" Multiplicity="0..1" />
-          <End Role="Student_File" Type="Cn.Com.Sve.OA.Entities.Store.Student_File" Multiplicity="*" />
+          <End Role="Student_Clazz" Type="Self.Student_Clazz" Multiplicity="0..1" />
+          <End Role="Student_File" Type="Self.Student_File" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student_Clazz">
               <PropertyRef Name="Id" />
@@ -1208,8 +1050,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_HomeVisitRecord_Input">
-          <End Role="Sys_User" Type="Cn.Com.Sve.OA.Entities.Store.Sys_User" Multiplicity="1" />
-          <End Role="Student_HomeVisitRecord" Type="Cn.Com.Sve.OA.Entities.Store.Student_HomeVisitRecord" Multiplicity="*" />
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="1" />
+          <End Role="Student_HomeVisitRecord" Type="Self.Student_HomeVisitRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_User">
               <PropertyRef Name="Id" />
@@ -1220,8 +1062,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_HomeVisitRecord_Student_Clazz">
-          <End Role="Student_Clazz" Type="Cn.Com.Sve.OA.Entities.Store.Student_Clazz" Multiplicity="1" />
-          <End Role="Student_HomeVisitRecord" Type="Cn.Com.Sve.OA.Entities.Store.Student_HomeVisitRecord" Multiplicity="*" />
+          <End Role="Student_Clazz" Type="Self.Student_Clazz" Multiplicity="1" />
+          <End Role="Student_HomeVisitRecord" Type="Self.Student_HomeVisitRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student_Clazz">
               <PropertyRef Name="Id" />
@@ -1232,8 +1074,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_HomeVisitRecord_Student_File">
-          <End Role="Student_File" Type="Cn.Com.Sve.OA.Entities.Store.Student_File" Multiplicity="1" />
-          <End Role="Student_HomeVisitRecord" Type="Cn.Com.Sve.OA.Entities.Store.Student_HomeVisitRecord" Multiplicity="*" />
+          <End Role="Student_File" Type="Self.Student_File" Multiplicity="1" />
+          <End Role="Student_HomeVisitRecord" Type="Self.Student_HomeVisitRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student_File">
               <PropertyRef Name="Id" />
@@ -1244,8 +1086,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_HomeVisitRecord_Sys_User">
-          <End Role="Sys_User" Type="Cn.Com.Sve.OA.Entities.Store.Sys_User" Multiplicity="0..1" />
-          <End Role="Student_HomeVisitRecord" Type="Cn.Com.Sve.OA.Entities.Store.Student_HomeVisitRecord" Multiplicity="*" />
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="0..1" />
+          <End Role="Student_HomeVisitRecord" Type="Self.Student_HomeVisitRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_User">
               <PropertyRef Name="Id" />
@@ -1256,8 +1098,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_TeleVisitRecord_Reviewer">
-          <End Role="Sys_User" Type="Cn.Com.Sve.OA.Entities.Store.Sys_User" Multiplicity="0..1" />
-          <End Role="Student_TeleVisitRecord" Type="Cn.Com.Sve.OA.Entities.Store.Student_TeleVisitRecord" Multiplicity="*" />
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="0..1" />
+          <End Role="Student_TeleVisitRecord" Type="Self.Student_TeleVisitRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_User">
               <PropertyRef Name="Id" />
@@ -1268,8 +1110,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_TeleVisitRecord_Student_Clazz">
-          <End Role="Student_Clazz" Type="Cn.Com.Sve.OA.Entities.Store.Student_Clazz" Multiplicity="1" />
-          <End Role="Student_TeleVisitRecord" Type="Cn.Com.Sve.OA.Entities.Store.Student_TeleVisitRecord" Multiplicity="*" />
+          <End Role="Student_Clazz" Type="Self.Student_Clazz" Multiplicity="1" />
+          <End Role="Student_TeleVisitRecord" Type="Self.Student_TeleVisitRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student_Clazz">
               <PropertyRef Name="Id" />
@@ -1280,8 +1122,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_TeleVisitRecord_Student_File">
-          <End Role="Student_File" Type="Cn.Com.Sve.OA.Entities.Store.Student_File" Multiplicity="1" />
-          <End Role="Student_TeleVisitRecord" Type="Cn.Com.Sve.OA.Entities.Store.Student_TeleVisitRecord" Multiplicity="*" />
+          <End Role="Student_File" Type="Self.Student_File" Multiplicity="1" />
+          <End Role="Student_TeleVisitRecord" Type="Self.Student_TeleVisitRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student_File">
               <PropertyRef Name="Id" />
@@ -1292,8 +1134,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_TeleVisitRecord_Visitor">
-          <End Role="Sys_User" Type="Cn.Com.Sve.OA.Entities.Store.Sys_User" Multiplicity="1" />
-          <End Role="Student_TeleVisitRecord" Type="Cn.Com.Sve.OA.Entities.Store.Student_TeleVisitRecord" Multiplicity="*" />
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="1" />
+          <End Role="Student_TeleVisitRecord" Type="Self.Student_TeleVisitRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_User">
               <PropertyRef Name="Id" />
@@ -1304,8 +1146,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_VisitRecord_Reviewer">
-          <End Role="Sys_User" Type="Cn.Com.Sve.OA.Entities.Store.Sys_User" Multiplicity="0..1" />
-          <End Role="Student_VisitRecord" Type="Cn.Com.Sve.OA.Entities.Store.Student_VisitRecord" Multiplicity="*" />
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="0..1" />
+          <End Role="Student_VisitRecord" Type="Self.Student_VisitRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_User">
               <PropertyRef Name="Id" />
@@ -1316,8 +1158,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_VisitRecord_Student_Clazz">
-          <End Role="Student_Clazz" Type="Cn.Com.Sve.OA.Entities.Store.Student_Clazz" Multiplicity="1" />
-          <End Role="Student_VisitRecord" Type="Cn.Com.Sve.OA.Entities.Store.Student_VisitRecord" Multiplicity="*" />
+          <End Role="Student_Clazz" Type="Self.Student_Clazz" Multiplicity="1" />
+          <End Role="Student_VisitRecord" Type="Self.Student_VisitRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student_Clazz">
               <PropertyRef Name="Id" />
@@ -1328,8 +1170,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_VisitRecord_Student_File">
-          <End Role="Student_File" Type="Cn.Com.Sve.OA.Entities.Store.Student_File" Multiplicity="1" />
-          <End Role="Student_VisitRecord" Type="Cn.Com.Sve.OA.Entities.Store.Student_VisitRecord" Multiplicity="*" />
+          <End Role="Student_File" Type="Self.Student_File" Multiplicity="1" />
+          <End Role="Student_VisitRecord" Type="Self.Student_VisitRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Student_File">
               <PropertyRef Name="Id" />
@@ -1340,8 +1182,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Student_VisitRecord_Visitor">
-          <End Role="Sys_User" Type="Cn.Com.Sve.OA.Entities.Store.Sys_User" Multiplicity="1" />
-          <End Role="Student_VisitRecord" Type="Cn.Com.Sve.OA.Entities.Store.Student_VisitRecord" Multiplicity="*" />
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="1" />
+          <End Role="Student_VisitRecord" Type="Self.Student_VisitRecord" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_User">
               <PropertyRef Name="Id" />
@@ -1352,8 +1194,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Sys_Function_Sys_Function">
-          <End Role="Sys_Function" Type="Cn.Com.Sve.OA.Entities.Store.Sys_Function" Multiplicity="0..1" />
-          <End Role="Sys_Function1" Type="Cn.Com.Sve.OA.Entities.Store.Sys_Function" Multiplicity="*" />
+          <End Role="Sys_Function" Type="Self.Sys_Function" Multiplicity="0..1" />
+          <End Role="Sys_Function1" Type="Self.Sys_Function" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_Function">
               <PropertyRef Name="Id" />
@@ -1364,10 +1206,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Sys_Function_Sys_Module">
-          <End Role="Sys_Module" Type="Cn.Com.Sve.OA.Entities.Store.Sys_Module" Multiplicity="1">
+          <End Role="Sys_Module" Type="Self.Sys_Module" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Sys_Function" Type="Cn.Com.Sve.OA.Entities.Store.Sys_Function" Multiplicity="*" />
+          <End Role="Sys_Function" Type="Self.Sys_Function" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_Module">
               <PropertyRef Name="Id" />
@@ -1378,8 +1220,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Sys_Supervisor_Sys_User">
-          <End Role="Sys_User" Type="Cn.Com.Sve.OA.Entities.Store.Sys_User" Multiplicity="1" />
-          <End Role="Sys_Supervisor" Type="Cn.Com.Sve.OA.Entities.Store.Sys_Supervisor" Multiplicity="*" />
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="1" />
+          <End Role="Sys_Supervisor" Type="Self.Sys_Supervisor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_User">
               <PropertyRef Name="Id" />
@@ -1390,8 +1232,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Sys_UserGroupFunctionPermission_Sys_Function">
-          <End Role="Sys_Function" Type="Cn.Com.Sve.OA.Entities.Store.Sys_Function" Multiplicity="1" />
-          <End Role="Sys_UserGroupFunctionPermission" Type="Cn.Com.Sve.OA.Entities.Store.Sys_UserGroupFunctionPermission" Multiplicity="*" />
+          <End Role="Sys_Function" Type="Self.Sys_Function" Multiplicity="1" />
+          <End Role="Sys_UserGroupFunctionPermission" Type="Self.Sys_UserGroupFunctionPermission" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_Function">
               <PropertyRef Name="Id" />
@@ -1402,8 +1244,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Sys_UserGroupFunctionPermission_Sys_UserGroup">
-          <End Role="Sys_UserGroup" Type="Cn.Com.Sve.OA.Entities.Store.Sys_UserGroup" Multiplicity="1" />
-          <End Role="Sys_UserGroupFunctionPermission" Type="Cn.Com.Sve.OA.Entities.Store.Sys_UserGroupFunctionPermission" Multiplicity="*" />
+          <End Role="Sys_UserGroup" Type="Self.Sys_UserGroup" Multiplicity="1" />
+          <End Role="Sys_UserGroupFunctionPermission" Type="Self.Sys_UserGroupFunctionPermission" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_UserGroup">
               <PropertyRef Name="Id" />
@@ -1414,8 +1256,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Sys_UserGroupModulePermission_Sys_Module">
-          <End Role="Sys_Module" Type="Cn.Com.Sve.OA.Entities.Store.Sys_Module" Multiplicity="1" />
-          <End Role="Sys_UserGroupModulePermission" Type="Cn.Com.Sve.OA.Entities.Store.Sys_UserGroupModulePermission" Multiplicity="*" />
+          <End Role="Sys_Module" Type="Self.Sys_Module" Multiplicity="1" />
+          <End Role="Sys_UserGroupModulePermission" Type="Self.Sys_UserGroupModulePermission" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_Module">
               <PropertyRef Name="Id" />
@@ -1426,8 +1268,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Sys_UserGroupModulePermission_Sys_UserGroup">
-          <End Role="Sys_UserGroup" Type="Cn.Com.Sve.OA.Entities.Store.Sys_UserGroup" Multiplicity="1" />
-          <End Role="Sys_UserGroupModulePermission" Type="Cn.Com.Sve.OA.Entities.Store.Sys_UserGroupModulePermission" Multiplicity="*" />
+          <End Role="Sys_UserGroup" Type="Self.Sys_UserGroup" Multiplicity="1" />
+          <End Role="Sys_UserGroupModulePermission" Type="Self.Sys_UserGroupModulePermission" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_UserGroup">
               <PropertyRef Name="Id" />
@@ -1438,8 +1280,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Sys_UserInGroup_Sys_User">
-          <End Role="Sys_User" Type="Cn.Com.Sve.OA.Entities.Store.Sys_User" Multiplicity="1" />
-          <End Role="Sys_UserInGroup" Type="Cn.Com.Sve.OA.Entities.Store.Sys_UserInGroup" Multiplicity="*" />
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="1" />
+          <End Role="Sys_UserInGroup" Type="Self.Sys_UserInGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_User">
               <PropertyRef Name="Id" />
@@ -1450,8 +1292,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Sys_UserInGroup_Sys_UserGroup">
-          <End Role="Sys_UserGroup" Type="Cn.Com.Sve.OA.Entities.Store.Sys_UserGroup" Multiplicity="1" />
-          <End Role="Sys_UserInGroup" Type="Cn.Com.Sve.OA.Entities.Store.Sys_UserInGroup" Multiplicity="*" />
+          <End Role="Sys_UserGroup" Type="Self.Sys_UserGroup" Multiplicity="1" />
+          <End Role="Sys_UserInGroup" Type="Self.Sys_UserInGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sys_UserGroup">
               <PropertyRef Name="Id" />
@@ -1461,6 +1303,254 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityContainer Name="CnComSveOAEntitiesStoreContainer">
+          <EntitySet Name="BaseInfo_City" EntityType="Self.BaseInfo_City" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseInfo_District" EntityType="Self.BaseInfo_District" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseInfo_InfoSourceBig" EntityType="Self.BaseInfo_InfoSourceBig" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseInfo_InfoSourceSmall" EntityType="Self.BaseInfo_InfoSourceSmall" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseInfo_Province" EntityType="Self.BaseInfo_Province" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseInfo_School" EntityType="Self.BaseInfo_School" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Common_Knowledge" EntityType="Self.Common_Knowledge" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employment_Company" EntityType="Self.Employment_Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employment_CompanyContact" EntityType="Self.Employment_CompanyContact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HuWai_SchoolAd" EntityType="Self.HuWai_SchoolAd" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HuWai_SchoolContact" EntityType="Self.HuWai_SchoolContact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Marketing_Customer" EntityType="Self.Marketing_Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Marketing_ImportCustomer" EntityType="Self.Marketing_ImportCustomer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Marketing_ImportDupliate" EntityType="Self.Marketing_ImportDupliate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Marketing_SalesTeam" EntityType="Self.Marketing_SalesTeam" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Marketing_SalesTeamMember" EntityType="Self.Marketing_SalesTeamMember" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Marketing_TelSaleLog" EntityType="Self.Marketing_TelSaleLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Qualification_School" EntityType="Self.Qualification_School" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Qualification_Student" EntityType="Self.Qualification_Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Qualification_UnrestrictedUser" EntityType="Self.Qualification_UnrestrictedUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student_ChangeClazzLog" EntityType="Self.Student_ChangeClazzLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student_Clazz" EntityType="Self.Student_Clazz" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student_File" EntityType="Self.Student_File" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student_HomeVisitRecord" EntityType="Self.Student_HomeVisitRecord" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student_TeleVisitRecord" EntityType="Self.Student_TeleVisitRecord" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student_VisitRecord" EntityType="Self.Student_VisitRecord" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sys_Function" EntityType="Self.Sys_Function" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sys_Module" EntityType="Self.Sys_Module" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sys_Supervisor" EntityType="Self.Sys_Supervisor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sys_User" EntityType="Self.Sys_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sys_UserGroup" EntityType="Self.Sys_UserGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sys_UserGroupFunctionPermission" EntityType="Self.Sys_UserGroupFunctionPermission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sys_UserGroupModulePermission" EntityType="Self.Sys_UserGroupModulePermission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sys_UserInGroup" EntityType="Self.Sys_UserInGroup" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BaseInfo_City_BaseInfo_Province" Association="Self.FK_BaseInfo_City_BaseInfo_Province">
+            <End Role="BaseInfo_Province" EntitySet="BaseInfo_Province" />
+            <End Role="BaseInfo_City" EntitySet="BaseInfo_City" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BaseInfo_District_BaseInfo_City" Association="Self.FK_BaseInfo_District_BaseInfo_City">
+            <End Role="BaseInfo_City" EntitySet="BaseInfo_City" />
+            <End Role="BaseInfo_District" EntitySet="BaseInfo_District" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BaseInfo_InfoSourceSmall_BaseInfo_InfoSourceBig" Association="Self.FK_BaseInfo_InfoSourceSmall_BaseInfo_InfoSourceBig">
+            <End Role="BaseInfo_InfoSourceBig" EntitySet="BaseInfo_InfoSourceBig" />
+            <End Role="BaseInfo_InfoSourceSmall" EntitySet="BaseInfo_InfoSourceSmall" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BaseInfo_School_BaseInfo_District" Association="Self.FK_BaseInfo_School_BaseInfo_District">
+            <End Role="BaseInfo_District" EntitySet="BaseInfo_District" />
+            <End Role="BaseInfo_School" EntitySet="BaseInfo_School" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_Consultant1" Association="Self.FK_Customer_Consultant1">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_Consultant2" Association="Self.FK_Customer_Consultant2">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_CreateTeacher" Association="Self.FK_Customer_CreateTeacher">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_District" Association="Self.FK_Customer_District">
+            <End Role="BaseInfo_District" EntitySet="BaseInfo_District" />
+            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_InfoSource" Association="Self.FK_Customer_InfoSource">
+            <End Role="BaseInfo_InfoSourceSmall" EntitySet="BaseInfo_InfoSourceSmall" />
+            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_NetConsultant" Association="Self.FK_Customer_NetConsultant">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_Salesman" Association="Self.FK_Customer_Salesman">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_SalesTeam" Association="Self.FK_Customer_SalesTeam">
+            <End Role="Marketing_SalesTeam" EntitySet="Marketing_SalesTeam" />
+            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_School" Association="Self.FK_Customer_School">
+            <End Role="BaseInfo_School" EntitySet="BaseInfo_School" />
+            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employment_Company_BaseInfo_City" Association="Self.FK_Employment_Company_BaseInfo_City">
+            <End Role="BaseInfo_City" EntitySet="BaseInfo_City" />
+            <End Role="Employment_Company" EntitySet="Employment_Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employment_Company_Sys_User" Association="Self.FK_Employment_Company_Sys_User">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Employment_Company" EntitySet="Employment_Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employment_CompanyContact_Employment_Company" Association="Self.FK_Employment_CompanyContact_Employment_Company">
+            <End Role="Employment_Company" EntitySet="Employment_Company" />
+            <End Role="Employment_CompanyContact" EntitySet="Employment_CompanyContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HuWai_SchoolAd_BaseInfo_School" Association="Self.FK_HuWai_SchoolAd_BaseInfo_School">
+            <End Role="BaseInfo_School" EntitySet="BaseInfo_School" />
+            <End Role="HuWai_SchoolAd" EntitySet="HuWai_SchoolAd" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HuWai_SchoolContact_BaseInfo_School" Association="Self.FK_HuWai_SchoolContact_BaseInfo_School">
+            <End Role="BaseInfo_School" EntitySet="BaseInfo_School" />
+            <End Role="HuWai_SchoolContact" EntitySet="HuWai_SchoolContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Marketing_Customer_Student_Clazz" Association="Self.FK_Marketing_Customer_Student_Clazz">
+            <End Role="Student_Clazz" EntitySet="Student_Clazz" />
+            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Marketing_ImportDupliate_Marketing_Customer" Association="Self.FK_Marketing_ImportDupliate_Marketing_Customer">
+            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
+            <End Role="Marketing_ImportDupliate" EntitySet="Marketing_ImportDupliate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Marketing_ImportDupliate_Marketing_ImportCustomer" Association="Self.FK_Marketing_ImportDupliate_Marketing_ImportCustomer">
+            <End Role="Marketing_ImportCustomer" EntitySet="Marketing_ImportCustomer" />
+            <End Role="Marketing_ImportDupliate" EntitySet="Marketing_ImportDupliate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Marketing_SalesTeamMember_Marketing_SalesTeam" Association="Self.FK_Marketing_SalesTeamMember_Marketing_SalesTeam">
+            <End Role="Marketing_SalesTeam" EntitySet="Marketing_SalesTeam" />
+            <End Role="Marketing_SalesTeamMember" EntitySet="Marketing_SalesTeamMember" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Marketing_SalesTeamMember_Sys_User" Association="Self.FK_Marketing_SalesTeamMember_Sys_User">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Marketing_SalesTeamMember" EntitySet="Marketing_SalesTeamMember" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Marketing_TelSaleLog_Marketing_Customer" Association="Self.FK_Marketing_TelSaleLog_Marketing_Customer">
+            <End Role="Marketing_Customer" EntitySet="Marketing_Customer" />
+            <End Role="Marketing_TelSaleLog" EntitySet="Marketing_TelSaleLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Marketing_TelSaleLog_Sys_User" Association="Self.FK_Marketing_TelSaleLog_Sys_User">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Marketing_TelSaleLog" EntitySet="Marketing_TelSaleLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_ChangeClazzLog_Student_Clazz" Association="Self.FK_Student_ChangeClazzLog_Student_Clazz">
+            <End Role="Student_Clazz" EntitySet="Student_Clazz" />
+            <End Role="Student_ChangeClazzLog" EntitySet="Student_ChangeClazzLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_ChangeClazzLog_Student_Clazz1" Association="Self.FK_Student_ChangeClazzLog_Student_Clazz1">
+            <End Role="Student_Clazz" EntitySet="Student_Clazz" />
+            <End Role="Student_ChangeClazzLog" EntitySet="Student_ChangeClazzLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_ChangeClazzLog_Student_File" Association="Self.FK_Student_ChangeClazzLog_Student_File">
+            <End Role="Student_File" EntitySet="Student_File" />
+            <End Role="Student_ChangeClazzLog" EntitySet="Student_ChangeClazzLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_File_BaseInfo_District" Association="Self.FK_Student_File_BaseInfo_District">
+            <End Role="BaseInfo_District" EntitySet="BaseInfo_District" />
+            <End Role="Student_File" EntitySet="Student_File" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_File_BaseInfo_InfoSourceSmall" Association="Self.FK_Student_File_BaseInfo_InfoSourceSmall">
+            <End Role="BaseInfo_InfoSourceSmall" EntitySet="BaseInfo_InfoSourceSmall" />
+            <End Role="Student_File" EntitySet="Student_File" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_File_BaseInfo_School" Association="Self.FK_Student_File_BaseInfo_School">
+            <End Role="BaseInfo_School" EntitySet="BaseInfo_School" />
+            <End Role="Student_File" EntitySet="Student_File" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_File_Student_Clazz" Association="Self.FK_Student_File_Student_Clazz">
+            <End Role="Student_Clazz" EntitySet="Student_Clazz" />
+            <End Role="Student_File" EntitySet="Student_File" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_HomeVisitRecord_Input" Association="Self.FK_Student_HomeVisitRecord_Input">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Student_HomeVisitRecord" EntitySet="Student_HomeVisitRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_HomeVisitRecord_Student_Clazz" Association="Self.FK_Student_HomeVisitRecord_Student_Clazz">
+            <End Role="Student_Clazz" EntitySet="Student_Clazz" />
+            <End Role="Student_HomeVisitRecord" EntitySet="Student_HomeVisitRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_HomeVisitRecord_Student_File" Association="Self.FK_Student_HomeVisitRecord_Student_File">
+            <End Role="Student_File" EntitySet="Student_File" />
+            <End Role="Student_HomeVisitRecord" EntitySet="Student_HomeVisitRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_HomeVisitRecord_Sys_User" Association="Self.FK_Student_HomeVisitRecord_Sys_User">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Student_HomeVisitRecord" EntitySet="Student_HomeVisitRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_TeleVisitRecord_Reviewer" Association="Self.FK_Student_TeleVisitRecord_Reviewer">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Student_TeleVisitRecord" EntitySet="Student_TeleVisitRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_TeleVisitRecord_Student_Clazz" Association="Self.FK_Student_TeleVisitRecord_Student_Clazz">
+            <End Role="Student_Clazz" EntitySet="Student_Clazz" />
+            <End Role="Student_TeleVisitRecord" EntitySet="Student_TeleVisitRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_TeleVisitRecord_Student_File" Association="Self.FK_Student_TeleVisitRecord_Student_File">
+            <End Role="Student_File" EntitySet="Student_File" />
+            <End Role="Student_TeleVisitRecord" EntitySet="Student_TeleVisitRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_TeleVisitRecord_Visitor" Association="Self.FK_Student_TeleVisitRecord_Visitor">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Student_TeleVisitRecord" EntitySet="Student_TeleVisitRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_VisitRecord_Reviewer" Association="Self.FK_Student_VisitRecord_Reviewer">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Student_VisitRecord" EntitySet="Student_VisitRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_VisitRecord_Student_Clazz" Association="Self.FK_Student_VisitRecord_Student_Clazz">
+            <End Role="Student_Clazz" EntitySet="Student_Clazz" />
+            <End Role="Student_VisitRecord" EntitySet="Student_VisitRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_VisitRecord_Student_File" Association="Self.FK_Student_VisitRecord_Student_File">
+            <End Role="Student_File" EntitySet="Student_File" />
+            <End Role="Student_VisitRecord" EntitySet="Student_VisitRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_VisitRecord_Visitor" Association="Self.FK_Student_VisitRecord_Visitor">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Student_VisitRecord" EntitySet="Student_VisitRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sys_Function_Sys_Function" Association="Self.FK_Sys_Function_Sys_Function">
+            <End Role="Sys_Function" EntitySet="Sys_Function" />
+            <End Role="Sys_Function1" EntitySet="Sys_Function" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sys_Function_Sys_Module" Association="Self.FK_Sys_Function_Sys_Module">
+            <End Role="Sys_Module" EntitySet="Sys_Module" />
+            <End Role="Sys_Function" EntitySet="Sys_Function" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sys_Supervisor_Sys_User" Association="Self.FK_Sys_Supervisor_Sys_User">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Sys_Supervisor" EntitySet="Sys_Supervisor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sys_UserGroupFunctionPermission_Sys_Function" Association="Self.FK_Sys_UserGroupFunctionPermission_Sys_Function">
+            <End Role="Sys_Function" EntitySet="Sys_Function" />
+            <End Role="Sys_UserGroupFunctionPermission" EntitySet="Sys_UserGroupFunctionPermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sys_UserGroupFunctionPermission_Sys_UserGroup" Association="Self.FK_Sys_UserGroupFunctionPermission_Sys_UserGroup">
+            <End Role="Sys_UserGroup" EntitySet="Sys_UserGroup" />
+            <End Role="Sys_UserGroupFunctionPermission" EntitySet="Sys_UserGroupFunctionPermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sys_UserGroupModulePermission_Sys_Module" Association="Self.FK_Sys_UserGroupModulePermission_Sys_Module">
+            <End Role="Sys_Module" EntitySet="Sys_Module" />
+            <End Role="Sys_UserGroupModulePermission" EntitySet="Sys_UserGroupModulePermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sys_UserGroupModulePermission_Sys_UserGroup" Association="Self.FK_Sys_UserGroupModulePermission_Sys_UserGroup">
+            <End Role="Sys_UserGroup" EntitySet="Sys_UserGroup" />
+            <End Role="Sys_UserGroupModulePermission" EntitySet="Sys_UserGroupModulePermission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sys_UserInGroup_Sys_User" Association="Self.FK_Sys_UserInGroup_Sys_User">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Sys_UserInGroup" EntitySet="Sys_UserInGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sys_UserInGroup_Sys_UserGroup" Association="Self.FK_Sys_UserInGroup_Sys_UserGroup">
+            <End Role="Sys_UserGroup" EntitySet="Sys_UserGroup" />
+            <End Role="Sys_UserInGroup" EntitySet="Sys_UserInGroup" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -1722,6 +1812,20 @@
             <End Role="Student" EntitySet="Students" />
             <End Role="Student_ChangeClazzLog" EntitySet="StudentChangeClazzLogs" />
           </AssociationSet>
+          <EntitySet Name="EmploymentCompanies" EntityType="Cn.Com.Sve.OA.Entities.EmploymentCompany" />
+          <EntitySet Name="EmploymentCompanyContacts" EntityType="Cn.Com.Sve.OA.Entities.EmploymentCompanyContact" />
+          <AssociationSet Name="FK_Employment_Company_BaseInfo_City" Association="Cn.Com.Sve.OA.Entities.FK_Employment_Company_BaseInfo_City">
+            <End Role="City" EntitySet="Cities" />
+            <End Role="Employment_Company" EntitySet="EmploymentCompanies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employment_Company_Sys_User" Association="Cn.Com.Sve.OA.Entities.FK_Employment_Company_Sys_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Employment_Company" EntitySet="EmploymentCompanies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employment_CompanyContact_Employment_Company" Association="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_Employment_Company">
+            <End Role="Employment_Company" EntitySet="EmploymentCompanies" />
+            <End Role="Employment_CompanyContact" EntitySet="EmploymentCompanyContacts" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="City">
           <Key>
@@ -1732,6 +1836,7 @@
           <Property Name="ProvinceId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Province" Relationship="Cn.Com.Sve.OA.Entities.FK_BaseInfo_City_BaseInfo_Province" FromRole="BaseInfo_City" ToRole="BaseInfo_Province" />
           <NavigationProperty Name="Districts" Relationship="Cn.Com.Sve.OA.Entities.FK_BaseInfo_District_BaseInfo_City" FromRole="BaseInfo_City" ToRole="BaseInfo_District" />
+          <NavigationProperty Name="Employment_Company" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_Company_BaseInfo_City" FromRole="City" ToRole="Employment_Company" />
         </EntityType>
         <EntityType Name="District">
           <Key>
@@ -1769,7 +1874,7 @@
           <Property Type="String" Name="Type" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Levels" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="DevBy" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="DevDate" />
+          <Property Type="DateTime" Name="DevDate" Precision="3" />
           <Property Type="Boolean" Name="Important" />
           <Property Type="String" Name="Equipments" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="DaoJiShiPai" />
@@ -1832,7 +1937,7 @@
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Password" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Status" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="LastLoginTime" />
+          <Property Type="DateTime" Name="LastLoginTime" Precision="3" />
           <Property Type="String" Name="LastLoginIP" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="DefaultUrl" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="SalesTeamMembers" Relationship="Cn.Com.Sve.OA.Entities.FK_Marketing_SalesTeamMember_Sys_User" FromRole="User" ToRole="Marketing_SalesTeamMember" />
@@ -1856,6 +1961,7 @@
           <NavigationProperty Name="Student_VisitRecord1" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_VisitRecord_Visitor" FromRole="User" ToRole="Student_VisitRecord" />
           <NavigationProperty Name="Student_HomeVisitRecord" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_HomeVisitRecord_Sys_User" FromRole="User" ToRole="Student_HomeVisitRecord" />
           <NavigationProperty Name="Student_HomeVisitRecord_1" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_HomeVisitRecord_Input" FromRole="User" ToRole="StudentHomeVisitRecord" />
+          <NavigationProperty Name="Employment_Company" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_Company_Sys_User" FromRole="User" ToRole="Employment_Company" />
           </EntityType>
         <EntityType Name="Module">
           <Key>
@@ -2005,25 +2111,25 @@
           <Property Type="String" Name="Address" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Postcode" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="SmallInfoSourceId" Nullable="false" />
-          <Property Type="String" Name="ConsultType" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ConsultType" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Remark" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="ConsultantId1" />
           <Property Type="Int32" Name="ConsultantId2" />
           <Property Type="Int32" Name="NetConsultantId" />
           <Property Type="Int32" Name="CreateTeacherId" />
-          <Property Type="DateTime" Name="ConsultTime" />
+          <Property Type="DateTime" Name="ConsultTime" Precision="3" />
           <Property Type="Int32" Name="SalesTeamId" />
           <Property Type="Int32" Name="SalesmanId" />
           <Property Type="Boolean" Name="IsImport" Nullable="false" />
           <Property Type="Int32" Name="TeleSalesTimes" Nullable="false" />
-          <Property Type="DateTime" Name="NextTeleSalesTime" />
-          <Property Type="DateTime" Name="AppointmentTime" />
-          <Property Type="DateTime" Name="DropInTime" />
-          <Property Type="DateTime" Name="DinWeiTime" />
-          <Property Type="DateTime" Name="SignUpTime" />
+          <Property Type="DateTime" Name="NextTeleSalesTime" Precision="3" />
+          <Property Type="DateTime" Name="AppointmentTime" Precision="3" />
+          <Property Type="DateTime" Name="DropInTime" Precision="3" />
+          <Property Type="DateTime" Name="DinWeiTime" Precision="3" />
+          <Property Type="DateTime" Name="SignUpTime" Precision="3" />
           <Property Type="Boolean" Name="IsDinWei" Nullable="false" />
           <Property Type="Boolean" Name="IsClosed" Nullable="false" />
-          <Property Type="DateTime" Name="LastSalesTime" />
+          <Property Type="DateTime" Name="LastSalesTime" Precision="3" />
           <Property Type="Boolean" Name="Important" Nullable="false" />
           <Property Type="String" Name="ConsultantRemark" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Keywords" MaxLength="255" FixedLength="false" Unicode="true" />
@@ -2046,9 +2152,9 @@
           <Property Type="Int32" Name="InClazzId" />
           <NavigationProperty Name="InClazz" Relationship="Cn.Com.Sve.OA.Entities.FK_Marketing_Customer_Student_Clazz1" FromRole="Customer" ToRole="Clazz" />
           <Property Type="Boolean" Name="IsPay" Nullable="false" />
-          <Property Type="DateTime" Name="PayTime" />
+          <Property Type="DateTime" Name="PayTime" Precision="3" />
           <Property Type="Boolean" Name="IsRefund" Nullable="false" />
-          <Property Type="DateTime" Name="RefundTime" />
+          <Property Type="DateTime" Name="RefundTime" Precision="3" />
           <Property Type="Boolean" Name="IsDropIn" Nullable="false" />
           <Property Type="Boolean" Name="IsSignUp" Nullable="false" />
         </EntityType>
@@ -2249,9 +2355,9 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="CustomerId" Nullable="false" />
           <Property Type="String" Name="Content" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="NextTelTime" />
+          <Property Type="DateTime" Name="NextTelTime" Precision="3" />
           <Property Type="Int32" Name="SalesmanId" Nullable="false" />
-          <Property Type="DateTime" Name="TelTime" Nullable="false" />
+          <Property Type="DateTime" Name="TelTime" Nullable="false" Precision="3" />
           <Property Type="Boolean" Name="IsConvert" Nullable="false" />
           <Property Type="Boolean" Name="IsSignUp" Nullable="false" />
           <NavigationProperty Name="Customer" Relationship="Cn.Com.Sve.OA.Entities.FK_Marketing_TelSaleLog_Marketing_Customer" FromRole="Marketing_TelSaleLog" ToRole="Customer" />
@@ -2295,20 +2401,20 @@
           <Property Type="String" Name="TeacherB" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Master" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Governor" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="OpenDate" />
-          <Property Type="DateTime" Name="ClosedDate" />
-          <Property Type="DateTime" Name="FinishedDate" />
+          <Property Type="DateTime" Name="OpenDate" Precision="3" />
+          <Property Type="DateTime" Name="ClosedDate" Precision="3" />
+          <Property Type="DateTime" Name="FinishedDate" Precision="3" />
           <Property Type="Boolean" Name="IsOpen" Nullable="false" />
           <Property Type="Boolean" Name="IsClosed" Nullable="false" />
           <Property Type="Boolean" Name="IsFinished" Nullable="false" />
-          <Property Type="DateTime" Name="CreateTime" Nullable="false" />
-          <Property Type="DateTime" Name="UpdateTime" Nullable="false" />
+          <Property Type="DateTime" Name="CreateTime" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="UpdateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Student" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_File_Student_Clazz" FromRole="Student_Clazz" ToRole="Student_File" />
           <NavigationProperty Name="Marketing_Customer_1" Relationship="Cn.Com.Sve.OA.Entities.FK_Marketing_Customer_Student_Clazz1" FromRole="Clazz" ToRole="Customer" />
           <NavigationProperty Name="Student_TeleVisitRecord" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_TeleVisitRecord_Student_Clazz" FromRole="Clazz" ToRole="Student_TeleVisitRecord" />
           <NavigationProperty Name="Student_VisitRecord" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_VisitRecord_Student_Clazz" FromRole="Clazz" ToRole="Student_VisitRecord" />
           <NavigationProperty Name="Student_HomeVisitRecord" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_HomeVisitRecord_Student_Clazz" FromRole="Clazz" ToRole="Student_HomeVisitRecord" />
-          <Property Type="DateTime" Name="KickOffDate" />
+          <Property Type="DateTime" Name="KickOffDate" Precision="3" />
           <NavigationProperty Name="Student_ChangeClazzLog" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_ChangeClazzLog_Student_Clazz" FromRole="Clazz" ToRole="Student_ChangeClazzLog" />
           <NavigationProperty Name="Student_ChangeClazzLog1" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_ChangeClazzLog_Student_Clazz1" FromRole="Clazz" ToRole="Student_ChangeClazzLog" />
         </EntityType>
@@ -2320,9 +2426,9 @@
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="PinYin" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Gender" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="Birthday" />
+          <Property Type="DateTime" Name="Birthday" Precision="3" />
           <Property Type="String" Name="EduLevel" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="GraduateDate" />
+          <Property Type="DateTime" Name="GraduateDate" Precision="3" />
           <Property Type="Int32" Name="Score" />
           <Property Type="Int32" Name="GruduateSchoolId" />
           <Property Type="String" Name="Profession" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -2375,22 +2481,22 @@
           <Property Type="String" Name="IntentCity" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="ClazzId" />
           <Property Type="String" Name="StudentNo" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="InSchoolDate" />
+          <Property Type="DateTime" Name="InSchoolDate" Precision="3" />
           <Property Type="String" Name="IsDorm" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="DormNo" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="GiveCourseware" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Consultants" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Remark" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="CreateTime" Nullable="false" />
-          <Property Type="DateTime" Name="LastUpdateTime" Nullable="false" />
+          <Property Type="DateTime" Name="CreateTime" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="LastUpdateTime" Nullable="false" Precision="3" />
           <Property Type="String" Name="IsGetQualification" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Status" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="TechnicalWay" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="NeedObtainWork" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="IntentPosition" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Decimal" Name="TargetSalary" Precision="18" Scale="2" />
-          <Property Type="DateTime" Name="InsuranceStartDate" />
-          <Property Type="DateTime" Name="InsuranceEndDate" />
+          <Property Type="DateTime" Name="InsuranceStartDate" Precision="3" />
+          <Property Type="DateTime" Name="InsuranceEndDate" Precision="3" />
           <Property Type="String" Name="GaoKaoBatch" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="GiveNotebook" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="District" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_File_BaseInfo_District" FromRole="Student_File" ToRole="District" />
@@ -2400,7 +2506,7 @@
           <Property Type="Decimal" Name="MaxSalary" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="CurrentSalary" Precision="18" Scale="2" />
           <Property Type="Decimal" Name="FirstSalary" Precision="18" Scale="2" />
-          <Property Type="DateTime" Name="BeginSchoolTime" />
+          <Property Type="DateTime" Name="BeginSchoolTime" Precision="3" />
           <Property Type="String" Name="MasterName1" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="MasterName2" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="MasterName3" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -2719,14 +2825,14 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="ClazzId" Nullable="false" />
           <Property Type="Int32" Name="StudentId" Nullable="false" />
-          <Property Type="DateTime" Name="Time" Nullable="false" />
+          <Property Type="DateTime" Name="Time" Nullable="false" Precision="3" />
           <Property Type="Int32" Name="VisitorId" Nullable="false" />
           <Property Type="String" Name="Interviewee" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="PhoneNo" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Advice" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Summary" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="ReviewerId" />
-          <Property Type="DateTime" Name="ReviewTime" />
+          <Property Type="DateTime" Name="ReviewTime" Precision="3" />
           <Property Type="String" Name="ReviewComment" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Clazz" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_TeleVisitRecord_Student_Clazz" FromRole="Student_TeleVisitRecord" ToRole="Clazz" />
           <NavigationProperty Name="Student" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_TeleVisitRecord_Student_File" FromRole="Student_TeleVisitRecord" ToRole="Student" />
@@ -2788,13 +2894,13 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="ClazzId" Nullable="false" />
           <Property Type="Int32" Name="StudentId" Nullable="false" />
-          <Property Type="DateTime" Name="Time" Nullable="false" />
+          <Property Type="DateTime" Name="Time" Nullable="false" Precision="3" />
           <Property Type="Int32" Name="VisitorId" Nullable="false" />
           <Property Type="String" Name="Goal" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Content" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Question" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="ReviewerId" />
-          <Property Type="DateTime" Name="ReviewTime" />
+          <Property Type="DateTime" Name="ReviewTime" Precision="3" />
           <Property Type="String" Name="ReviewComment" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Clazz" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_VisitRecord_Student_Clazz" FromRole="Student_VisitRecord" ToRole="Clazz" />
           <NavigationProperty Name="Student" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_VisitRecord_Student_File" FromRole="Student_VisitRecord" ToRole="Student" />
@@ -2856,7 +2962,7 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="ClazzId" Nullable="false" />
           <Property Type="Int32" Name="StudentId" Nullable="false" />
-          <Property Type="DateTime" Name="Time" Nullable="false" />
+          <Property Type="DateTime" Name="Time" Nullable="false" Precision="3" />
           <Property Type="String" Name="VisitType" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="BeginTime" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="EndTime" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -2867,7 +2973,7 @@
           <Property Type="String" Name="Advice" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Summary" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="ReviewerId" />
-          <Property Type="DateTime" Name="ReviewTime" />
+          <Property Type="DateTime" Name="ReviewTime" Precision="3" />
           <Property Type="String" Name="ReviewComment" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Clazz" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_HomeVisitRecord_Student_Clazz" FromRole="Student_HomeVisitRecord" ToRole="Clazz" />
           <NavigationProperty Name="Student" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_HomeVisitRecord_Student_File" FromRole="Student_HomeVisitRecord" ToRole="Student" />
@@ -3007,14 +3113,14 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Clazz" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="TargetSchoolName" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="SignUpTime" />
+          <Property Type="DateTime" Name="SignUpTime" Precision="3" />
           <Property Type="String" Name="SeqNo" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="TargetProfession" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="TargetLevel" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="StudentNo" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Sex" MaxLength="1" FixedLength="true" Unicode="true" />
-          <Property Type="DateTime" Name="Birthday" />
+          <Property Type="DateTime" Name="Birthday" Precision="3" />
           <Property Type="String" Name="JiGuang" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="IdCardNo" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="MinZu" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -3030,11 +3136,11 @@
           <Property Type="String" Name="Company" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Title" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="CompanyTelephoneNo" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="BeginWorkTime" />
+          <Property Type="DateTime" Name="BeginWorkTime" Precision="3" />
           <Property Type="Int32" Name="WorkedYears" />
           <Property Type="String" Name="HighestEduLevel" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="HighestQualification" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="GraduateDate" />
+          <Property Type="DateTime" Name="GraduateDate" Precision="3" />
           <Property Type="String" Name="GruduateSchool" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="HighestQualificationNo" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="StudyDuration1" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -3064,7 +3170,7 @@
           <Property Type="String" Name="Referrer" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ReferrerMobile" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ReferrerQQ" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="MatriculateTime" />
+          <Property Type="DateTime" Name="MatriculateTime" Precision="3" />
           <Property Type="String" Name="NetUserName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="NetPassword" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="StudyType" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -3085,7 +3191,7 @@
           <Property Type="Int32" Name="StudentId" Nullable="false" />
           <Property Type="Int32" Name="OldClazzId" />
           <Property Type="Int32" Name="NewClazzId" Nullable="false" />
-          <Property Type="DateTime" Name="ChangeTime" Nullable="false" />
+          <Property Type="DateTime" Name="ChangeTime" Nullable="false" Precision="3" />
           <Property Type="String" Name="OperatorName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="OldClazz" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_ChangeClazzLog_Student_Clazz" FromRole="Student_ChangeClazzLog" ToRole="Clazz" />
           <NavigationProperty Name="NewClazz" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_ChangeClazzLog_Student_Clazz1" FromRole="Student_ChangeClazzLog" ToRole="Clazz" />
@@ -3124,6 +3230,86 @@
             </Principal>
             <Dependent Role="Student_ChangeClazzLog">
               <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EmploymentCompany">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Important" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Website" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Telephone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CityId" Type="Int32" />
+          <Property Name="Introduction" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SourceType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Referer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="EmployedQty" Type="Int32" Nullable="false" />
+          <Property Name="OldOaId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TempProvId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TempProvName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TempCityId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TempCityName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="City" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_Company_BaseInfo_City" FromRole="Employment_Company" ToRole="City" />
+          <NavigationProperty Name="User" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_Company_Sys_User" FromRole="Employment_Company" ToRole="User" />
+          <NavigationProperty Name="Contact" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_Employment_Company" FromRole="Employment_Company" ToRole="Employment_CompanyContact" />
+        </EntityType>
+        <EntityType Name="EmploymentCompanyContact">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telephone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QQ" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Introduction" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="OldOaId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OldOaCompanyId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Company" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_Employment_Company" FromRole="Employment_CompanyContact" ToRole="Employment_Company" />
+        </EntityType>
+        <Association Name="FK_Employment_Company_BaseInfo_City">
+          <End Type="Cn.Com.Sve.OA.Entities.City" Role="City" Multiplicity="0..1" />
+          <End Type="Cn.Com.Sve.OA.Entities.EmploymentCompany" Role="Employment_Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employment_Company">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employment_Company_Sys_User">
+          <End Type="Cn.Com.Sve.OA.Entities.User" Role="User" Multiplicity="0..1" />
+          <End Type="Cn.Com.Sve.OA.Entities.EmploymentCompany" Role="Employment_Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employment_Company">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employment_CompanyContact_Employment_Company">
+          <End Type="Cn.Com.Sve.OA.Entities.EmploymentCompany" Role="Employment_Company" Multiplicity="1" />
+          <End Type="Cn.Com.Sve.OA.Entities.EmploymentCompanyContact" Role="Employment_CompanyContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employment_Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employment_CompanyContact">
+              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3769,6 +3955,48 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="EmploymentCompanies">
+            <EntityTypeMapping TypeName="Cn.Com.Sve.OA.Entities.EmploymentCompany">
+              <MappingFragment StoreEntitySet="Employment_Company">
+                <ScalarProperty Name="TempCityName" ColumnName="TempCityName" />
+                <ScalarProperty Name="TempCityId" ColumnName="TempCityId" />
+                <ScalarProperty Name="TempProvName" ColumnName="TempProvName" />
+                <ScalarProperty Name="TempProvId" ColumnName="TempProvId" />
+                <ScalarProperty Name="OldOaId" ColumnName="OldOaId" />
+                <ScalarProperty Name="EmployedQty" ColumnName="EmployedQty" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Referer" ColumnName="Referer" />
+                <ScalarProperty Name="SourceType" ColumnName="SourceType" />
+                <ScalarProperty Name="Introduction" ColumnName="Introduction" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="Important" ColumnName="Important" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmploymentCompanyContacts">
+            <EntityTypeMapping TypeName="Cn.Com.Sve.OA.Entities.EmploymentCompanyContact">
+              <MappingFragment StoreEntitySet="Employment_CompanyContact">
+                <ScalarProperty Name="OldOaCompanyId" ColumnName="OldOaCompanyId" />
+                <ScalarProperty Name="OldOaId" ColumnName="OldOaId" />
+                <ScalarProperty Name="Introduction" ColumnName="Introduction" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -3786,6 +4014,7 @@
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
@@ -4004,7 +4233,7 @@
         <EntityTypeShape EntityType="Cn.Com.Sve.OA.Entities.UserGroup" Width="2.25" PointX="15.375" PointY="10.875" Height="1.9700325520833388" />
         <EntityTypeShape EntityType="Cn.Com.Sve.OA.Entities.UserGroupFunctionPermission" Width="2.375" PointX="17.625" PointY="8.5" Height="1.9700325520833388" />
         <EntityTypeShape EntityType="Cn.Com.Sve.OA.Entities.UserGroupModulePermission" Width="2.5" PointX="20.625" PointY="7.125" Height="1.9700325520833388" />
-        <EntityTypeShape EntityType="Cn.Com.Sve.OA.Entities.UserInGroup" Width="1.625" PointX="20.625" PointY="3.75" Height="1.9700325520833388" />
+        <EntityTypeShape EntityType="Cn.Com.Sve.OA.Entities.UserInGroup" Width="1.625" PointX="20.75" PointY="5.625" Height="1.9700325520833388" />
         <AssociationConnector Association="Cn.Com.Sve.OA.Entities.FK_Sys_UserGroupFunctionPermission_Sys_Function" >
           <ConnectorPoint PointX="3" PointY="7.6068933105468748" />
           <ConnectorPoint PointX="3.25" PointY="7.6068933105468748" />
@@ -4328,6 +4557,11 @@
           <ConnectorPoint PointX="11.833333333333334" PointY="24.314865222656259" />
           <ConnectorPoint PointX="12.125" PointY="24.314865222656259" />
         </AssociationConnector>
+        <EntityTypeShape EntityType="Cn.Com.Sve.OA.Entities.EmploymentCompany" Width="2" PointX="20.875" PointY="0.5" />
+        <EntityTypeShape EntityType="Cn.Com.Sve.OA.Entities.EmploymentCompanyContact" Width="2.5" PointX="23.5" PointY="0.5" />
+        <AssociationConnector Association="Cn.Com.Sve.OA.Entities.FK_Employment_Company_BaseInfo_City" />
+        <AssociationConnector Association="Cn.Com.Sve.OA.Entities.FK_Employment_Company_Sys_User" />
+        <AssociationConnector Association="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_Employment_Company" />
         </Diagram>
     </Diagrams>
   </Designer>

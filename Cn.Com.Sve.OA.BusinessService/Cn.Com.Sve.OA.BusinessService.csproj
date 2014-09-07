@@ -132,6 +132,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BusinessService.tt</DependentUpon>
     </Compile>
+    <Compile Include="CityService.cs" />
     <Compile Include="CityService.partial.cs">
       <DependentUpon>BusinessService.tt</DependentUpon>
     </Compile>
@@ -144,6 +145,13 @@
     </Compile>
     <Compile Include="DistrictService.cs" />
     <Compile Include="DistrictService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmploymentCompanyContactService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmploymentCompanyService.cs" />
+    <Compile Include="EmploymentCompanyService.partial.cs">
       <DependentUpon>BusinessService.tt</DependentUpon>
     </Compile>
     <Compile Include="FunctionService.cs" />
@@ -163,6 +171,12 @@
       <DependentUpon>ServiceInterface.tt</DependentUpon>
     </Compile>
     <Compile Include="IDistrictService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IEmploymentCompanyContactService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IEmploymentCompanyService.partial.cs">
       <DependentUpon>ServiceInterface.tt</DependentUpon>
     </Compile>
     <Compile Include="IFunctionService.partial.cs">

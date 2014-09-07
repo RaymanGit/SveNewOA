@@ -233,6 +233,18 @@ namespace Cn.Com.Sve.OA.Entities
             get { return _studentChangeClazzLogs  ?? (_studentChangeClazzLogs = CreateObjectSet<StudentChangeClazzLog>("StudentChangeClazzLogs")); }
         }
         private ObjectSet<StudentChangeClazzLog> _studentChangeClazzLogs;
+    
+        public ObjectSet<EmploymentCompany> EmploymentCompanies
+        {
+            get { return _employmentCompanies  ?? (_employmentCompanies = CreateObjectSet<EmploymentCompany>("EmploymentCompanies")); }
+        }
+        private ObjectSet<EmploymentCompany> _employmentCompanies;
+    
+        public ObjectSet<EmploymentCompanyContact> EmploymentCompanyContacts
+        {
+            get { return _employmentCompanyContacts  ?? (_employmentCompanyContacts = CreateObjectSet<EmploymentCompanyContact>("EmploymentCompanyContacts")); }
+        }
+        private ObjectSet<EmploymentCompanyContact> _employmentCompanyContacts;
 
         #endregion
 

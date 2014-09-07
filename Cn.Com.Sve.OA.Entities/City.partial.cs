@@ -98,6 +98,38 @@ namespace Cn.Com.Sve.OA.Entities
             }
         }
         private ICollection<District> _districts;
+    
+        public virtual ICollection<EmploymentCompany> Employment_Company
+        {
+            get
+            {
+                if (_employment_Company == null)
+                {
+                    var newCollection = new FixupCollection<EmploymentCompany>();
+                    newCollection.CollectionChanged += FixupEmployment_Company;
+                    _employment_Company = newCollection;
+                }
+                return _employment_Company;
+            }
+            set
+            {
+                if (!ReferenceEquals(_employment_Company, value))
+                {
+                    var previousValue = _employment_Company as FixupCollection<EmploymentCompany>;
+                    if (previousValue != null)
+                    {
+                        previousValue.CollectionChanged -= FixupEmployment_Company;
+                    }
+                    _employment_Company = value;
+                    var newValue = value as FixupCollection<EmploymentCompany>;
+                    if (newValue != null)
+                    {
+                        newValue.CollectionChanged += FixupEmployment_Company;
+                    }
+                }
+            }
+        }
+        private ICollection<EmploymentCompany> _employment_Company;
 
         #endregion
 
@@ -136,6 +168,28 @@ namespace Cn.Com.Sve.OA.Entities
             if (e.OldItems != null)
             {
                 foreach (District item in e.OldItems)
+                {
+                    if (ReferenceEquals(item.City, this))
+                    {
+                        item.City = null;
+                    }
+                }
+            }
+        }
+    
+        private void FixupEmployment_Company(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (EmploymentCompany item in e.NewItems)
+                {
+                    item.City = this;
+                }
+            }
+    
+            if (e.OldItems != null)
+            {
+                foreach (EmploymentCompany item in e.OldItems)
                 {
                     if (ReferenceEquals(item.City, this))
                     {

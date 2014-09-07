@@ -69,6 +69,13 @@
     <Compile Include="Criteria\DistrictCriteria.partial.cs">
       <DependentUpon>Criteria.tt</DependentUpon>
     </Compile>
+    <Compile Include="Criteria\EmploymentCompanyContactCriteria.partial.cs">
+      <DependentUpon>Criteria.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Criteria\EmploymentCompanyCriteria.cs" />
+    <Compile Include="Criteria\EmploymentCompanyCriteria.partial.cs">
+      <DependentUpon>Criteria.tt</DependentUpon>
+    </Compile>
     <Compile Include="Criteria\FunctionCriteria.partial.cs">
       <DependentUpon>Criteria.tt</DependentUpon>
     </Compile>
@@ -164,6 +171,12 @@
     <Compile Include="CustomerAssignSummary.cs" />
     <Compile Include="District.cs" />
     <Compile Include="District.partial.cs">
+      <DependentUpon>OaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmploymentCompany.partial.cs">
+      <DependentUpon>OaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmploymentCompanyContact.partial.cs">
       <DependentUpon>OaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Function.partial.cs">

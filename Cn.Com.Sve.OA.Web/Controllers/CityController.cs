@@ -37,5 +37,15 @@ namespace Cn.Com.Sve.OA.Web.Controllers {
 			});
 			return this.Json(new { Provinces=m }, JsonRequestBehavior.AllowGet);
 		}
+
+		public ActionResult Suggest(string prefix, int qty) {
+			List<object> m = new List<object>();
+			var r = this.Service.FindForSuggest(new CityCriteria { NameSrh = prefix, pagesize = qty, sortname = "name", sortorder = "asc" });
+			r.Data.ForEach(o => {
+				m.Add(new { Id = o.Id, Name = o.Province.Name + o.Name });
+			});
+			return this.Json(m, JsonRequestBehavior.AllowGet);
+		}
+
 	}
 }

@@ -1,0 +1,172 @@
+﻿@model Cn.RaymanLee.Data.PagedModel<Cn.Com.Sve.OA.Entities.EmploymentCompany>
+
+@{
+    Layout = null;
+    Cn.Com.Sve.OA.Entities.Criteria.EmploymentCompanyCriteria criteria =
+        (Cn.Com.Sve.OA.Entities.Criteria.EmploymentCompanyCriteria)this.ViewBag.Criteria;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.autocomplete.css")" rel="stylesheet" type="text/css" />
+
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.core.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.widget.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.position.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.autocomplete.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.form.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script>
+    <style type="text/css">
+        body {
+            font-size: 12px;
+        }
+
+        .l-table-edit {
+        }
+
+        .l-table-edit-td {
+            padding: 4px;
+        }
+
+        .l-button-submit, .l-button-reset {
+            width: 80px;
+            float: left;
+            margin-left: 10px;
+            padding-bottom: 2px;
+        }
+
+        .l-verify-tip {
+            left: 230px;
+            top: 120px;
+            z-index: 9999;
+        }
+    </style>
+    <style type="text/css">
+	.ui-autocomplete-loading { background: white url('@Url.Content("~/Content/themes/base/images/ui-anim_basic_16x16.gif")') right center no-repeat; }
+	#f_UserName { width: 25em; }
+        		.dt{ width:100%; border:1px solid #aaaaa;}
+		.dt th { background-color:#eeeeee; text-align:center; font-weight:bold;}
+
+    </style>
+    <script type="text/javascript">
+        $(function () {
+        });
+    </script>
+</head>
+<body style="padding: 10px; height: 100%; text-align: center;">
+    <div id="pnlByCondition" style="width: 98%">
+        <form id="frmCondition" class="l-form" action='' method="post" enctype="multipart/form-data">
+            <table cellpadding="0" cellspacing="0" class="l-table-edit">
+                <tr>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        区域
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <input type='text' id='Zone' name="Zone" ltype='text' value="@criteria.Zone" class="l-text" />
+                    </td>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        公司名称
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <input type='text' id='NameSrh' name="NameSrh" ltype='text' value="@criteria.NameSrh" class="l-text" />
+                    </td>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        企业分类
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <select id="TypeSrh" name="TypeSrh" class="l-text">
+                            <option value="">全部</option>
+                            @if (criteria.TypeSrh != null && criteria.TypeSrh.Equals("IT类")) {
+                                <option value="IT类" selected='selected'>IT类</option>
+                            } else {
+                                <option value="IT类">IT类</option>
+                            }
+                            @if (criteria.TypeSrh != null && criteria.TypeSrh.Equals("非IT类")) {
+                                <option value="非IT类" selected='selected'>非IT类</option>
+                            } else {
+                                <option value="非IT类">非IT类</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        合作属性
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <select id="ImportantSrh" name="ImportantSrh" class="l-text">
+                            <option value="">全部</option>
+                            @if (criteria.ImportantSrh != null && criteria.ImportantSrh.Equals("核心")) {
+                                <option value="核心" selected='selected'>核心</option>
+                            } else {
+                                <option value="核心">核心</option>
+                            }
+                            @if (criteria.ImportantSrh != null && criteria.ImportantSrh.Equals("重点")) {
+                                <option value="重点" selected='selected'>重点</option>
+                            } else {
+                                <option value="重点">重点</option>
+                            }
+                            @if (criteria.ImportantSrh != null && criteria.ImportantSrh.Equals("关注")) {
+                                <option value="关注" selected='selected'>关注</option>
+                            } else {
+                                <option value="关注">关注</option>
+                            }
+                            @if (criteria.ImportantSrh != null && criteria.ImportantSrh.Equals("普通")) {
+                                <option value="普通" selected='selected'>普通</option>
+                            } else {
+                                <option value="普通">普通</option>
+                            }
+                        </select>
+                    </td>
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        负责人
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <input type='text' id='UserName' name="UserName" ltype='text' value="@criteria.UserName" class="l-text" />
+                    </td>
+                    <td style="text-align:center" colspan="2">
+                        <input type="submit" id="btnSearch" value="查询" class="l-button l-button-submit" />
+                        <input type="button" id="btnAdd" value="新增" class="l-button l-button-submit" 
+                               onclick="top.f_addTab('tab-add-employment-company-', '添加就业企业', '@Url.Action("AddNew", "EmploymentCompany")');" />
+                    </td>
+               </tr>
+            </table>
+        </form>
+    </div>
+
+    <div id="pnlByRecords" style="width: 98%">
+            <div style="margin-bottom:5px;">
+                <table class="dt" border="1" cellpadding="2">
+                    <tr><th>公司名称</th><th>分类</th><th>合作属性</th><th>录用人数</th><th>省份</th><th>城市</th></tr>
+                    @if (this.Model.Data != null) { 
+                        foreach (var t in this.Model.Data) {
+                            <tr>
+                                <td>
+                                    <a href="#" onclick="top.f_addTab('tab-display-employment-company-@t.Id', '@t.Name', '@Url.Action("Display", "EmploymentCompany")' + '?id=@t.Id');return false;">@t.Name</a>
+                                </td>
+                                <td>@t.Type</td><td>@t.Important</td><td>@t.EmployedQty</td><td>@t.City.Province.Name</td><td>@t.City.Name</td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+    </div>
+
+
+</body>
+</html>

@@ -211,6 +211,14 @@
     <Compile Include="Controllers\DistrictController.partial.cs">
       <DependentUpon>Controllers.partial.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\EmploymentCompanyContactController.cs" />
+    <Compile Include="Controllers\EmploymentCompanyContactController.partial.cs">
+      <DependentUpon>Controllers.partial.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\EmploymentCompanyController.cs" />
+    <Compile Include="Controllers\EmploymentCompanyController.partial.cs">
+      <DependentUpon>Controllers.partial.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\FunctionController.partial.cs">
       <DependentUpon>Controllers.partial.tt</DependentUpon>
     </Compile>
@@ -312,6 +320,12 @@
       <DependentUpon>Controllers.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\TempCode\DistrictControllerTemp.cs">
+      <DependentUpon>Controllers.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\TempCode\EmploymentCompanyContactControllerTemp.cs">
+      <DependentUpon>Controllers.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\TempCode\EmploymentCompanyControllerTemp.cs">
       <DependentUpon>Controllers.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\TempCode\FunctionControllerTemp.cs">
@@ -2235,6 +2249,15 @@
       <DependentUpon>IndexViews.tt</DependentUpon>
     </Content>
     <Content Include="Views\QualificationSchool\Index.cshtml" />
+    <Content Include="Views\TempCode\EmploymentCompany-Index.cshtml">
+      <DependentUpon>IndexViews.tt</DependentUpon>
+    </Content>
+    <Content Include="Views\TempCode\EmploymentCompanyContact-Index.cshtml">
+      <DependentUpon>IndexViews.tt</DependentUpon>
+    </Content>
+    <Content Include="Views\EmploymentCompany\Search.cshtml" />
+    <Content Include="Views\EmploymentCompany\Display.cshtml" />
+    <Content Include="Views\EmploymentCompany\AddNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

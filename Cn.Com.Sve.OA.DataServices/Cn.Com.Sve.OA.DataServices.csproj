@@ -105,6 +105,7 @@
     <Compile Include="BigInfoSourceRepository.partial.cs">
       <DependentUpon>Repository.tt</DependentUpon>
     </Compile>
+    <Compile Include="CityRepository.cs" />
     <Compile Include="CityRepository.partial.cs">
       <DependentUpon>Repository.tt</DependentUpon>
     </Compile>
@@ -118,6 +119,13 @@
     <Compile Include="DbContextFactory.cs" />
     <Compile Include="DistrictRepository.cs" />
     <Compile Include="DistrictRepository.partial.cs">
+      <DependentUpon>Repository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmploymentCompanyContactRepository.partial.cs">
+      <DependentUpon>Repository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmploymentCompanyRepository.cs" />
+    <Compile Include="EmploymentCompanyRepository.partial.cs">
       <DependentUpon>Repository.tt</DependentUpon>
     </Compile>
     <Compile Include="FunctionRepository.cs" />
@@ -137,6 +145,12 @@
       <DependentUpon>RepositoryInterface.tt</DependentUpon>
     </Compile>
     <Compile Include="IDistrictRepository.partial.cs">
+      <DependentUpon>RepositoryInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IEmploymentCompanyContactRepository.partial.cs">
+      <DependentUpon>RepositoryInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IEmploymentCompanyRepository.partial.cs">
       <DependentUpon>RepositoryInterface.tt</DependentUpon>
     </Compile>
     <Compile Include="IFunctionRepository.partial.cs">

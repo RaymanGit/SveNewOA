@@ -1,0 +1,549 @@
+﻿@model Cn.Com.Sve.OA.Entities.EmploymentCompany
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/jquery.ui.autocomplete.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.core.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.widget.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.position.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery/ui/jquery.ui.autocomplete.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.form.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script>
+    <style type="text/css">
+        body {
+            font-size: 12px;
+        }
+
+        .l-table-edit {
+        }
+
+        .l-table-edit-td {
+            padding: 4px;
+        }
+
+        .l-button-submit, .l-button-reset {
+            width: 80px;
+            float: left;
+            margin-left: 10px;
+            padding-bottom: 2px;
+        }
+
+        .l-verify-tip {
+            left: 230px;
+            top: 120px;
+            z-index: 9999;
+        }
+    </style>
+    <script type="text/javascript">
+    function addSchoolAd() {
+        action = "add";
+        $("#f_EmploymentCompanyContact_CompanyId").val(@this.Model.Id);
+			$("#f_EmploymentCompanyContact_Name").val("");
+			$("#f_EmploymentCompanyContact_Mobile").val("");
+			$("#f_EmploymentCompanyContact_Position").val("");
+			$("#f_EmploymentCompanyContact_Telephone").val("");
+			$("#f_EmploymentCompanyContact_QQ").val("");
+			$("#f_EmploymentCompanyContact_Email").val("");
+			$("#f_EmploymentCompanyContact_Introduction").val("");
+			$("#f_EmploymentCompanyContact_OldOaId").val("");
+			$("#f_EmploymentCompanyContact_OldOaCompanyId").val("");
+            $dialog = $.ligerDialog.open({ target: $("#dEditor"), width: 580, height: 320 });
+        }
+        function editSchoolAd() {
+            action = "edit";
+            var row = grd.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+			$("#f_EmploymentCompanyContact_Id").val(row.Id);
+			$("#f_EmploymentCompanyContact_CompanyId").val(@this.Model.Id);
+			$("#f_EmploymentCompanyContact_Name").val(row.Name);
+			$("#f_EmploymentCompanyContact_Mobile").val(row.Mobile);
+			$("#f_EmploymentCompanyContact_Position").val(row.Position);
+			$("#f_EmploymentCompanyContact_Telephone").val(row.Telephone);
+			$("#f_EmploymentCompanyContact_QQ").val(row.QQ);
+			$("#f_EmploymentCompanyContact_Email").val(row.Email);
+			$("#f_EmploymentCompanyContact_Introduction").val(row.Introduction);
+			$("#f_EmploymentCompanyContact_OldOaId").val(row.OldOaId);
+			$("#f_EmploymentCompanyContact_OldOaCompanyId").val(row.OldOaCompanyId);
+            $dialog = $.ligerDialog.open({ target: $("#dEditor"), width: 580, height: 320 });
+        }
+        function deleteSchoolAd() {
+            var row = grd.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？", function (r) {
+                if (r) {
+                    $.post("@Url.Action("Delete", "EmploymentCompanyContact")", { id: row.Id }
+                    , function (result) {
+                        if (result.Successful) {
+                            grd.deleteSelectedRow();
+                        } else {
+                            $.ligerMessageBox.error('错误', result.Message);
+                        }
+                    }
+                );
+            }
+        });
+    }
+    function saveSchoolAd() {
+        if (action == "add") {
+            $.post("@Url.Action("Add", "EmploymentCompanyContact")", $("#frmEditor").serialize(),
+                function (result) {
+                    if (result.Successful) {
+                        grd.addRow(result.Data);
+                        $dialog.hidden();
+                        LG.tip("操作成功！");
+                    } else {
+                        LG.showError(result.Message);
+                    }
+                }
+            );
+        } else {
+            $.post("@Url.Action("Update", "EmploymentCompanyContact")", $("#frmEditor").serialize(),
+                function (result) {
+                    if (result.Successful) {
+                        var row = grd.getSelected();
+                        if (!row) { alert('请选择行'); return; }
+                        grd.updateRow(row, result.Data);
+                        $dialog.hidden();
+                        LG.tip("操作成功！");
+                    } else {
+                        LG.showError(result.Message);
+                    }
+                }
+            );
+        }
+    }
+
+</script>
+    <script type="text/javascript">
+        var grd;
+        var action = "add";
+        var $dialog;
+
+        $(function () {
+            $("#f_EmploymentCompany_City_Name").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("Suggest", "City")',
+                        dataType: "json",
+                        data: {
+                            qty: 12,
+                            prefix: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.Name,
+                                    value: item.Id
+                                }
+                            }));
+                        }
+                    });
+                },
+                minLength: 1,
+                select: function (event, ui) {
+                    $("#f_EmploymentCompany_City_Id").val(ui.item.value);
+                    $("#f_EmploymentCompany_City_Name").val(ui.item.label);
+                    return false;
+                },
+                open: function () {
+                    $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                },
+                close: function () {
+                    $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                }
+            });
+
+            $("#f_EmploymentCompany_User_Name").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("Suggest", "User")',
+                        dataType: "json",
+                        data: {
+                            qty: 12,
+                            prefix: request.term
+                        },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.Name,
+                                    value: item.Id
+                                }
+                            }));
+                        }
+                    });
+                },
+                minLength: 1,
+                select: function (event, ui) {
+                    $("#f_EmploymentCompany_User_Id").val(ui.item.value);
+                    $("#f_EmploymentCompany_User_Name").val(ui.item.label);
+                    return false;
+                },
+                open: function () {
+                    $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                },
+                close: function () {
+                    $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                }
+            });
+        
+
+            $("#frmSchool").ligerForm();
+            $("#frmEditor").ligerForm();
+            grd = $("#grd").ligerGrid({
+                columns: [
+					{ display: '姓名', name: 'Name', align: 'center' },
+					{ display: '手机', name: 'Mobile', align: 'center' },
+					{ display: '职务', name: 'Position', align: 'center' },
+					{ display: 'QQ', name: 'QQ', align: 'center' },
+					{ display: '电话', name: 'Telephone', align: 'center' },
+					{ display: '邮箱', name: 'Email', align: 'center' },
+					{ display: '备注', name: 'Introduction', align: 'center' }
+                ],
+                pageSize: 20,
+                url: '@Url.Action("GetContactsByCompanylId", "EmploymentCompanyContact", new { id = this.Model.Id })',
+                sortName: 'Name',
+                width: '98%', height: '100%', checkbox: false,
+                usePager: false,
+                toolbar: {
+                    items: [
+                    { text: '增加', icon: 'add', click: addSchoolAd },
+                    { line: true },
+                    { text: '修改', icon: 'modify', click: editSchoolAd },
+                    { line: true },
+                    { text: '删除', icon: 'delete', click: deleteSchoolAd }
+                    ]
+                }
+            });
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp) {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frmSchool").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    saveSchool();
+                    return false;
+                }
+            });
+            var v2 = $("#frmEditor").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    saveSchoolAd();
+                    return false;
+                }
+            });
+        });
+
+
+        function saveSchool() {
+            $.post("@Url.Action("Update", "EmploymentCompany")", $("#frmSchool").serialize(),
+                function (result) {
+                    if (result.Successful) {
+                        LG.tip("操作成功！");
+                    } else {
+                        LG.showError(result.Message);
+                    }
+                }
+            );
+        }
+    </script>
+</head>
+<body style="padding: 10px; height: 100%; text-align: center;">
+    <div style="width: 98%">
+        <form action="" method="post" id="frmSchool">
+            <input type="hidden" id="f_EmploymentCompany_Id" name="Id" value="@this.Model.Id" />
+            <table cellpadding="0" cellspacing="0" class="l-table-edit">
+                <tr>
+                    <td class='l-table-edit-td' style='text-align: right;'>
+                        公司名字
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; ' colspan="4">
+                        <input name='Name' type='text' id='f_EmploymentCompany_Name' ltype='text' value="@this.Model.Name" ligerui="width:430" />
+                    </td>
+                    <td style='text-align: left;'></td>
+                    <td class='l-table-edit-td' style='text-align: right;'>
+                        企业分类
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                        <select id="f_EmploymentCompany_Type" name="Type">
+                            @if (this.Model.Type != null && this.Model.Type.Equals("IT类")) {
+                                <option value="IT类" selected='selected'>IT类</option>
+                            } else {
+                                <option value="IT类">IT类</option>
+                            }
+                            @if (this.Model.Type != null && this.Model.Type.Equals("非IT类")) {
+                                <option value="非IT类" selected='selected'>非IT类</option>
+                            } else {
+                                <option value="非IT类">非IT类</option>
+                            }
+                        </select>
+                    </td>
+                    <td style='text-align: left;'></td>
+                </tr>
+                <tr>
+                    <td class='l-table-edit-td' style='text-align: right;'>
+                        区域
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                        <input name='CityName' type='text' id='f_EmploymentCompany_City_Name' value="@this.Model.City.Name" />
+                        <input name='CityId' type='hidden' id='f_EmploymentCompany_City_Id' ltype='text' value="@this.Model.CityId" />
+                    </td>
+                    <td style='text-align: left;'></td>                    
+                    <td class='l-table-edit-td' style='text-align: right;'>
+                        就业老师
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                        <input name='UserName' type='text' id='f_EmploymentCompany_User_Name' value="@(this.Model.User==null ? "" : this.Model.User.Name)" />
+                        <input name='UserId' type='hidden' id='f_EmploymentCompany_User_Id' ltype='text' value="@this.Model.UserId" />
+                    </td>
+                    <td style='text-align: left;'></td>
+                    <td class='l-table-edit-td' style='text-align: right;'>
+                        合作属性
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                        <select id="f_EmploymentCompany_Important" name="Important">
+                            @if (this.Model.Important != null && this.Model.Important.Equals("核心")) {
+                                <option value="核心" selected='selected'>核心</option>
+                            } else {
+                                <option value="核心">核心</option>
+                            }
+                            @if (this.Model.Important != null && this.Model.Important.Equals("重点")) {
+                                <option value="重点" selected='selected'>重点</option>
+                            } else {
+                                <option value="重点">重点</option>
+                            }
+                            @if (this.Model.Important != null && this.Model.Important.Equals("关注")) {
+                                <option value="关注" selected='selected'>关注</option>
+                            } else {
+                                <option value="关注">关注</option>
+                            }
+                            @if (this.Model.Important != null && this.Model.Important.Equals("普通")) {
+                                <option value="普通" selected='selected'>普通</option>
+                            } else {
+                                <option value="普通">普通</option>
+                            }
+                        </select>
+                    </td>
+                    <td style='text-align: left;'></td>
+                </tr><tr>
+                    <td class='l-table-edit-td' style='text-align: right;'>
+                        信息来源
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                        <select name="SourceType" id="f_EmploymentCompany_SourceType">
+                            @if (this.Model.SourceType != null && this.Model.SourceType.Equals("网络")) {
+                                <option value="网络" selected='selected'>网络</option>
+                            } else {
+                                <option value="网络">网络</option>
+                            }
+                            @if (this.Model.SourceType != null && this.Model.SourceType.Equals("转介绍")) {
+                                <option value="转介绍" selected='selected'>转介绍</option>
+                            } else {
+                                <option value="转介绍">转介绍</option>
+                            }
+                            @if (this.Model.SourceType != null && this.Model.SourceType.Equals("自主上门")) {
+                                <option value="自主上门" selected='selected'>自主上门</option>
+                            } else {
+                                <option value="自主上门">自主上门</option>
+                            }
+                        </select>
+                    </td>
+                    <td style='text-align: left;'></td>
+                    <td class='l-table-edit-td' style='text-align: right;'>
+                        转介绍者
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                        <input name='Referer' type='text' id='f_EmploymentCompany_Referer' ltype='text' value="@this.Model.Referer" />
+                    </td>
+                    <td style='text-align: left;'></td>
+                    <td class='l-table-edit-td' style='text-align: right;'>
+                        电话
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                        <input name='Telephone' type='text' id='f_EmploymentCompany_Telephone' ltype='text' value="@this.Model.Telephone" />
+                    </td>
+                    <td style='text-align: left;'></td>
+                </tr>
+                <tr>
+                    <td class='l-table-edit-td' style='text-align: right;'>
+                        传真
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; width: 160px'>
+                        <input name='Fax' type='text' id='f_EmploymentCompany_Fax' ltype='text' value="@this.Model.Fax" />
+                    </td>
+                    <td style='text-align: left;'></td>
+                    <td class='l-table-edit-td' style='text-align: right;'>
+                        地址
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left;' colspan="4">
+                        <input name='Address' type='text' id='f_EmploymentCompany_Address' ltype='text' value="@this.Model.Address" ligerui="width:430" />
+                    </td>
+                    <td style='text-align: left;'></td>
+                </tr>
+                <tr>
+                    <td class='l-table-edit-td' style='text-align: right;'>
+                        网址
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left;' colspan="7">
+                        <input name='Website' type='text' id='f_EmploymentCompany_Website' ltype='text' value="@this.Model.Website"  ligerui="width:680" />
+                    </td>
+                    <td style='text-align: left;'></td>
+                </tr>
+                <tr>
+                    <td class='l-table-edit-td' style='text-align: right;'>
+                        简介
+                    </td>
+                    <td class='l-table-edit-td' style='text-align: left; ' colspan="7">
+                        <input name='Introduction' type='text' id='f_EmploymentCompany_Introduction' ltype='text' value="@this.Model.Introduction" ligerui="width:680" />
+                    </td>
+                    <td style='text-align: left;'></td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: center;">
+                        <input type="submit" id="btnSchoolSave" value="保存" class="l-button l-button-submit" />
+                       <input name='EmployedQty' type='hidden' id='f_EmploymentCompany_EmployedQty' ltype='text' value="@this.Model.EmployedQty" />
+                        <input name='OldOaId' type='hidden' id='f_EmploymentCompany_OldOaId' ltype='text' value="@this.Model.OldOaId" />
+                    </td>
+                    <td colspan="5" style="text-align: center;">
+                        <!--
+                        @Html.ActionLink("学校联系人", "ListBySchool", "SchoolContact", new { schoolId = this.Model.Id }, null)&nbsp;&nbsp;
+                        @Html.ActionLink("讲座信息", "ListBySchool", "SchoolTrainning", new { schoolId = this.Model.Id }, null)&nbsp;&nbsp;
+                        @Html.ActionLink("回访记录", "ListBySchool", "SchoolVisit", new { schoolId = this.Model.Id }, null)&nbsp;&nbsp;
+                        @Html.ActionLink("同校校友录", "SearchBySchool", "Student", new { schoolId = this.Model.Id }, null)&nbsp;&nbsp;
+                            -->
+                        <a href=""></a>&nbsp;&nbsp;
+                        <a href=""></a>&nbsp;&nbsp;
+                        <a href=""></a>&nbsp;&nbsp;
+                        <a href=""></a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id="grd">
+    </div>
+    
+    <div id="dEditor" style="display: none;">
+        <form action="" method="post" id="frmEditor">
+            <input type="hidden" id="f_EmploymentCompanyContact_Id" name="Id" value="" />
+            <input name='CompanyId' type='hidden' id='f_EmploymentCompanyContact_CompanyId'  />
+            <input name='OldOaId' type='hidden' id='f_EmploymentCompanyContact_OldOaId'  />
+            <input name='OldOaCompanyId' type='hidden' id='f_EmploymentCompanyContact_OldOaCompanyId' />
+
+            <table cellpadding="0" cellspacing="0" class="l-table-edit">
+                <tr>
+                    <td class='l-table-edit-td' style='text-align:right;'>姓名</td>
+                    <td class='l-table-edit-td' style='text-align:left;width:160px'>
+                        <input name='Name' type='text' id='f_EmploymentCompanyContact_Name' ltype='text' />
+                    </td>
+                    <td style='text-align:left;'></td>
+                    <td class='l-table-edit-td' style='text-align:right;'>手机</td>
+                    <td class='l-table-edit-td' style='text-align:left;width:160px'>
+                        <input name='Mobile' type='text' id='f_EmploymentCompanyContact_Mobile' ltype='text' />
+                    </td>
+                    <td style='text-align:left;'></td>
+                </tr>
+
+                <tr>
+                    <td class='l-table-edit-td' style='text-align:right;'>职务</td>
+                    <td class='l-table-edit-td' style='text-align:left;width:160px'>
+                        <input name='Position' type='text' id='f_EmploymentCompanyContact_Position' ltype='text' />
+                    </td>
+                    <td style='text-align:left;'></td>
+                    <td class='l-table-edit-td' style='text-align:right;'>电话</td>
+                    <td class='l-table-edit-td' style='text-align:left;width:160px'>
+                        <input name='Telephone' type='text' id='f_EmploymentCompanyContact_Telephone' ltype='text' />
+                    </td>
+                    <td style='text-align:left;'></td>
+                </tr>
+
+                <tr>
+                    <td class='l-table-edit-td' style='text-align:right;'>QQ</td>
+                    <td class='l-table-edit-td' style='text-align:left;width:160px'>
+                        <input name='QQ' type='text' id='f_EmploymentCompanyContact_QQ' ltype='text' />
+                    </td>
+                    <td style='text-align:left;'></td>
+                    <td class='l-table-edit-td' style='text-align:right;'>电子邮箱</td>
+                    <td class='l-table-edit-td' style='text-align:left;width:160px'>
+                        <input name='Email' type='text' id='f_EmploymentCompanyContact_Email' ltype='text' />
+                    </td>
+                    <td style='text-align:left;'></td>
+                </tr>
+
+                <tr>
+                    <td class='l-table-edit-td' style='text-align:right;'>备注</td>
+                    <td class='l-table-edit-td' style='text-align:left;' colspan="4">
+                        <input name='Introduction' type='text' id='f_EmploymentCompanyContact_Introduction' ltype='text' />
+                    </td>
+                    <td style='text-align:left;'></td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align:center;">
+                        <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                        <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    
+</body>
+</html>
