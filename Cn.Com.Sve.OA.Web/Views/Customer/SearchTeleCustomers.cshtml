@@ -87,7 +87,15 @@
                 });
 
                 $.getJSON('@Url.Action("GetInitData", "Customer")', function (data) {
-                    initData = data
+                    initData = data;
+
+                    var teams = [{ Id: '', Name: '所有', Members: [] }];
+                    for (i = 0; i < initData.Teams.length; i++) {
+                        teams.push(initData.Teams[i]);
+                    }
+                    $cboTeamId4.setData(teams);
+                    $cboTeamId4.selectValue(teams[0].Id);
+
 
                     $("#frmCondition").ligerForm();
                 });
@@ -125,12 +133,73 @@
                     }
                 });
 
+                $cboMemberId4 = $("#f_MemberId4").ligerComboBox(
+                    { textField: 'Name', valueField: 'UserId', valueFieldID: 'SalesmanIdSrh' });
+                $cboTeamId4 = $("#f_TeamId4").ligerComboBox(
+                    {
+                        textField: 'Name', valueField: 'Id', valueFieldID: 'SalesTeamIdSrh',
+                        onSelected: function (v, t) {
+                            if (v == null || v.length == 0) {
+                                $cboMemberId4.setData([{ Id: '', Name: '所有', UserId: '' }]);
+                                $cboMemberId4.selectValue('');
+                                return;
+                            }
+
+                            var members = [{ Id: '', Name: '所有', UserId: '' }];
+                            for (i = 0; i < initData.Teams.length; i++) {
+                                var p = initData.Teams[i];
+                                if (p.Id != v) continue;
+                                for (j = 0; j < p.Members.length; j++) {
+                                    members.push({ Id: p.Members[j].Id, Name: p.Members[j].Name, UserId: p.Members[j].UserId });
+                                }
+                                $cboMemberId4.setData(members);
+                                if (members.length > 0) {
+                                    $cboMemberId4.selectValue(members[0].Id);
+                                } else {
+                                    $cboMemberId4.selectValue('');
+                                }
+                            }
+                        }
+                    });
+
+                $("#DistrictName").autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: '@Url.Action("Suggest", "District")',
+                            dataType: "json",
+                            data: {
+                                qty: 12,
+                                prefix: request.term
+                            },
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.Name,
+                                        value: item.Id
+                                    }
+                                }));
+                            }
+                        });
+                    },
+                    minLength: 1,
+                    select: function (event, ui) {
+                        $("#DistrictId").val(ui.item.value);
+                        $("#DistrictName").val(ui.item.label);
+                        return false;
+                    },
+                    open: function () {
+                        $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                    },
+                    close: function () {
+                        $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                    }
+                });
+
                 $("#btnSearch").click(function () {
 
                     gCustomer.set({
                         url: '@Url.Action("Search", "Customer")',
                         usePager: true,
-
                         parms: [
                         //                    { name: 'SchoolIdSrh', value: $("#SchoolIdSrh").val() },
                     {name: 'SchoolNameSrh', value: $("#f_SchoolNameSrh").val() },
@@ -139,9 +208,16 @@
                     { name: 'NameSrh', value: $("#NameSrh").val() },
                     { name: 'TelephoneSrh', value: $("#TelephoneSrh").val() },
                     { name: 'ImportantSrh', value: $("#ImportantSrh").get(0).checked },
+                    { name: 'DistrictIdSrh', value: $("#DistrictId").val() },
+                    { name: 'SalesTeamIdSrh', value: $("#SalesTeamIdSrh").val() },
+                    { name: 'SalesmanIdSrh', value: $("#SalesmanIdSrh").val() },
                     { name: 'IsTodaySrh', value: $("#IsTodaySrh").get(0).checked }
                     ]
                     });
+                    //
+                    //
+                    //
+
                     gCustomer.loadData();
                     gCustomer.changePage("first");
                 });
@@ -208,7 +284,29 @@
                     <td style='text-align: left;' class='l-table-edit-td'>
                         <input type='checkbox' id='IsTodaySrh' name="IsTodaySrh" ltype='text' />&nbsp;今天需要回访
                     </td>
-
+                    </tr>
+                    <tr>
+                        <td style='text-align: right;' class='l-table-edit-td'>
+                            招生小组
+                        </td>
+                        <td style='text-align: left;' class='l-table-edit-td'>
+                            <input name='f_TeamId4' type='text' id='f_TeamId4' ltype='text' />
+                            <input name='SalesTeamIdSrh' type='hidden' id='SalesTeamIdSrh' />
+                        </td>
+                        <td style='text-align: right;' class='l-table-edit-td'>
+                            电访员
+                        </td>
+                        <td style='text-align: left;' class='l-table-edit-td'>
+                            <input name='f_MemberId4' type='text' id='f_MemberId4' ltype='text' />
+                            <input name='SalesmanIdSrh' type='hidden' id='SalesmanIdSrh' />
+                        </td>
+                        <td style='text-align: right;' class='l-table-edit-td'>
+                            区/县
+                        </td>
+                        <td style='text-align: left;' class='l-table-edit-td'>
+                            <input name='DistrictName' type='text' id='DistrictName' />
+                            <input name='DistrictId' type='hidden' id='DistrictId' ltype='text' />
+                        </td>
 
                     <td style="text-align:center">
                         <input type="button" id="btnSearch" value="查询" />

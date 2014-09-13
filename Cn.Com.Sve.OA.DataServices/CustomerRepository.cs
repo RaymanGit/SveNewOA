@@ -176,6 +176,9 @@ namespace Cn.Com.Sve.OA.DataServices {
 			if (!String.IsNullOrEmpty(c.InClazzNameSrh)) {
 				sb.AppendFormat(" AND Clazz.[Name] LIKE '%{0}%' ", c.InClazzNameSrh);
 			}
+			if (c.DistrictIdSrh.HasValue) {
+				sb.AppendFormat(" AND C.DistrictId = {0} ", c.DistrictIdSrh.Value);
+			}
 			if (c.SchoolIdSrh.HasValue) {
 				sb.AppendFormat(" AND C.SchoolId = {0} ", c.SchoolIdSrh.Value);
 			}
