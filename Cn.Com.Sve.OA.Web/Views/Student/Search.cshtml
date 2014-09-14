@@ -93,13 +93,18 @@
     				//$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
     			}
     		});
-            $("#frmCondition").ligerForm();
+    	    $("#frmCondition").ligerForm();
+    	    $("#btnExport").click(function () {
+    	        $("#export").val("true");
+    	        $("#frmCondition").submit();
+    	    })
         });
     </script>
 </head>
 <body style="padding: 10px; height: 100%; text-align: center;">
     <div id="pnlByCondition" style="width: 98%">
              <form id="frmCondition" class="l-form" action='' method="post" enctype="multipart/form-data">
+                 <input type="hidden" id="export" name="Export" value="false" />
                 <table cellpadding="0" cellspacing="0" class="l-table-edit">
                 <tr>
                     <td style='text-align: right;' class='l-table-edit-td'>
@@ -344,13 +349,67 @@
                         </select>
 
                     </td>
-                    <td style="text-align:center" colspan="4">
+                    <td style='text-align: right;' class='l-table-edit-td'>
+                        联系方式
+                    </td>
+                    <td style='text-align: left;' class='l-table-edit-td'>
+                        <input type='text' id='ContactWay' name="ContactWay" ltype='text' value="@this.Model.Criteria.ContactWay" />
+                    </td>
+
+                    <td style="text-align:center" colspan="2">
                         <input type="submit" id="btnSearch" value="查询" />
+                        <input type="submit" id="btnExport" value="导出" />
                     </td>
                 </tr>
 
                 </table>
             </form>
+    </div>
+    <div style="width: 98%">
+        <div class="searchtitle">
+            <span>统计信息</span>
+        </div>
+        <div class="navline" style="margin-bottom: 4px; margin-top: 4px;">
+        </div>
+        <div class="searchbox" style="padding-left:40px;">
+            <p><b>按报读学校统计</b></p>
+            <table cellpadding="0" cellspacing="0" class="l-table-edit" style="width:100%;">
+                <tr>
+                    @for (int i = 0; i < this.Model.SchoolSummary.Count; i++) {
+                        <td style='text-align: left; ' class='l-table-edit-td'>@this.Model.SchoolSummary[i].Key (@this.Model.SchoolSummary[i].Value)</td>
+                        if ((i + 1) % 4 == 0) {
+                            @Html.Raw("</tr><tr>");
+                        }
+                    }
+                </tr>
+            </table>
+        </div>
+        <div class="searchbox" style="padding-left:40px;">
+            <p><b>按户口类型统计</b></p>
+            <table cellpadding="0" cellspacing="0" class="l-table-edit" style="width:100%;">
+                <tr>
+                    @for (int i = 0; i < this.Model.HuKouSummary.Count; i++) {
+                        <td style='text-align: left; ' class='l-table-edit-td'>@this.Model.HuKouSummary[i].Key (@this.Model.HuKouSummary[i].Value)</td>
+                        if ((i + 1) % 4 == 0) {
+                            @Html.Raw("</tr><tr>");
+                        }
+                    }
+                </tr>
+            </table>
+        </div>
+        <div class="searchbox" style="padding-left:40px;">
+            <p><b>按居住区域统计</b></p>
+            <table cellpadding="0" cellspacing="0" class="l-table-edit" style="width:100%;">
+                <tr>
+                    @for (int i = 0; i < this.Model.DistrictSummary.Count; i++) {
+                        <td style='text-align: left; ' class='l-table-edit-td'>@this.Model.DistrictSummary[i].Key (@this.Model.DistrictSummary[i].Value)</td>
+                        if ((i + 1) % 4 == 0) {
+                            @Html.Raw("</tr><tr>");
+                        }
+                    }
+                </tr>
+            </table>
+        </div>
     </div>
 
      @foreach (var t in this.Model.Clazz) {

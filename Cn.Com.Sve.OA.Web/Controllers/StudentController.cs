@@ -287,11 +287,37 @@ namespace Cn.Com.Sve.OA.Web.Controllers {
 				});
 				m.Clazz.Add(clazz);
 			});
+
+			r.Data.Where(o=>!String.IsNullOrEmpty(o.QualificationSchool)).GroupBy(o => o.QualificationSchool).Select(g => new { Name = g.Key, Qty = g.Count() }).ToList().ForEach(o => {
+				m.SchoolSummary.Add(new KeyValuePair<string, int>(o.Name, o.Qty));
+			});
+			r.Data.Where(o=>!String.IsNullOrEmpty(o.HuKouType)).GroupBy(o => o.HuKouType).Select(g => new { Name = g.Key, Qty = g.Count() }).ToList().ForEach(o => {
+				m.HuKouSummary.Add(new KeyValuePair<string, int>(o.Name, o.Qty));
+			});
+			r.Data.Where(o=>o.District!=null).GroupBy(o => o.District.FullName).Select(g => new { Name = g.Key, Qty = g.Count() }).ToList().ForEach(o => {
+				m.DistrictSummary.Add(new KeyValuePair<string, int>(o.Name, o.Qty));
+			});
+
+
+
 			return m;
 		}
 		[HttpPost]
 		public ActionResult Search(StudentCriteria c) {
-			return this.View(this.DoSearch(c));
+			if (c.Export) {
+				var sb = new System.Text.StringBuilder();
+				sb.AppendLine("姓名\t地址\t毕业学校");
+				var r = this.Service.Search(c);
+				r.Data.ForEach(o => {
+					sb.AppendLine(String.Format("{0}\t{1}\t{2}", 
+						o.Name, o.Address, o.GruduateSchool != null ? o.GruduateSchool.Name : ""));
+				});
+
+				return File(System.Text.Encoding.Default.GetBytes(sb.ToString()), "application/ms-excel", "fileStream.xls");
+
+			} else {
+				return this.View(this.DoSearch(c));
+			}
 			//r.Data.ForEach(o => {
 			//    //this.AddRowToGridModel(m, o);
 			//    m.Rows.Add(new { 

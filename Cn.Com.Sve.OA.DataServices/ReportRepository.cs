@@ -1504,7 +1504,7 @@ ORDER BY TeleQty, VisitQty, VisitQty2, ReviewTQty, ReviewVQty, HomeQty, ReviewHQ
 			StringBuilder sb = new StringBuilder();
 			var m = new List<StudentVisitSummaryReportItem>();
 			var db = DatabaseFactory.CreateDatabase();
-
+			/*
 			sb.Append(@"
 				SELECT Name, SUM(TQty) AS TQty, SUM(VQty) AS VQty FROM (
 				SELECT U.Name, COUNT(*) AS TQty, 0 AS VQty
@@ -1522,6 +1522,32 @@ ORDER BY TeleQty, VisitQty, VisitQty2, ReviewTQty, ReviewVQty, HomeQty, ReviewHQ
 				GROUP BY Name
 				ORDER BY SUM(TQty)+SUM(VQty) DESC			
 			");
+			 * */
+			sb.Append(@"
+				SELECT Name, SUM(TQty) AS TQty, SUM(VQty) AS VQty, SUM(HQty) AS HQty FROM (
+				SELECT U.Name, COUNT(*) AS TQty, 0 AS VQty, 0 AS HQty
+				FROM Student_TeleVisitRecord R 
+				INNER JOIN Sys_User U ON R.VisitorId=U.Id
+				WHERE Time BETWEEN '@StartTime' AND '@EndTime'
+				GROUP BY U.Name
+				UNION ALL
+				SELECT U.Name, 0 AS TQty, COUNT(*) AS VQty, 0 AS HQty
+				FROM Student_VisitRecord R 
+				INNER JOIN Sys_User U ON R.VisitorId=U.Id
+				WHERE Time BETWEEN '@StartTime' AND '@EndTime'
+				GROUP BY U.Name
+				UNION ALL
+				SELECT U.Name, 0 AS TQty, 0 AS VQty, COUNT(*) AS HQty
+				FROM Student_HomeVisitRecord R 
+				INNER JOIN Sys_User U ON R.Visitors LIKE '%' + U.Name + '%'
+				WHERE Time BETWEEN '@StartTime' AND '@EndTime'
+				GROUP BY U.Name
+				
+				) A
+				GROUP BY Name
+				ORDER BY SUM(TQty)+SUM(VQty) DESC			
+			");
+
 			sb.Replace("@StartTime", (startTime == null) ? "2000-1-1" : String.Format("{0:d}", startTime));
 			sb.Replace("@EndTime", (endTime == null) ? "3000-1-1" : String.Format("{0:d}", endTime));
 
@@ -1530,7 +1556,8 @@ ORDER BY TeleQty, VisitQty, VisitQty2, ReviewTQty, ReviewVQty, HomeQty, ReviewHQ
 					m.Add(new StudentVisitSummaryReportItem {
 						TeacherName = ir["Name"].ToStr(),
 						TeleQty = ir["TQty"].ToInt(),
-						VisitQty = ir["VQty"].ToInt()
+						VisitQty = ir["VQty"].ToInt(),
+						HomeQty=ir["HQty"].ToInt()
 					});
 				}
 			}

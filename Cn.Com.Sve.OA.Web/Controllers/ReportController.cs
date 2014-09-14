@@ -214,7 +214,7 @@ namespace Cn.Com.Sve.OA.Web.Controllers {
 			var r = this.Service.GetStudentVisitSummaryReportByTeacher(c.BeginTime, c.EndTime);
 			m.Total = r.Count;
 			foreach (var o in r) {
-				m.Rows.Add(new { TeacherName = o.TeacherName,TeleQty = o.TeleQty, VisitQty = o.VisitQty });
+				m.Rows.Add(new { TeacherName = o.TeacherName,TeleQty = o.TeleQty, VisitQty = o.VisitQty, HomeQty=o.HomeQty });
 			}
 			return this.Json(m, JsonRequestBehavior.AllowGet);
 		}

@@ -263,6 +263,7 @@
             $("#f_add_NextTeleSalesTime").ligerDateEditor({showTime:true, initValue:'@(Model.Customer.NextTeleSalesTime==null ? "" : Model.Customer.NextTeleSalesTime.Value.ToString("yyyy-MM-dd HH:mm"))'});
             $("#frmAddLog").ligerForm();
             $("#btnAddLog").click(function () {
+                $("#btnAddLog").hide();
                 if(action=='add'){
                     $.post('@Url.Action("Add","TelSaleLog")', $("#frmAddLog").serialize(),
                         function (result) {
@@ -274,6 +275,7 @@
                             }else{
                                 LG.showError(result.Message);
                             }
+                            $("#btnAddLog").show();
                         }
                     );
                 } else {
@@ -285,6 +287,7 @@
                             }else{
                                 LG.showError(result.Message);
                             }
+                            $("#btnAddLog").show();
                         }
                     );
                 }

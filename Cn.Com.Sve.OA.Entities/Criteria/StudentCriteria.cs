@@ -10,6 +10,9 @@ namespace Cn.Com.Sve.OA.Entities.Criteria {
 		public string AddrZoneSrh { get; set; }
 		public string GruduateSchoolNameSrh { get; set; }
 		public string SemesterSrh { get; set; }
+		public string ContactWay { get; set; }
+		// 是否导出
+		public bool Export { get; set; }
 
 	}
 }

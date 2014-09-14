@@ -58,12 +58,26 @@ namespace Cn.Com.Sve.OA.Web.Controllers {
 
 		public ActionResult Suggest(string prefix, int qty) {
 			List<object> m = new List<object>();
-			var r = this.Service.FindByCriteria(new ClazzCriteria { NameSrh = prefix, pagesize = qty, sortname = "name", sortorder = "asc" });
+			var r = this.Service.FindByCriteria2(new ClazzCriteria { NameSrh = prefix, pagesize = qty, sortname = "name", sortorder = "asc" });
 			r.Data.ForEach(o => {
 				m.Add(new { Id = o.Id, Name = o.Name });
 			});
 			return this.Json(m, JsonRequestBehavior.AllowGet);
 		}
+
+		public ActionResult GetData2(ClazzCriteria c) {
+			var m = new LigerGridModel();
+			this.BeforeGetData(c);
+			var r = this.Service.FindByCriteria2(c);
+			this.AfterGetData(m, c, r);
+			m.Total = r.RecordCount;
+			r.Data.ForEach(o => {
+				this.AddRowToGridModel(m, o);
+			});
+			this.AfterBuildGridModel(m, c, r);
+			return this.Json(m, JsonRequestBehavior.AllowGet);
+		}
+
 
 	}
 }

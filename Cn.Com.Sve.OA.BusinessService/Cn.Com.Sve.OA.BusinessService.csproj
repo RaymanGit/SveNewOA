@@ -136,6 +136,7 @@
     <Compile Include="CityService.partial.cs">
       <DependentUpon>BusinessService.tt</DependentUpon>
     </Compile>
+    <Compile Include="ClazzService.cs" />
     <Compile Include="ClazzService.partial.cs">
       <DependentUpon>BusinessService.tt</DependentUpon>
     </Compile>

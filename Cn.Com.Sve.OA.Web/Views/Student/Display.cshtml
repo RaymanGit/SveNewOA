@@ -119,9 +119,8 @@
                 <td>费用来源</td>
                 <td>@this.Model.FeeSource</td>
                 <td>信息来源</td>
-                <td>@(this.Model.InfoSourceSmall!=null?this.Model.InfoSourceSmall.FullName:"")</td>
-                <td>咨询老师</td>
-                <td>@this.Model.Consultants</td>
+                <td colspan="3">@(this.Model.InfoSourceSmall!=null?this.Model.InfoSourceSmall.FullName:"")</td>
+
             </tr>
             <tr>
                 <td width="60px">QQ号</td>
@@ -337,8 +336,10 @@
             <tr>
                 <td align="center" colspan="2">是否与学院老师有关系</td>
                 <td align="center" colspan="2">@this.Model.HasRelTeacher</td>
-                <td align="center" colspan="2">关系人</td>
-                <td align="center" colspan="2">@this.Model.RelTeacher</td>
+                <td align="center">关系人</td>
+                <td align="center" >@this.Model.RelTeacher</td>
+                <td>咨询老师</td>
+                <td>@this.Model.Consultants</td>
             </tr>
             <tr>
                 <td align="center">家庭情况</td>
