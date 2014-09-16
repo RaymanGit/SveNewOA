@@ -72,6 +72,9 @@
     <Compile Include="Criteria\EmploymentCompanyContactCriteria.partial.cs">
       <DependentUpon>Criteria.tt</DependentUpon>
     </Compile>
+    <Compile Include="Criteria\EmploymentCompanyContactVisitLogCriteria.partial.cs">
+      <DependentUpon>Criteria.tt</DependentUpon>
+    </Compile>
     <Compile Include="Criteria\EmploymentCompanyCriteria.cs" />
     <Compile Include="Criteria\EmploymentCompanyCriteria.partial.cs">
       <DependentUpon>Criteria.tt</DependentUpon>
@@ -177,6 +180,9 @@
       <DependentUpon>OaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EmploymentCompanyContact.partial.cs">
+      <DependentUpon>OaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmploymentCompanyContactVisitLog.partial.cs">
       <DependentUpon>OaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Function.partial.cs">

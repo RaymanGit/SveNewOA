@@ -63,6 +63,9 @@ namespace Cn.Com.Sve.OA.Web.Controllers {
 		}
 		public ActionResult Display(int id) {
 			var m = this.Service.FindById(id);
+			var vService = new EmploymentCompanyContactVisitLogService(new SysContext { CurrentUser = AppContext.CurrentUser });
+			this.ViewBag.VisitLogs = vService.FindByCompanyId(id).OrderByDescending(o=>o.Time).ToList();
+			this.ViewBag.CurrentUser = AppContext.CurrentUser;
 			return this.View(m);
 		}
 

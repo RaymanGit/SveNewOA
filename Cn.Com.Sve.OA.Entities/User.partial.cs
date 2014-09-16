@@ -768,6 +768,38 @@ namespace Cn.Com.Sve.OA.Entities
             }
         }
         private ICollection<EmploymentCompany> _employment_Company;
+    
+        public virtual ICollection<EmploymentCompanyContactVisitLog> Employment_CompanyContact_VisitLog
+        {
+            get
+            {
+                if (_employment_CompanyContact_VisitLog == null)
+                {
+                    var newCollection = new FixupCollection<EmploymentCompanyContactVisitLog>();
+                    newCollection.CollectionChanged += FixupEmployment_CompanyContact_VisitLog;
+                    _employment_CompanyContact_VisitLog = newCollection;
+                }
+                return _employment_CompanyContact_VisitLog;
+            }
+            set
+            {
+                if (!ReferenceEquals(_employment_CompanyContact_VisitLog, value))
+                {
+                    var previousValue = _employment_CompanyContact_VisitLog as FixupCollection<EmploymentCompanyContactVisitLog>;
+                    if (previousValue != null)
+                    {
+                        previousValue.CollectionChanged -= FixupEmployment_CompanyContact_VisitLog;
+                    }
+                    _employment_CompanyContact_VisitLog = value;
+                    var newValue = value as FixupCollection<EmploymentCompanyContactVisitLog>;
+                    if (newValue != null)
+                    {
+                        newValue.CollectionChanged += FixupEmployment_CompanyContact_VisitLog;
+                    }
+                }
+            }
+        }
+        private ICollection<EmploymentCompanyContactVisitLog> _employment_CompanyContact_VisitLog;
 
         #endregion
 
@@ -1252,6 +1284,28 @@ namespace Cn.Com.Sve.OA.Entities
                     if (ReferenceEquals(item.User, this))
                     {
                         item.User = null;
+                    }
+                }
+            }
+        }
+    
+        private void FixupEmployment_CompanyContact_VisitLog(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (EmploymentCompanyContactVisitLog item in e.NewItems)
+                {
+                    item.Visitor = this;
+                }
+            }
+    
+            if (e.OldItems != null)
+            {
+                foreach (EmploymentCompanyContactVisitLog item in e.OldItems)
+                {
+                    if (ReferenceEquals(item.Visitor, this))
+                    {
+                        item.Visitor = null;
                     }
                 }
             }

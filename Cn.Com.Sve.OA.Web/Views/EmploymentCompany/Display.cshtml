@@ -101,7 +101,12 @@
             }
         });
     }
-    function saveSchoolAd() {
+        function addVisitLog() {
+            var row = grd.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+            top.f_addTab('tab-add-employmentvisitlog-'+row.Id, '录入访谈记录', '@Url.Action("AddNew", "EmploymentCompanyContactVisitLog")' + '?contactId='+row.Id);
+        }
+        function saveSchoolAd() {
         if (action == "add") {
             $.post("@Url.Action("Add", "EmploymentCompanyContact")", $("#frmEditor").serialize(),
                 function (result) {
@@ -228,8 +233,10 @@
                     { line: true },
                     { text: '修改', icon: 'modify', click: editSchoolAd },
                     { line: true },
-                    { text: '删除', icon: 'delete', click: deleteSchoolAd }
-                    ]
+                    { text: '删除', icon: 'delete', click: deleteSchoolAd },
+                    { line: true },
+                    { text: '访谈', icon: 'add', click: addVisitLog }
+        ]
                 }
             });
             $.validator.addMethod(
@@ -480,70 +487,106 @@
     </div>
     <div id="grd">
     </div>
-    
-    <div id="dEditor" style="display: none;">
-        <form action="" method="post" id="frmEditor">
-            <input type="hidden" id="f_EmploymentCompanyContact_Id" name="Id" value="" />
-            <input name='CompanyId' type='hidden' id='f_EmploymentCompanyContact_CompanyId'  />
-            <input name='OldOaId' type='hidden' id='f_EmploymentCompanyContact_OldOaId'  />
-            <input name='OldOaCompanyId' type='hidden' id='f_EmploymentCompanyContact_OldOaCompanyId' />
-
-            <table cellpadding="0" cellspacing="0" class="l-table-edit">
-                <tr>
-                    <td class='l-table-edit-td' style='text-align:right;'>姓名</td>
-                    <td class='l-table-edit-td' style='text-align:left;width:160px'>
-                        <input name='Name' type='text' id='f_EmploymentCompanyContact_Name' ltype='text' />
-                    </td>
-                    <td style='text-align:left;'></td>
-                    <td class='l-table-edit-td' style='text-align:right;'>手机</td>
-                    <td class='l-table-edit-td' style='text-align:left;width:160px'>
-                        <input name='Mobile' type='text' id='f_EmploymentCompanyContact_Mobile' ltype='text' />
-                    </td>
-                    <td style='text-align:left;'></td>
-                </tr>
-
-                <tr>
-                    <td class='l-table-edit-td' style='text-align:right;'>职务</td>
-                    <td class='l-table-edit-td' style='text-align:left;width:160px'>
-                        <input name='Position' type='text' id='f_EmploymentCompanyContact_Position' ltype='text' />
-                    </td>
-                    <td style='text-align:left;'></td>
-                    <td class='l-table-edit-td' style='text-align:right;'>电话</td>
-                    <td class='l-table-edit-td' style='text-align:left;width:160px'>
-                        <input name='Telephone' type='text' id='f_EmploymentCompanyContact_Telephone' ltype='text' />
-                    </td>
-                    <td style='text-align:left;'></td>
-                </tr>
-
-                <tr>
-                    <td class='l-table-edit-td' style='text-align:right;'>QQ</td>
-                    <td class='l-table-edit-td' style='text-align:left;width:160px'>
-                        <input name='QQ' type='text' id='f_EmploymentCompanyContact_QQ' ltype='text' />
-                    </td>
-                    <td style='text-align:left;'></td>
-                    <td class='l-table-edit-td' style='text-align:right;'>电子邮箱</td>
-                    <td class='l-table-edit-td' style='text-align:left;width:160px'>
-                        <input name='Email' type='text' id='f_EmploymentCompanyContact_Email' ltype='text' />
-                    </td>
-                    <td style='text-align:left;'></td>
-                </tr>
-
-                <tr>
-                    <td class='l-table-edit-td' style='text-align:right;'>备注</td>
-                    <td class='l-table-edit-td' style='text-align:left;' colspan="4">
-                        <input name='Introduction' type='text' id='f_EmploymentCompanyContact_Introduction' ltype='text' />
-                    </td>
-                    <td style='text-align:left;'></td>
-                </tr>
-                <tr>
-                    <td colspan="3" style="text-align:center;">
-                        <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
-                        <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
-                    </td>
-                </tr>
-            </table>
-        </form>
+    <div class="searchtitle">
+        <span>访谈记录</span>
     </div>
-    
+    <div class="navline" style="margin-bottom: 4px; margin-top: 4px;">
+    </div>
+
+    <div style="width: 98%">
+        @{
+            var logs = (System.Collections.Generic.IEnumerable<Cn.Com.Sve.OA.Entities.EmploymentCompanyContactVisitLog>)this.ViewBag.VisitLogs;
+            var u = (Cn.Com.Sve.OA.Entities.User)this.ViewBag.CurrentUser;
+        }
+        @foreach (var l in logs) {
+            <table cellpadding="0" cellspacing="0" class="l-table-edit" style="width:100%" border="1">
+                <tr>
+                    <td class='l-table-edit-td'>访谈日期</td>
+                    <td class='l-table-edit-td'>@String.Format("{0:D}",l.Time)</td>
+                    <td class='l-table-edit-td'>访谈对象</td>
+                    <td class='l-table-edit-td'>@l.CompanyContact.Name</td>
+                    <td class='l-table-edit-td'>访谈人员</td>
+                    <td class='l-table-edit-td'>@l.Visitor.Name</td>
+                    <td class='l-table-edit-td'>访谈类型</td>
+                    <td class='l-table-edit-td'>@l.Type</td>
+               </tr>
+                <tr><td colspan="8" class='l-table-edit-td'>访谈内容：@l.Content</td></tr>
+                <tr><td colspan="8" class='l-table-edit-td'>
+                    @if (l.VisitorId.Equals(u.Id)) {
+                        @Html.ActionLink("编辑", "EditSync", "EmploymentCompanyContactVisitLog", new {id=l.Id },null)
+                        @Html.Raw("&nbsp;")
+                        @Html.ActionLink("删除", "DeleteSync", "EmploymentCompanyContactVisitLog", new {id=l.Id },null)
+                        
+                    }
+                </td></tr>
+            </table>
+
+        }
+    </div>
+
+        <div id="dEditor" style="display: none;">
+            <form action="" method="post" id="frmEditor">
+                <input type="hidden" id="f_EmploymentCompanyContact_Id" name="Id" value="" />
+                <input name='CompanyId' type='hidden' id='f_EmploymentCompanyContact_CompanyId' />
+                <input name='OldOaId' type='hidden' id='f_EmploymentCompanyContact_OldOaId' />
+                <input name='OldOaCompanyId' type='hidden' id='f_EmploymentCompanyContact_OldOaCompanyId' />
+
+                <table cellpadding="0" cellspacing="0" class="l-table-edit">
+                    <tr>
+                        <td class='l-table-edit-td' style='text-align:right;'>姓名</td>
+                        <td class='l-table-edit-td' style='text-align:left;width:160px'>
+                            <input name='Name' type='text' id='f_EmploymentCompanyContact_Name' ltype='text' />
+                        </td>
+                        <td style='text-align:left;'></td>
+                        <td class='l-table-edit-td' style='text-align:right;'>手机</td>
+                        <td class='l-table-edit-td' style='text-align:left;width:160px'>
+                            <input name='Mobile' type='text' id='f_EmploymentCompanyContact_Mobile' ltype='text' />
+                        </td>
+                        <td style='text-align:left;'></td>
+                    </tr>
+
+                    <tr>
+                        <td class='l-table-edit-td' style='text-align:right;'>职务</td>
+                        <td class='l-table-edit-td' style='text-align:left;width:160px'>
+                            <input name='Position' type='text' id='f_EmploymentCompanyContact_Position' ltype='text' />
+                        </td>
+                        <td style='text-align:left;'></td>
+                        <td class='l-table-edit-td' style='text-align:right;'>电话</td>
+                        <td class='l-table-edit-td' style='text-align:left;width:160px'>
+                            <input name='Telephone' type='text' id='f_EmploymentCompanyContact_Telephone' ltype='text' />
+                        </td>
+                        <td style='text-align:left;'></td>
+                    </tr>
+
+                    <tr>
+                        <td class='l-table-edit-td' style='text-align:right;'>QQ</td>
+                        <td class='l-table-edit-td' style='text-align:left;width:160px'>
+                            <input name='QQ' type='text' id='f_EmploymentCompanyContact_QQ' ltype='text' />
+                        </td>
+                        <td style='text-align:left;'></td>
+                        <td class='l-table-edit-td' style='text-align:right;'>电子邮箱</td>
+                        <td class='l-table-edit-td' style='text-align:left;width:160px'>
+                            <input name='Email' type='text' id='f_EmploymentCompanyContact_Email' ltype='text' />
+                        </td>
+                        <td style='text-align:left;'></td>
+                    </tr>
+
+                    <tr>
+                        <td class='l-table-edit-td' style='text-align:right;'>备注</td>
+                        <td class='l-table-edit-td' style='text-align:left;' colspan="4">
+                            <input name='Introduction' type='text' id='f_EmploymentCompanyContact_Introduction' ltype='text' />
+                        </td>
+                        <td style='text-align:left;'></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align:center;">
+                            <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                            <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
 </body>
 </html>

@@ -124,6 +124,10 @@
     <Compile Include="EmploymentCompanyContactRepository.partial.cs">
       <DependentUpon>Repository.tt</DependentUpon>
     </Compile>
+    <Compile Include="EmploymentCompanyContactVisitLogRepository.cs" />
+    <Compile Include="EmploymentCompanyContactVisitLogRepository.partial.cs">
+      <DependentUpon>Repository.tt</DependentUpon>
+    </Compile>
     <Compile Include="EmploymentCompanyRepository.cs" />
     <Compile Include="EmploymentCompanyRepository.partial.cs">
       <DependentUpon>Repository.tt</DependentUpon>
@@ -148,6 +152,9 @@
       <DependentUpon>RepositoryInterface.tt</DependentUpon>
     </Compile>
     <Compile Include="IEmploymentCompanyContactRepository.partial.cs">
+      <DependentUpon>RepositoryInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IEmploymentCompanyContactVisitLogRepository.partial.cs">
       <DependentUpon>RepositoryInterface.tt</DependentUpon>
     </Compile>
     <Compile Include="IEmploymentCompanyRepository.partial.cs">

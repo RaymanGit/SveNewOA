@@ -245,6 +245,12 @@ namespace Cn.Com.Sve.OA.Entities
             get { return _employmentCompanyContacts  ?? (_employmentCompanyContacts = CreateObjectSet<EmploymentCompanyContact>("EmploymentCompanyContacts")); }
         }
         private ObjectSet<EmploymentCompanyContact> _employmentCompanyContacts;
+    
+        public ObjectSet<EmploymentCompanyContactVisitLog> EmploymentCompanyContactVisitLogs
+        {
+            get { return _employmentCompanyContactVisitLogs  ?? (_employmentCompanyContactVisitLogs = CreateObjectSet<EmploymentCompanyContactVisitLog>("EmploymentCompanyContactVisitLogs")); }
+        }
+        private ObjectSet<EmploymentCompanyContactVisitLog> _employmentCompanyContactVisitLogs;
 
         #endregion
 

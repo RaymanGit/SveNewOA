@@ -122,6 +122,17 @@
           <Property Name="OldOaId" Type="nvarchar" MaxLength="50" />
           <Property Name="OldOaCompanyId" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="Employment_CompanyContact_VisitLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyContactId" Type="int" Nullable="false" />
+          <Property Name="Time" Type="datetime" Nullable="false" />
+          <Property Name="VisitorId" Type="int" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Content" Type="ntext" Nullable="false" />
+        </EntityType>
         <EntityType Name="HuWai_SchoolAd">
           <Key>
             <PropertyRef Name="Id" />
@@ -857,6 +868,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Employment_CompanyContact_VisitLog_Employment_CompanyContact">
+          <End Role="Employment_CompanyContact" Type="Self.Employment_CompanyContact" Multiplicity="1" />
+          <End Role="Employment_CompanyContact_VisitLog" Type="Self.Employment_CompanyContact_VisitLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employment_CompanyContact">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employment_CompanyContact_VisitLog">
+              <PropertyRef Name="CompanyContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employment_CompanyContact_VisitLog_Sys_User">
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="1" />
+          <End Role="Employment_CompanyContact_VisitLog" Type="Self.Employment_CompanyContact_VisitLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sys_User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employment_CompanyContact_VisitLog">
+              <PropertyRef Name="VisitorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_HuWai_SchoolAd_BaseInfo_School">
           <End Role="BaseInfo_School" Type="Self.BaseInfo_School" Multiplicity="1" />
           <End Role="HuWai_SchoolAd" Type="Self.HuWai_SchoolAd" Multiplicity="*" />
@@ -1313,6 +1348,7 @@
           <EntitySet Name="Common_Knowledge" EntityType="Self.Common_Knowledge" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employment_Company" EntityType="Self.Employment_Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employment_CompanyContact" EntityType="Self.Employment_CompanyContact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employment_CompanyContact_VisitLog" EntityType="Self.Employment_CompanyContact_VisitLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HuWai_SchoolAd" EntityType="Self.HuWai_SchoolAd" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HuWai_SchoolContact" EntityType="Self.HuWai_SchoolContact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Marketing_Customer" EntityType="Self.Marketing_Customer" Schema="dbo" store:Type="Tables" />
@@ -1401,6 +1437,14 @@
           <AssociationSet Name="FK_Employment_CompanyContact_Employment_Company" Association="Self.FK_Employment_CompanyContact_Employment_Company">
             <End Role="Employment_Company" EntitySet="Employment_Company" />
             <End Role="Employment_CompanyContact" EntitySet="Employment_CompanyContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employment_CompanyContact_VisitLog_Employment_CompanyContact" Association="Self.FK_Employment_CompanyContact_VisitLog_Employment_CompanyContact">
+            <End Role="Employment_CompanyContact" EntitySet="Employment_CompanyContact" />
+            <End Role="Employment_CompanyContact_VisitLog" EntitySet="Employment_CompanyContact_VisitLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employment_CompanyContact_VisitLog_Sys_User" Association="Self.FK_Employment_CompanyContact_VisitLog_Sys_User">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Employment_CompanyContact_VisitLog" EntitySet="Employment_CompanyContact_VisitLog" />
           </AssociationSet>
           <AssociationSet Name="FK_HuWai_SchoolAd_BaseInfo_School" Association="Self.FK_HuWai_SchoolAd_BaseInfo_School">
             <End Role="BaseInfo_School" EntitySet="BaseInfo_School" />
@@ -1826,6 +1870,15 @@
             <End Role="Employment_Company" EntitySet="EmploymentCompanies" />
             <End Role="Employment_CompanyContact" EntitySet="EmploymentCompanyContacts" />
           </AssociationSet>
+          <EntitySet Name="EmploymentCompanyContactVisitLogs" EntityType="Cn.Com.Sve.OA.Entities.EmploymentCompanyContactVisitLog" />
+          <AssociationSet Name="FK_Employment_CompanyContact_VisitLog_Employment_CompanyContact" Association="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_VisitLog_Employment_CompanyContact">
+            <End Role="EmploymentCompanyContact" EntitySet="EmploymentCompanyContacts" />
+            <End Role="Employment_CompanyContact_VisitLog" EntitySet="EmploymentCompanyContactVisitLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employment_CompanyContact_VisitLog_Sys_User" Association="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_VisitLog_Sys_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Employment_CompanyContact_VisitLog" EntitySet="EmploymentCompanyContactVisitLogs" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="City">
           <Key>
@@ -1962,6 +2015,7 @@
           <NavigationProperty Name="Student_HomeVisitRecord" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_HomeVisitRecord_Sys_User" FromRole="User" ToRole="Student_HomeVisitRecord" />
           <NavigationProperty Name="Student_HomeVisitRecord_1" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_HomeVisitRecord_Input" FromRole="User" ToRole="StudentHomeVisitRecord" />
           <NavigationProperty Name="Employment_Company" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_Company_Sys_User" FromRole="User" ToRole="Employment_Company" />
+          <NavigationProperty Name="Employment_CompanyContact_VisitLog" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_VisitLog_Sys_User" FromRole="User" ToRole="Employment_CompanyContact_VisitLog" />
           </EntityType>
         <EntityType Name="Module">
           <Key>
@@ -3276,6 +3330,7 @@
           <Property Name="OldOaId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="OldOaCompanyId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Company" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_Employment_Company" FromRole="Employment_CompanyContact" ToRole="Employment_Company" />
+          <NavigationProperty Name="Employment_CompanyContact_VisitLog" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_VisitLog_Employment_CompanyContact" FromRole="EmploymentCompanyContact" ToRole="Employment_CompanyContact_VisitLog" />
         </EntityType>
         <Association Name="FK_Employment_Company_BaseInfo_City">
           <End Type="Cn.Com.Sve.OA.Entities.City" Role="City" Multiplicity="0..1" />
@@ -3310,6 +3365,43 @@
             </Principal>
             <Dependent Role="Employment_CompanyContact">
               <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EmploymentCompanyContactVisitLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyContactId" Type="Int32" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="VisitorId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CompanyContact" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_VisitLog_Employment_CompanyContact" FromRole="Employment_CompanyContact_VisitLog" ToRole="EmploymentCompanyContact" />
+          <NavigationProperty Name="Visitor" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_VisitLog_Sys_User" FromRole="Employment_CompanyContact_VisitLog" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Employment_CompanyContact_VisitLog_Employment_CompanyContact">
+          <End Type="Cn.Com.Sve.OA.Entities.EmploymentCompanyContact" Role="EmploymentCompanyContact" Multiplicity="1" />
+          <End Type="Cn.Com.Sve.OA.Entities.EmploymentCompanyContactVisitLog" Role="Employment_CompanyContact_VisitLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmploymentCompanyContact">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employment_CompanyContact_VisitLog">
+              <PropertyRef Name="CompanyContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employment_CompanyContact_VisitLog_Sys_User">
+          <End Type="Cn.Com.Sve.OA.Entities.User" Role="User" Multiplicity="1" />
+          <End Type="Cn.Com.Sve.OA.Entities.EmploymentCompanyContactVisitLog" Role="Employment_CompanyContact_VisitLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employment_CompanyContact_VisitLog">
+              <PropertyRef Name="VisitorId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3997,6 +4089,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="EmploymentCompanyContactVisitLogs">
+            <EntityTypeMapping TypeName="Cn.Com.Sve.OA.Entities.EmploymentCompanyContactVisitLog">
+              <MappingFragment StoreEntitySet="Employment_CompanyContact_VisitLog">
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="VisitorId" ColumnName="VisitorId" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="CompanyContactId" ColumnName="CompanyContactId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -4562,6 +4666,9 @@
         <AssociationConnector Association="Cn.Com.Sve.OA.Entities.FK_Employment_Company_BaseInfo_City" />
         <AssociationConnector Association="Cn.Com.Sve.OA.Entities.FK_Employment_Company_Sys_User" />
         <AssociationConnector Association="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_Employment_Company" />
+        <EntityTypeShape EntityType="Cn.Com.Sve.OA.Entities.EmploymentCompanyContactVisitLog" Width="2.5" PointX="26.875" PointY="0.875" />
+        <AssociationConnector Association="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_VisitLog_Employment_CompanyContact" />
+        <AssociationConnector Association="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_VisitLog_Sys_User" />
         </Diagram>
     </Diagrams>
   </Designer>
