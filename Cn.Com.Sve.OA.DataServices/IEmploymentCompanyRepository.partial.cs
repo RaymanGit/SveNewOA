@@ -26,6 +26,7 @@ namespace Cn.Com.Sve.OA.DataServices {
     	IEnumerable<EmploymentCompany> FindByTempProvName(string tempProvName);
     	IEnumerable<EmploymentCompany> FindByTempCityId(string tempCityId);
     	IEnumerable<EmploymentCompany> FindByTempCityName(string tempCityName);
+    	IEnumerable<EmploymentCompany> FindByAddTime(Nullable<System.DateTime> addTime);
     	IEnumerable<EmploymentCompany> FindByCriteria(EmploymentCompanyCriteria c);
     }
 }

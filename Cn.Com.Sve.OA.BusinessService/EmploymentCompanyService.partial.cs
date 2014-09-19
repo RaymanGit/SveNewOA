@@ -119,6 +119,9 @@ namespace Cn.Com.Sve.OA.BusinessService {
     	public List<EmploymentCompany> FindByTempCityName(string tempCityName){
     		return this.Repository.FindByTempCityName(tempCityName).ToList();
     	}
+    	public List<EmploymentCompany> FindByAddTime(Nullable<System.DateTime> addTime){
+    		return this.Repository.FindByAddTime(addTime).ToList();
+    	}
     	public PagedModel<EmploymentCompany> FindByCriteria(EmploymentCompanyCriteria c) {
     		PagedModel<EmploymentCompany> m = new PagedModel<EmploymentCompany>();
     		var r = this.Repository.FindByCriteria(c);
@@ -254,6 +257,13 @@ namespace Cn.Com.Sve.OA.BusinessService {
     				r = r.OrderBy(o=>o.TempCityName);
     			}else{
     				r = r.OrderByDescending(o=>o.TempCityName);
+    			}
+    		}
+    		if(c.sortname.ToLower().Equals("addtime")){
+    			if(c.sortorder.ToLower().Equals("asc")){
+    				r = r.OrderBy(o=>o.AddTime);
+    			}else{
+    				r = r.OrderByDescending(o=>o.AddTime);
     			}
     		}
     		

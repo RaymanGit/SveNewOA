@@ -39,5 +39,8 @@ namespace Cn.Com.Sve.OA.Entities.Criteria {
     	public string TempProvNameSrh { get; set;}
     	public string TempCityIdSrh { get; set;}
     	public string TempCityNameSrh { get; set;}
+    	public Nullable<System.DateTime> AddTimeSrh { get; set;}
+    	public Nullable<System.DateTime> AddTimeFromSrh { get; set;}
+    	public Nullable<System.DateTime> AddTimeToSrh { get; set;}
     }
 }

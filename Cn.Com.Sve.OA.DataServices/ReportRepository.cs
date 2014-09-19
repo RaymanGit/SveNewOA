@@ -34,6 +34,8 @@ namespace Cn.Com.Sve.OA.DataServices {
 		List<SalesTeamSummaryReport> GetSignUpSummaryReportBySalesTeamAndSchool(int year, int teamId);
 		List<SignUpRankingListItem> GetSignUpRankingList(DateTime startTime, DateTime endTime, string orderBy, string rankBy);
 		List<StudentVisitSummaryReportItem> GetStudentVisitSummaryReportByTeacher(DateTime? startTime, DateTime? endTime);
+		List<EmploymentVisitReviewReprtItem> GetEmploymentVisitReviewReprt(DateTime? startTime, DateTime? endTime);
+		List<NewEmployeeCompanyReportItem> GetNewEmployeeCompanyReport(DateTime? startTime, DateTime? endTime);
 	}
 	public class ReportRepository : IReportRepository {
 		// 三访统计 - 按班级
@@ -1564,5 +1566,71 @@ ORDER BY TeleQty, VisitQty, VisitQty2, ReviewTQty, ReviewVQty, HomeQty, ReviewHQ
 
 			return m;
 		}
+	
+		// 就业访谈报表
+		public List<EmploymentVisitReviewReprtItem> GetEmploymentVisitReviewReprt(DateTime? startTime, DateTime? endTime) {
+			StringBuilder sb = new StringBuilder();
+			var m = new List<EmploymentVisitReviewReprtItem>();
+			var db = DatabaseFactory.CreateDatabase();
+			
+			sb.Append(@"
+				SELECT VisitorId, U.Name AS VisitorName, SUM(EQty) AS EQty, SUM(SQty) AS SQty FROM (
+				SELECT VisitorId, COUNT(Id) AS EQty, 0 AS SQty FROM Employment_CompanyContact_VisitLog 
+				WHERE [Time] BETWEEN '@StartDate' AND '@EndDate'
+				GROUP BY VisitorId
+				UNION ALL
+				SELECT VisitorId, 0 AS EQty, COUNT(Id) AS SQty FROM Employment_Student_VisitLog 
+				WHERE [Time] BETWEEN '@StartDate' AND '@EndDate'
+				GROUP BY VisitorId
+				) A INNER JOIN Sys_User U ON A.VisitorId=U.Id
+				GROUP BY A.VisitorId, U.Name
+				ORDER BY SUM(EQty)+SUM(SQty)
+			");
+
+			sb.Replace("@StartDate", (startTime == null) ? "2000-1-1" : String.Format("{0:d}", startTime));
+			sb.Replace("@EndDate", (endTime == null) ? "3000-1-1" : String.Format("{0:d}", endTime));
+
+			using (var ir = db.ExecuteReader(CommandType.Text, sb.ToString())) {
+				while (ir.Read()) {
+					m.Add(new EmploymentVisitReviewReprtItem {
+						VisitorId = ir["VisitorId"].ToInt(),
+						VisitorName = ir["VisitorName"].ToStr(),
+						EQty = ir["EQty"].ToInt(),
+						SQty = ir["SQty"].ToInt()
+					});
+				}
+			}
+
+			return m;
+		}
+		// 就业新增企业报表
+		public List<NewEmployeeCompanyReportItem> GetNewEmployeeCompanyReport(DateTime? startTime, DateTime? endTime) {
+			StringBuilder sb = new StringBuilder();
+			var m = new List<NewEmployeeCompanyReportItem>();
+			var db = DatabaseFactory.CreateDatabase();
+			
+			sb.Append(@"
+				SELECT C.Name, C.[Address], U.Id AS TeacherId, U.Name AS TeacherName
+				FROM Employment_Company C LEFT JOIN Sys_User U ON C.UserId=U.Id
+				WHERE ISNULL(C.AddTime,'1900-1-1') BETWEEN '@StartDate' AND '@EndDate'
+			");
+
+			sb.Replace("@StartDate", (startTime == null) ? "2000-1-1" : String.Format("{0:d}", startTime));
+			sb.Replace("@EndDate", (endTime == null) ? "3000-1-1" : String.Format("{0:d}", endTime));
+
+			using (var ir = db.ExecuteReader(CommandType.Text, sb.ToString())) {
+				while (ir.Read()) {
+					m.Add(new NewEmployeeCompanyReportItem {
+						TeacherId = ir["TeacherId"].ToInt(),
+						TeacherName = ir["TeacherName"].ToStr(),
+						Name = ir["Name"].ToStr(),
+						Address = ir["Address"].ToStr()
+					});
+				}
+			}
+
+			return m;
+		}
+		
 	}
 }

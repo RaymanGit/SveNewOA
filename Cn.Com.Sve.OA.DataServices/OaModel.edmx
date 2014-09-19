@@ -105,6 +105,7 @@
           <Property Name="TempProvName" Type="nvarchar" MaxLength="50" />
           <Property Name="TempCityId" Type="nvarchar" MaxLength="50" />
           <Property Name="TempCityName" Type="nvarchar" MaxLength="50" />
+          <Property Name="AddTime" Type="datetime" />
         </EntityType>
         <EntityType Name="Employment_CompanyContact">
           <Key>
@@ -132,6 +133,18 @@
           <Property Name="VisitorId" Type="int" Nullable="false" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Content" Type="ntext" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employment_Student_VisitLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="VisitorId" Type="int" Nullable="false" />
+          <Property Name="Time" Type="datetime" Nullable="false" />
+          <Property Name="Position" Type="nvarchar" MaxLength="50" />
+          <Property Name="Objective" Type="nvarchar" MaxLength="50" />
+          <Property Name="Content" Type="ntext" />
         </EntityType>
         <EntityType Name="HuWai_SchoolAd">
           <Key>
@@ -892,6 +905,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Employment_Student_VisitLog_Student_File">
+          <End Role="Student_File" Type="Self.Student_File" Multiplicity="1" />
+          <End Role="Employment_Student_VisitLog" Type="Self.Employment_Student_VisitLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student_File">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employment_Student_VisitLog">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employment_Student_VisitLog_Sys_User">
+          <End Role="Sys_User" Type="Self.Sys_User" Multiplicity="1" />
+          <End Role="Employment_Student_VisitLog" Type="Self.Employment_Student_VisitLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sys_User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employment_Student_VisitLog">
+              <PropertyRef Name="VisitorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_HuWai_SchoolAd_BaseInfo_School">
           <End Role="BaseInfo_School" Type="Self.BaseInfo_School" Multiplicity="1" />
           <End Role="HuWai_SchoolAd" Type="Self.HuWai_SchoolAd" Multiplicity="*" />
@@ -1349,6 +1386,7 @@
           <EntitySet Name="Employment_Company" EntityType="Self.Employment_Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employment_CompanyContact" EntityType="Self.Employment_CompanyContact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employment_CompanyContact_VisitLog" EntityType="Self.Employment_CompanyContact_VisitLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employment_Student_VisitLog" EntityType="Self.Employment_Student_VisitLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HuWai_SchoolAd" EntityType="Self.HuWai_SchoolAd" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HuWai_SchoolContact" EntityType="Self.HuWai_SchoolContact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Marketing_Customer" EntityType="Self.Marketing_Customer" Schema="dbo" store:Type="Tables" />
@@ -1445,6 +1483,14 @@
           <AssociationSet Name="FK_Employment_CompanyContact_VisitLog_Sys_User" Association="Self.FK_Employment_CompanyContact_VisitLog_Sys_User">
             <End Role="Sys_User" EntitySet="Sys_User" />
             <End Role="Employment_CompanyContact_VisitLog" EntitySet="Employment_CompanyContact_VisitLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employment_Student_VisitLog_Student_File" Association="Self.FK_Employment_Student_VisitLog_Student_File">
+            <End Role="Student_File" EntitySet="Student_File" />
+            <End Role="Employment_Student_VisitLog" EntitySet="Employment_Student_VisitLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employment_Student_VisitLog_Sys_User" Association="Self.FK_Employment_Student_VisitLog_Sys_User">
+            <End Role="Sys_User" EntitySet="Sys_User" />
+            <End Role="Employment_Student_VisitLog" EntitySet="Employment_Student_VisitLog" />
           </AssociationSet>
           <AssociationSet Name="FK_HuWai_SchoolAd_BaseInfo_School" Association="Self.FK_HuWai_SchoolAd_BaseInfo_School">
             <End Role="BaseInfo_School" EntitySet="BaseInfo_School" />
@@ -1879,6 +1925,15 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Employment_CompanyContact_VisitLog" EntitySet="EmploymentCompanyContactVisitLogs" />
           </AssociationSet>
+          <EntitySet Name="EmploymentStudentVisitLogs" EntityType="Cn.Com.Sve.OA.Entities.EmploymentStudentVisitLog" />
+          <AssociationSet Name="FK_Employment_Student_VisitLog_Student_File" Association="Cn.Com.Sve.OA.Entities.FK_Employment_Student_VisitLog_Student_File">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Employment_Student_VisitLog" EntitySet="EmploymentStudentVisitLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employment_Student_VisitLog_Sys_User" Association="Cn.Com.Sve.OA.Entities.FK_Employment_Student_VisitLog_Sys_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Employment_Student_VisitLog" EntitySet="EmploymentStudentVisitLogs" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="City">
           <Key>
@@ -2016,6 +2071,7 @@
           <NavigationProperty Name="Student_HomeVisitRecord_1" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_HomeVisitRecord_Input" FromRole="User" ToRole="StudentHomeVisitRecord" />
           <NavigationProperty Name="Employment_Company" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_Company_Sys_User" FromRole="User" ToRole="Employment_Company" />
           <NavigationProperty Name="Employment_CompanyContact_VisitLog" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_VisitLog_Sys_User" FromRole="User" ToRole="Employment_CompanyContact_VisitLog" />
+          <NavigationProperty Name="EmploymentStudentVisitLogs" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_Student_VisitLog_Sys_User" FromRole="User" ToRole="Employment_Student_VisitLog" />
           </EntityType>
         <EntityType Name="Module">
           <Key>
@@ -2606,6 +2662,7 @@
           <NavigationProperty Name="VisitRecords" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_VisitRecord_Student_File" FromRole="Student" ToRole="Student_VisitRecord" />
           <NavigationProperty Name="HomeVisitRecords" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_HomeVisitRecord_Student_File" FromRole="Student" ToRole="Student_HomeVisitRecord" />
           <NavigationProperty Name="ChangeClazzLogs" Relationship="Cn.Com.Sve.OA.Entities.FK_Student_ChangeClazzLog_Student_File" FromRole="Student" ToRole="Student_ChangeClazzLog" />
+          <NavigationProperty Name="Employment_VisitLog" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_Student_VisitLog_Student_File" FromRole="Student" ToRole="Employment_Student_VisitLog" />
         </EntityType>
         <Association Name="FK_Student_File_BaseInfo_District">
           <End Type="Cn.Com.Sve.OA.Entities.District" Role="District" Multiplicity="0..1" />
@@ -3313,6 +3370,7 @@
           <NavigationProperty Name="City" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_Company_BaseInfo_City" FromRole="Employment_Company" ToRole="City" />
           <NavigationProperty Name="User" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_Company_Sys_User" FromRole="Employment_Company" ToRole="User" />
           <NavigationProperty Name="Contact" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_Employment_Company" FromRole="Employment_Company" ToRole="Employment_CompanyContact" />
+          <Property Name="AddTime" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="EmploymentCompanyContact">
           <Key>
@@ -3401,6 +3459,44 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Employment_CompanyContact_VisitLog">
+              <PropertyRef Name="VisitorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EmploymentStudentVisitLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="VisitorId" Type="Int32" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Objective" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Student" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_Student_VisitLog_Student_File" FromRole="Employment_Student_VisitLog" ToRole="Student" />
+          <NavigationProperty Name="Visitor" Relationship="Cn.Com.Sve.OA.Entities.FK_Employment_Student_VisitLog_Sys_User" FromRole="Employment_Student_VisitLog" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Employment_Student_VisitLog_Student_File">
+          <End Type="Cn.Com.Sve.OA.Entities.Student" Role="Student" Multiplicity="1" />
+          <End Type="Cn.Com.Sve.OA.Entities.EmploymentStudentVisitLog" Role="Employment_Student_VisitLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employment_Student_VisitLog">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employment_Student_VisitLog_Sys_User">
+          <End Type="Cn.Com.Sve.OA.Entities.User" Role="User" Multiplicity="1" />
+          <End Type="Cn.Com.Sve.OA.Entities.EmploymentStudentVisitLog" Role="Employment_Student_VisitLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employment_Student_VisitLog">
               <PropertyRef Name="VisitorId" />
             </Dependent>
           </ReferentialConstraint>
@@ -4050,6 +4146,7 @@
           <EntitySetMapping Name="EmploymentCompanies">
             <EntityTypeMapping TypeName="Cn.Com.Sve.OA.Entities.EmploymentCompany">
               <MappingFragment StoreEntitySet="Employment_Company">
+                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
                 <ScalarProperty Name="TempCityName" ColumnName="TempCityName" />
                 <ScalarProperty Name="TempCityId" ColumnName="TempCityId" />
                 <ScalarProperty Name="TempProvName" ColumnName="TempProvName" />
@@ -4097,6 +4194,19 @@
                 <ScalarProperty Name="VisitorId" ColumnName="VisitorId" />
                 <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="CompanyContactId" ColumnName="CompanyContactId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmploymentStudentVisitLogs">
+            <EntityTypeMapping TypeName="Cn.Com.Sve.OA.Entities.EmploymentStudentVisitLog">
+              <MappingFragment StoreEntitySet="Employment_Student_VisitLog">
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Objective" ColumnName="Objective" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="VisitorId" ColumnName="VisitorId" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4669,6 +4779,9 @@
         <EntityTypeShape EntityType="Cn.Com.Sve.OA.Entities.EmploymentCompanyContactVisitLog" Width="2.5" PointX="26.875" PointY="0.875" />
         <AssociationConnector Association="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_VisitLog_Employment_CompanyContact" />
         <AssociationConnector Association="Cn.Com.Sve.OA.Entities.FK_Employment_CompanyContact_VisitLog_Sys_User" />
+        <EntityTypeShape EntityType="Cn.Com.Sve.OA.Entities.EmploymentStudentVisitLog" Width="2.25" PointX="14.75" PointY="6.875" />
+        <AssociationConnector Association="Cn.Com.Sve.OA.Entities.FK_Employment_Student_VisitLog_Student_File" />
+        <AssociationConnector Association="Cn.Com.Sve.OA.Entities.FK_Employment_Student_VisitLog_Sys_User" />
         </Diagram>
     </Diagrams>
   </Designer>

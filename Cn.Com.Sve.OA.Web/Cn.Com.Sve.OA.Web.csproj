@@ -223,6 +223,9 @@
     <Compile Include="Controllers\EmploymentCompanyController.partial.cs">
       <DependentUpon>Controllers.partial.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\EmploymentStudentVisitLogController.partial.cs">
+      <DependentUpon>Controllers.partial.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\FunctionController.partial.cs">
       <DependentUpon>Controllers.partial.tt</DependentUpon>
     </Compile>
@@ -333,6 +336,9 @@
       <DependentUpon>Controllers.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\TempCode\EmploymentCompanyControllerTemp.cs">
+      <DependentUpon>Controllers.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\TempCode\EmploymentStudentVisitLogControllerTemp.cs">
       <DependentUpon>Controllers.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\TempCode\FunctionControllerTemp.cs">
@@ -2270,6 +2276,11 @@
     </Content>
     <Content Include="Views\EmploymentCompanyContactVisitLog\AddNew.cshtml" />
     <Content Include="Views\EmploymentCompanyContactVisitLog\EditSync.cshtml" />
+    <Content Include="Views\TempCode\EmploymentStudentVisitLog-Index.cshtml">
+      <DependentUpon>IndexViews.tt</DependentUpon>
+    </Content>
+    <Content Include="Views\Report\EmploymentVisitReviewReprt.cshtml" />
+    <Content Include="Views\Report\NewEmployeeCompanyReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

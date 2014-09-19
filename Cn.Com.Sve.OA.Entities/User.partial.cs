@@ -800,6 +800,38 @@ namespace Cn.Com.Sve.OA.Entities
             }
         }
         private ICollection<EmploymentCompanyContactVisitLog> _employment_CompanyContact_VisitLog;
+    
+        public virtual ICollection<EmploymentStudentVisitLog> EmploymentStudentVisitLogs
+        {
+            get
+            {
+                if (_employmentStudentVisitLogs == null)
+                {
+                    var newCollection = new FixupCollection<EmploymentStudentVisitLog>();
+                    newCollection.CollectionChanged += FixupEmploymentStudentVisitLogs;
+                    _employmentStudentVisitLogs = newCollection;
+                }
+                return _employmentStudentVisitLogs;
+            }
+            set
+            {
+                if (!ReferenceEquals(_employmentStudentVisitLogs, value))
+                {
+                    var previousValue = _employmentStudentVisitLogs as FixupCollection<EmploymentStudentVisitLog>;
+                    if (previousValue != null)
+                    {
+                        previousValue.CollectionChanged -= FixupEmploymentStudentVisitLogs;
+                    }
+                    _employmentStudentVisitLogs = value;
+                    var newValue = value as FixupCollection<EmploymentStudentVisitLog>;
+                    if (newValue != null)
+                    {
+                        newValue.CollectionChanged += FixupEmploymentStudentVisitLogs;
+                    }
+                }
+            }
+        }
+        private ICollection<EmploymentStudentVisitLog> _employmentStudentVisitLogs;
 
         #endregion
 
@@ -1302,6 +1334,28 @@ namespace Cn.Com.Sve.OA.Entities
             if (e.OldItems != null)
             {
                 foreach (EmploymentCompanyContactVisitLog item in e.OldItems)
+                {
+                    if (ReferenceEquals(item.Visitor, this))
+                    {
+                        item.Visitor = null;
+                    }
+                }
+            }
+        }
+    
+        private void FixupEmploymentStudentVisitLogs(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (EmploymentStudentVisitLog item in e.NewItems)
+                {
+                    item.Visitor = this;
+                }
+            }
+    
+            if (e.OldItems != null)
+            {
+                foreach (EmploymentStudentVisitLog item in e.OldItems)
                 {
                     if (ReferenceEquals(item.Visitor, this))
                     {

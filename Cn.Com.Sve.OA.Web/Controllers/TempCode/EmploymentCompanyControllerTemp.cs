@@ -33,7 +33,8 @@ namespace Cn.Com.Sve.OA.Web.Controllers.TempCode {
     			TempProvId=e.TempProvId,
     			TempProvName=e.TempProvName,
     			TempCityId=e.TempCityId,
-    			TempCityName=e.TempCityName
+    			TempCityName=e.TempCityName,
+    			AddTime=e.AddTime
     			};
     		}
     

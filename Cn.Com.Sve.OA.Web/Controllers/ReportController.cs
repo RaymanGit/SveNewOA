@@ -220,5 +220,29 @@ namespace Cn.Com.Sve.OA.Web.Controllers {
 		}
 
 		#endregion
+
+		#region 就业报表
+		// 就业访谈报表
+		public ActionResult EmploymentVisitReviewReprt(DateTime? startTime, DateTime? endTime) {
+			startTime = (startTime != null) ? startTime : new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+			endTime = (endTime != null) ? endTime : DateTime.Today;
+
+			var m = this.Service.GetEmploymentVisitReviewReprt(startTime, endTime);
+			this.ViewBag.StartTime = startTime;
+			this.ViewBag.EndTime = endTime;
+			return this.View(m);
+		}
+		// 就业新增企业报表
+		public ActionResult NewEmployeeCompanyReport(DateTime? startTime, DateTime? endTime) {
+			startTime = (startTime != null) ? startTime : new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+			endTime = (endTime != null) ? endTime : DateTime.Today;
+
+			var m = this.Service.GetNewEmployeeCompanyReport(startTime, endTime);
+			this.ViewBag.StartTime = startTime;
+			this.ViewBag.EndTime = endTime;
+			return this.View(m);
+		}
+
+		#endregion
 	}
 }

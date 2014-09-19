@@ -37,6 +37,7 @@ namespace Cn.Com.Sve.OA.BusinessService {
     	List<EmploymentCompany> FindByTempProvName(string tempProvName);
     	List<EmploymentCompany> FindByTempCityId(string tempCityId);
     	List<EmploymentCompany> FindByTempCityName(string tempCityName);
+    	List<EmploymentCompany> FindByAddTime(Nullable<System.DateTime> addTime);
     	PagedModel<EmploymentCompany> FindByCriteria(EmploymentCompanyCriteria c);
     }
 }

@@ -45,6 +45,7 @@ namespace Cn.Com.Sve.OA.DataServices {
     			e.TempProvName = entity.TempProvName;
     			e.TempCityId = entity.TempCityId;
     			e.TempCityName = entity.TempCityName;
+    			e.AddTime = entity.AddTime;
     		}
     		//if (this.FindById(entity.Id) != null) {
     		//	this.DbContext.EmploymentCompanies.Attach(entity);
@@ -127,6 +128,9 @@ namespace Cn.Com.Sve.OA.DataServices {
     	public IEnumerable<EmploymentCompany> FindByTempCityName(string tempCityName){
     				return this.DbContext.EmploymentCompanies.Include("City").Include("User").Where(o => o.TempCityName.Equals(tempCityName));
     			}
+    	public IEnumerable<EmploymentCompany> FindByAddTime(Nullable<System.DateTime> addTime){
+    				return this.DbContext.EmploymentCompanies.Include("City").Include("User").Where(o => o.AddTime.Value.Equals(addTime.Value));
+    			}
     	public IEnumerable<EmploymentCompany> FindByCriteria(EmploymentCompanyCriteria c) {
     		return this.DbContext.EmploymentCompanies.Include("City").Include("User").Where(o => 
     			(!c.IdSrh.HasValue || o.Id.Equals(c.IdSrh.Value))
@@ -156,6 +160,9 @@ namespace Cn.Com.Sve.OA.DataServices {
     			&& (String.IsNullOrEmpty(c.TempProvNameSrh) || o.TempProvName.Contains(c.TempProvNameSrh))
     			&& (String.IsNullOrEmpty(c.TempCityIdSrh) || o.TempCityId.Contains(c.TempCityIdSrh))
     			&& (String.IsNullOrEmpty(c.TempCityNameSrh) || o.TempCityName.Contains(c.TempCityNameSrh))
+    			&& (!c.AddTimeSrh.HasValue || (o.AddTime.HasValue 			&& o.AddTime.Value.Equals(c.AddTimeSrh.Value)))
+    			&& (!c.AddTimeFromSrh.HasValue || (o.AddTime.HasValue 			&& o.AddTime.Value >= c.AddTimeFromSrh.Value))
+    			&& (!c.AddTimeToSrh.HasValue || (o.AddTime.HasValue 			&& o.AddTime.Value <= c.AddTimeToSrh.Value))
     
     		);
     	}

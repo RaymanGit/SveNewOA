@@ -170,6 +170,12 @@ namespace Cn.Com.Sve.OA.Entities
             get;
             set;
         }
+    
+        public virtual Nullable<System.DateTime> AddTime
+        {
+            get;
+            set;
+        }
 
         #endregion
 

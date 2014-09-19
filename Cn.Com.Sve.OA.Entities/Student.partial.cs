@@ -1186,6 +1186,38 @@ namespace Cn.Com.Sve.OA.Entities
             }
         }
         private ICollection<StudentChangeClazzLog> _changeClazzLogs;
+    
+        public virtual ICollection<EmploymentStudentVisitLog> Employment_VisitLog
+        {
+            get
+            {
+                if (_employment_VisitLog == null)
+                {
+                    var newCollection = new FixupCollection<EmploymentStudentVisitLog>();
+                    newCollection.CollectionChanged += FixupEmployment_VisitLog;
+                    _employment_VisitLog = newCollection;
+                }
+                return _employment_VisitLog;
+            }
+            set
+            {
+                if (!ReferenceEquals(_employment_VisitLog, value))
+                {
+                    var previousValue = _employment_VisitLog as FixupCollection<EmploymentStudentVisitLog>;
+                    if (previousValue != null)
+                    {
+                        previousValue.CollectionChanged -= FixupEmployment_VisitLog;
+                    }
+                    _employment_VisitLog = value;
+                    var newValue = value as FixupCollection<EmploymentStudentVisitLog>;
+                    if (newValue != null)
+                    {
+                        newValue.CollectionChanged += FixupEmployment_VisitLog;
+                    }
+                }
+            }
+        }
+        private ICollection<EmploymentStudentVisitLog> _employment_VisitLog;
 
         #endregion
 
@@ -1512,6 +1544,28 @@ namespace Cn.Com.Sve.OA.Entities
             if (e.OldItems != null)
             {
                 foreach (StudentChangeClazzLog item in e.OldItems)
+                {
+                    if (ReferenceEquals(item.Student, this))
+                    {
+                        item.Student = null;
+                    }
+                }
+            }
+        }
+    
+        private void FixupEmployment_VisitLog(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (EmploymentStudentVisitLog item in e.NewItems)
+                {
+                    item.Student = this;
+                }
+            }
+    
+            if (e.OldItems != null)
+            {
+                foreach (EmploymentStudentVisitLog item in e.OldItems)
                 {
                     if (ReferenceEquals(item.Student, this))
                     {

@@ -1,0 +1,348 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Aqua/css/ligerui-all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/Gray/css/all.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/ligerUI/skins/ligerui-icons.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/lib/css/common.css")" rel="stylesheet" type="text/css" />  
+    <script src="@Url.Content("~/Content/lib/jquery/jquery-1.7.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/ligerUI/js/ligerui.all.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Content/lib/jquery-validation/jquery.metadata.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/jquery-validation/messages_cn.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/js/LG.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/lib/json2.js")" type="text/javascript"></script> 
+	
+    <style type="text/css">
+        body{ font-size:12px;}
+        .l-table-edit {}
+        .l-table-edit-td{ padding:4px;}
+        .l-button-submit,.l-button-reset{width:80px; float:left; margin-left:10px; padding-bottom:2px;}
+        .l-verify-tip{ left:230px; top:120px; z-index:9999;}
+    </style>
+    <script type="text/javascript">
+        var gEmploymentStudentVisitLog;
+        var action = "add";
+        var $dialog;
+		var initData;
+		
+        $(function () {
+            gEmploymentStudentVisitLog = $("#grdEmploymentStudentVisitLog").ligerGrid({
+                columns: [
+                    { display: 'Id', name: 'Id', width: 100, align: 'left' },
+					{ display: 'StudentId', name: 'StudentId', width: 100, align: 'left' },
+					{ display: 'VisitorId', name: 'VisitorId', width: 100, align: 'left' },
+					{ display: 'Time', name: 'Time', width: 100, align: 'left' },
+					{ display: 'Position', name: 'Position', width: 100, align: 'left' },
+					{ display: 'Objective', name: 'Objective', width: 100, align: 'left' },
+					{ display: 'Content', name: 'Content', width: 100, align: 'left' }
+                  ],
+                pageSize: 20, toolbar: {},
+                url: '@Url.Action("GetData","EmploymentStudentVisitLog")', 
+                sortName: 'Name',
+                width: '98%', height: '100%', checkbox: false,
+                usePager:true,
+                toolbar: { items: [
+                { text: '增加', icon: 'add', click: addEmploymentStudentVisitLog },
+                { line: true },
+                { text: '修改', icon: 'modify', click: editEmploymentStudentVisitLog },
+                { line: true },
+                { text: '删除', icon: 'delete', click: deleteEmploymentStudentVisitLog }
+                ]
+                }
+            });
+            $("#btnSearch").click(function () {
+                gEmploymentStudentVisitLog.set({ 
+                    parms : [
+                    { name: 'IdSrh', value: $('#IdSrh').val() },
+					{ name: 'IdFromSrh', value: $('#IdFromSrh').val() },
+					{ name: 'IdToSrh', value: $('#IdToSrh').val() },
+					{ name: 'StudentIdSrh', value: $('#StudentIdSrh').val() },
+					{ name: 'StudentIdFromSrh', value: $('#StudentIdFromSrh').val() },
+					{ name: 'StudentIdToSrh', value: $('#StudentIdToSrh').val() },
+					{ name: 'VisitorIdSrh', value: $('#VisitorIdSrh').val() },
+					{ name: 'VisitorIdFromSrh', value: $('#VisitorIdFromSrh').val() },
+					{ name: 'VisitorIdToSrh', value: $('#VisitorIdToSrh').val() },
+					{ name: 'TimeSrh', value: $('#TimeSrh').val() },
+					{ name: 'PositionSrh', value: $('#PositionSrh').val() },
+					{ name: 'ObjectiveSrh', value: $('#ObjectiveSrh').val() },
+					{ name: 'ContentSrh', value: $('#ContentSrh').val() }
+                    ]
+                });
+                gEmploymentStudentVisitLog.loadData();
+            });
+			
+            $.validator.addMethod(
+	            "notnull",
+	            function (value, element, regexp)
+	            {
+	                if (!value) return true;
+	                return !$(element).hasClass("l-text-field-null");
+	            },
+	            "不能为空"
+            );
+
+            $.metadata.setType("attr", "validate");
+            var v = $("#frmEmploymentStudentVisitLog").validate({
+                errorPlacement: function (lable, element) {
+                    if (element.hasClass("l-textarea")) {
+                        element.addClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().addClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                    $(element).attr("title", lable.html()).ligerTip();
+                },
+                success: function (lable) {
+                    var element = $("#" + lable.attr("for"));
+                    if (element.hasClass("l-textarea")) {
+                        element.removeClass("l-textarea-invalid");
+                    } else if (element.hasClass("l-text-field")) {
+                        element.parent().removeClass("l-text-invalid");
+                    }
+                    $(element).removeAttr("title").ligerHideTip();
+                },
+                submitHandler: function () {
+                    saveEmploymentStudentVisitLog();
+                    return false;
+                }
+            });
+
+			$.getJSON("@Url.Action("GetInitData","EmploymentStudentVisitLog")", function(data){
+				initData = data;
+                /*
+				$("#f_City_ProvinceId").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceId',data:data.Provinces });
+                data.Provinces.unshift({ Id:'', Name:'所有' });
+                $("#f_City_ProvinceIdSrh").ligerComboBox(
+                    {textField:'Name',valueField:'Id',valueFieldID:'ProvinceIdSrh',data:data.Provinces });
+				*/
+	            $("#formsearch").ligerForm();
+				$("#frmEmploymentStudentVisitLog").ligerForm();
+            });
+
+
+        });
+		
+        function addEmploymentStudentVisitLog(){
+            action = "add";
+			$("#f_EmploymentStudentVisitLog_Id").val("");
+			$("#f_EmploymentStudentVisitLog_StudentId").val("");
+			$("#f_EmploymentStudentVisitLog_VisitorId").val("");
+			$("#f_EmploymentStudentVisitLog_Time").val("");
+			$("#f_EmploymentStudentVisitLog_Position").val("");
+			$("#f_EmploymentStudentVisitLog_Objective").val("");
+			$("#f_EmploymentStudentVisitLog_Content").val("");
+			$dialog = $.ligerDialog.open({ target: $("#dEmploymentStudentVisitLog"), width: 300, height: 150 });
+        }
+        function editEmploymentStudentVisitLog() {
+            action = "edit";
+            var row = gEmploymentStudentVisitLog.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+			$("#f_EmploymentStudentVisitLog_Id").val(row.Id);
+			$("#f_EmploymentStudentVisitLog_StudentId").val(row.StudentId);
+			$("#f_EmploymentStudentVisitLog_VisitorId").val(row.VisitorId);
+			$("#f_EmploymentStudentVisitLog_Time").val(row.Time);
+			$("#f_EmploymentStudentVisitLog_Position").val(row.Position);
+			$("#f_EmploymentStudentVisitLog_Objective").val(row.Objective);
+			$("#f_EmploymentStudentVisitLog_Content").val(row.Content);
+            $dialog = $.ligerDialog.open({ target: $("#dEmploymentStudentVisitLog"), width: 300, height: 150 });
+        }
+        function deleteEmploymentStudentVisitLog() {
+            var row = gEmploymentStudentVisitLog.getSelectedRow();
+            if (!row) { LG.tip('请选择行!'); return }
+
+            $.ligerDialog.confirm("您确定要删除选中记录么？",function (r) { 
+                if(r){
+                    $.post("@Url.Action("Delete","EmploymentStudentVisitLog")", { id: row.Id }
+                        , function (result) {
+                            if (result.Successful) {
+                                gEmploymentStudentVisitLog.deleteSelectedRow();
+                            } else {
+                                $.ligerMessageBox.error('错误', result.Message);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+        function saveEmploymentStudentVisitLog(){
+            if(action=="add"){
+                $.post("@Url.Action("Add","EmploymentStudentVisitLog")", $("#frmEmploymentStudentVisitLog").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            gEmploymentStudentVisitLog.addRow(result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }else{
+                $.post("@Url.Action("Update","EmploymentStudentVisitLog")", $("#frmEmploymentStudentVisitLog").serialize(),
+                    function (result) {
+                        if (result.Successful) {
+                            var row = gEmploymentStudentVisitLog.getSelected();
+                            if (!row) { alert('请选择行'); return; }
+                            gEmploymentStudentVisitLog.updateRow(row,result.Data);
+                            $dialog.hidden();
+                            LG.tip("操作成功！");
+                        }else{
+                            LG.showError(result.Message);
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+<body style="padding:10px;height:100%; text-align:center;">
+  <div id="mainsearch" style=" width:98%">
+    <div class="searchtitle">
+        <span>搜索</span><img src="@Url.Content("~/Content/lib/icons/32X32/searchtool.gif")" alt="" />
+        <div class="togglebtn"></div> 
+    </div>
+    <div class="navline" style="margin-bottom:4px; margin-top:4px;"></div>
+    <div class="searchbox">
+        <form id="formsearch" class="l-form" action="">
+        <table cellpadding="0" cellspacing="0" class="l-table-edit" >
+			<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Id</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdSrh' type='text' id='IdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdFromSrh' type='text' id='IdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>IdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='IdToSrh' type='text' id='IdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudentId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudentIdSrh' type='text' id='StudentIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudentIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudentIdFromSrh' type='text' id='StudentIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>StudentIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='StudentIdToSrh' type='text' id='StudentIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>VisitorId</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='VisitorIdSrh' type='text' id='VisitorIdSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>VisitorIdFrom</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='VisitorIdFromSrh' type='text' id='VisitorIdFromSrh' ltype='text' /></td>
+</tr>
+<tr>
+<td style='text-align:right;' class='l-table-edit-td'>VisitorIdTo</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='VisitorIdToSrh' type='text' id='VisitorIdToSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Time</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='TimeSrh' type='text' id='TimeSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Position</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='PositionSrh' type='text' id='PositionSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Objective</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ObjectiveSrh' type='text' id='ObjectiveSrh' ltype='text' /></td>
+</tr>
+
+				<tr>
+<td style='text-align:right;' class='l-table-edit-td'>Content</td>
+<td style='text-align:left;' class='l-table-edit-td'><input name='ContentSrh' type='text' id='ContentSrh' ltype='text' /></td>
+</tr>
+
+            <tr>
+                <td style="text-align:center;" class="l-table-edit-td" colspan="3"><input type="button" value="查询" id="btnSearch"  /></td>
+            </tr>
+        </table>
+        
+        </form>
+    </div>
+  </div>
+  <div id="grdEmploymentStudentVisitLog"></div> 
+  
+   <div id="dEmploymentStudentVisitLog" style="display: none;">
+        <form action="" method="post" id="frmEmploymentStudentVisitLog">
+			<input type="hidden" id="f_EmploymentStudentVisitLog_Id" name="Id" value="" />
+			<table cellpadding="0" cellspacing="0" class="l-table-edit" >
+	            
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>StudentId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='StudentId' type='text' id='f_EmploymentStudentVisitLog_StudentId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>VisitorId</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='VisitorId' type='text' id='f_EmploymentStudentVisitLog_VisitorId' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Time</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Time' type='text' id='f_EmploymentStudentVisitLog_Time' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Position</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Position' type='text' id='f_EmploymentStudentVisitLog_Position' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Objective</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Objective' type='text' id='f_EmploymentStudentVisitLog_Objective' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+				<tr>
+<td class='l-table-edit-td' style='text-align:right;'>Content</td>
+<td class='l-table-edit-td' style='text-align:left;width:160px'>
+<input name='Content' type='text' id='f_EmploymentStudentVisitLog_Content' ltype='text' />
+</td>
+<td style='text-align:left;'></td>
+</tr>
+
+            <tr>
+                <td colspan="3" style="text-align:center;">
+                    <input type="submit" id="btnProvinceSave" value="保存" class="l-button l-button-submit" />
+                    <input type="button" id="btnProvinceCancel" value="取消" onclick='$dialog.hidden();' class="l-button l-button-reset" />
+                </td>
+            </tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

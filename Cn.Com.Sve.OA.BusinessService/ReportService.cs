@@ -31,8 +31,11 @@ namespace Cn.Com.Sve.OA.BusinessService {
 		List<SalesTeamSummaryReport> GetSignUpSummaryReportBySchool(int year);
 		List<SalesTeamSummaryReport> GetSignUpSummaryReportByEduLevel(int year);
 		List<SalesTeamSummaryReport> GetSignUpSummaryReportBySalesTeamAndSchool(int year, int teamId);
+
 		List<SignUpRankingListItem> GetSignUpRankingList(DateTime? startTime, DateTime? endTime, string orderBy, string rankBy);
 		List<StudentVisitSummaryReportItem> GetStudentVisitSummaryReportByTeacher(DateTime? startTime, DateTime? endTime);
+		List<EmploymentVisitReviewReprtItem> GetEmploymentVisitReviewReprt(DateTime? startTime, DateTime? endTime);
+		List<NewEmployeeCompanyReportItem> GetNewEmployeeCompanyReport(DateTime? startTime, DateTime? endTime);
 	}
 	public class ReportService : IReportService {
 		public List<StudentVisitSummaryReportItem> GetStudentVisitSummaryReport(DateTime? startTime, DateTime? endTime) {
@@ -225,6 +228,17 @@ namespace Cn.Com.Sve.OA.BusinessService {
 		public List<StudentVisitSummaryReportItem> GetStudentVisitSummaryReportByTeacher(DateTime? startTime, DateTime? endTime) {
 			var ds = new ReportRepository();
 			var m = ds.GetStudentVisitSummaryReportByTeacher(startTime, endTime);
+			return m;
+		}
+
+		public List<EmploymentVisitReviewReprtItem> GetEmploymentVisitReviewReprt(DateTime? startTime, DateTime? endTime) {
+			var ds = new ReportRepository();
+			var m = ds.GetEmploymentVisitReviewReprt(startTime, endTime);
+			return m;
+		}
+		public List<NewEmployeeCompanyReportItem> GetNewEmployeeCompanyReport(DateTime? startTime, DateTime? endTime) {
+			var ds = new ReportRepository();
+			var m = ds.GetNewEmployeeCompanyReport(startTime, endTime);
 			return m;
 		}
 	}

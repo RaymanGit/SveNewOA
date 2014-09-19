@@ -159,6 +159,9 @@
     <Compile Include="EmploymentCompanyService.partial.cs">
       <DependentUpon>BusinessService.tt</DependentUpon>
     </Compile>
+    <Compile Include="EmploymentStudentVisitLogService.partial.cs">
+      <DependentUpon>BusinessService.tt</DependentUpon>
+    </Compile>
     <Compile Include="FunctionService.cs" />
     <Compile Include="FunctionService.partial.cs">
       <DependentUpon>BusinessService.tt</DependentUpon>
@@ -185,6 +188,9 @@
       <DependentUpon>ServiceInterface.tt</DependentUpon>
     </Compile>
     <Compile Include="IEmploymentCompanyService.partial.cs">
+      <DependentUpon>ServiceInterface.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IEmploymentStudentVisitLogService.partial.cs">
       <DependentUpon>ServiceInterface.tt</DependentUpon>
     </Compile>
     <Compile Include="IFunctionService.partial.cs">
